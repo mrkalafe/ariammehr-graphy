@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#120e0c">
+    <meta name="theme-color" content="#1a1a1a">
     <meta name="description" content="آریامهر گرافی؛ رسانه‌ای برای تاریخ، اسناد، تصاویر و روایت‌های مستند ایران.">
     <title>آریامهر گرافی | روایت تاریخ، اسناد و تصاویر</title>
 
@@ -12,29 +12,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-       :root {
-    color-scheme: dark;
+        :root {
+            color-scheme: dark;
 
-    --bg: #1a1a1a;
-    --surface: rgba(255, 255, 255, .055);
-    --surface-strong: rgba(26, 26, 26, .96);
+            --bg: #1a1a1a;
+            --surface: rgba(255,255,255,.055);
+            --line: rgba(255,255,255,.10);
 
-    --line: rgba(255, 255, 255, .10);
-    --line-orange: rgba(237, 42, 73, .35);
+            --text: #ffffff;
+            --muted: #b8bdc5;
 
-    --text: #ffffff;
-    --muted: #b8bdc5;
+            --red: #ed2a49;
+            --gold: #d3a034;
+            --blue: #2a8acf;
 
-    --orange: #ed2a49;
-    --orange-light: #ff6179;
+            --shadow: 0 24px 80px rgba(0,0,0,.38);
+        }
 
-    --gold: #d3a034;
-    --blue: #2a8acf;
-
-    --shadow: 0 24px 80px rgba(0, 0, 0, .38);
-}
-
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         html {
             scroll-behavior: smooth;
@@ -45,23 +42,13 @@
             margin: 0;
             min-height: 100vh;
             color: var(--text);
-           background:
-    radial-gradient(
-        ellipse at 90% 5%,
-        rgba(42, 138, 207, .16),
-        transparent 35rem
-    ),
-    radial-gradient(
-        ellipse at 5% 40%,
-        rgba(237, 42, 73, .13),
-        transparent 35rem
-    ),
-    radial-gradient(
-        ellipse at 55% 100%,
-        rgba(211, 160, 52, .09),
-        transparent 30rem
-    ),
-    #1a1a1a;
+            font-family: 'Vazirmatn', sans-serif;
+
+            background:
+                radial-gradient(ellipse at 90% 5%, rgba(42,138,207,.16), transparent 35rem),
+                radial-gradient(ellipse at 5% 40%, rgba(237,42,73,.13), transparent 35rem),
+                radial-gradient(ellipse at 55% 100%, rgba(211,160,52,.09), transparent 30rem),
+                #1a1a1a;
         }
 
         body::before {
@@ -76,12 +63,21 @@
             mask-image: linear-gradient(to bottom, black, transparent 75%);
         }
 
-        a { color: inherit; }
+        a {
+            color: inherit;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
 
         .container {
             width: min(1180px, calc(100% - 40px));
             margin-inline: auto;
         }
+
+        /* Navbar */
 
         .site-header {
             position: sticky;
@@ -99,7 +95,7 @@
             padding: 12px 20px;
             border: 1px solid var(--line);
             border-radius: 23px;
-            background: rgba(17, 14, 12, .78);
+            background: rgba(17,17,17,.78);
             backdrop-filter: blur(22px);
             -webkit-backdrop-filter: blur(22px);
             box-shadow: 0 12px 45px rgba(0,0,0,.2);
@@ -109,12 +105,11 @@
             display: inline-flex;
             align-items: center;
             gap: 11px;
-            color: var(--orange);
+            color: var(--red);
             text-decoration: none;
             white-space: nowrap;
             font-size: 23px;
             font-weight: 900;
-            letter-spacing: -.8px;
         }
 
         .brand-mark {
@@ -122,10 +117,10 @@
             height: 39px;
             display: grid;
             place-items: center;
-            border: 1px solid var(--line-orange);
+            border: 1px solid rgba(211,160,52,.35);
             border-radius: 13px;
-            background: rgba(244,119,67,.1);
-            color: var(--orange-light);
+            background: rgba(211,160,52,.08);
+            color: var(--gold);
         }
 
         .nav-links {
@@ -140,7 +135,7 @@
             align-items: center;
             gap: 8px;
             padding: 11px 13px;
-            color: #c0b7b1;
+            color: #c0c0c0;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
@@ -151,9 +146,9 @@
 
         .nav-link:hover,
         .nav-link.active {
-            color: var(--orange-light);
-            border-color: var(--line-orange);
-            background: rgba(244,119,67,.08);
+            color: var(--blue);
+            border-color: rgba(42,138,207,.3);
+            background: rgba(42,138,207,.08);
         }
 
         .nav-actions {
@@ -170,26 +165,29 @@
             border: 1px solid transparent;
             border-radius: 13px;
             background: transparent;
-            color: #b8aea8;
+            color: #b8bdc5;
             cursor: pointer;
             transition: .2s ease;
         }
 
         .icon-button:hover {
-            color: var(--orange-light);
-            border-color: var(--line-orange);
-            background: rgba(244,119,67,.08);
+            color: var(--gold);
+            border-color: rgba(211,160,52,.3);
+            background: rgba(211,160,52,.08);
         }
 
-        .menu-toggle { display: none; }
+        .menu-toggle {
+            display: none;
+        }
+
+        /* Hero */
 
         .hero {
             position: relative;
-            min-height: 540px;
-            display: grid;
-            place-items: center;
-            padding: 100px 20px 95px;
-            text-align: center;
+            display: block;
+            min-height: 570px;
+            padding: 75px 20px;
+            text-align: initial;
             isolation: isolate;
         }
 
@@ -202,22 +200,38 @@
             left: 50%;
             z-index: -1;
             transform: translate(-50%, -45%);
-            border: 1px solid rgba(244,119,67,.13);
+            border: 1px solid rgba(211,160,52,.13);
             border-radius: 50%;
-            box-shadow: 0 0 0 55px rgba(244,119,67,.018), 0 0 0 110px rgba(244,119,67,.012);
+            box-shadow:
+                0 0 0 55px rgba(211,160,52,.018),
+                0 0 0 110px rgba(42,138,207,.012);
         }
 
-        .hero-content { max-width: 850px; }
+        .hero-layout {
+            width: min(1150px, 100%);
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            align-items: center;
+            gap: 55px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: right;
+            max-width: 850px;
+        }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 9px;
             padding: 10px 17px;
-            border: 1px solid var(--line-orange);
+            border: 1px solid rgba(211,160,52,.35);
             border-radius: 999px;
-            color: var(--orange-light);
-            background: rgba(244,119,67,.07);
+            color: var(--gold);
+            background: rgba(211,160,52,.07);
             font-size: 13px;
             font-weight: 600;
         }
@@ -231,13 +245,13 @@
         }
 
         .hero h1 span {
-            color: var(--orange);
-            text-shadow: 0 8px 35px rgba(244,119,67,.18);
+            color: var(--gold);
+            text-shadow: 0 8px 35px rgba(211,160,52,.18);
         }
 
         .hero-description {
             max-width: 690px;
-            margin: 0 auto;
+            margin: 0;
             color: var(--muted);
             font-size: clamp(15px, 1.7vw, 18px);
             line-height: 2.2;
@@ -245,7 +259,7 @@
 
         .hero-actions {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             flex-wrap: wrap;
             gap: 12px;
             margin-top: 32px;
@@ -260,36 +274,132 @@
             padding: 0 21px;
             border-radius: 15px;
             text-decoration: none;
-            font: inherit;
             font-size: 14px;
             font-weight: 700;
             transition: .22s ease;
         }
 
         .button-primary {
-            color: #1b100b;
-            background: linear-gradient(135deg, #ff9568, #ed6937);
-            box-shadow: 0 10px 30px rgba(237,105,55,.2);
+            color: #ffffff;
+            background: linear-gradient(135deg, #ed2a49, #bd1935);
+            box-shadow: 0 10px 30px rgba(237,42,73,.2);
         }
 
         .button-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(237,105,55,.3);
+            box-shadow: 0 15px 35px rgba(237,42,73,.3);
         }
 
         .button-ghost {
-            color: #e8ded7;
+            color: #e8e8e8;
             border: 1px solid var(--line);
             background: rgba(255,255,255,.035);
         }
 
         .button-ghost:hover {
-            border-color: var(--line-orange);
-            background: rgba(244,119,67,.07);
+            border-color: rgba(42,138,207,.4);
+            background: rgba(42,138,207,.08);
         }
 
-        .section {
-            padding: 55px 0 75px;
+        /* Shah Portrait */
+
+        .hero-portrait {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 460px;
+        }
+
+        .portrait-frame {
+            position: relative;
+            width: 310px;
+            height: 410px;
+            padding: 9px;
+            border: 1px solid rgba(211,160,52,.45);
+            border-radius: 25px;
+            background: rgba(255,255,255,.055);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.45),
+                0 0 45px rgba(237,42,73,.10);
+            transform: rotate(-2deg);
+            transition: .4s ease;
+        }
+
+        .portrait-frame:hover {
+            transform: rotate(0deg) translateY(-8px);
+            border-color: var(--gold);
+        }
+
+        .portrait-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            border-radius: 18px;
+            display: block;
+        }
+
+        .portrait-caption {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 16px;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 13px;
+            background: rgba(26,26,26,.78);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .portrait-caption span {
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .portrait-caption small {
+            color: var(--gold);
+            font-size: 12px;
+        }
+
+        .portrait-glow {
+            position: absolute;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(237,42,73,.23),
+                rgba(42,138,207,.10),
+                transparent 70%
+            );
+            filter: blur(35px);
+        }
+
+        .portrait-decoration {
+            position: absolute;
+            width: 330px;
+            height: 430px;
+            border: 1px solid rgba(42,138,207,.25);
+            border-radius: 30px;
+            transform: rotate(5deg);
+            z-index: -1;
+        }
+
+        /* Categories */
+
+        .categories-section {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 45px 0 65px;
         }
 
         .section-heading {
@@ -300,9 +410,130 @@
             margin-bottom: 25px;
         }
 
+        .section-eyebrow {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .categories-section .section-heading h2 {
+            margin: 0;
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 800;
+        }
+
+        .categories-section .section-heading h2 span {
+            color: var(--red);
+        }
+
+        .categories-section .section-heading p {
+            margin: 9px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 2;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .category-card {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 23px;
+            border: 1px solid var(--line);
+            border-radius: 21px;
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,.065),
+                rgba(255,255,255,.018)
+            );
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            text-decoration: none;
+            transition: .25s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(211,160,52,.4);
+            box-shadow: var(--shadow);
+            background: rgba(255,255,255,.07);
+        }
+
+        .category-icon {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 19px;
+            border-radius: 16px;
+        }
+
+        .category-icon.red {
+            color: var(--red);
+            background: rgba(237,42,73,.12);
+            border: 1px solid rgba(237,42,73,.25);
+        }
+
+        .category-icon.gold {
+            color: var(--gold);
+            background: rgba(211,160,52,.12);
+            border: 1px solid rgba(211,160,52,.25);
+        }
+
+        .category-icon.blue {
+            color: var(--blue);
+            background: rgba(42,138,207,.12);
+            border: 1px solid rgba(42,138,207,.25);
+        }
+
+        .category-icon.white {
+            color: #ffffff;
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.18);
+        }
+
+        .category-card h3 {
+            margin: 0 0 9px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .category-card p {
+            min-height: 48px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 2;
+        }
+
+        .category-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 20px;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* General Sections */
+
+        .section {
+            padding: 55px 0 75px;
+        }
+
         .section-kicker {
             margin: 0 0 7px;
-            color: var(--orange);
+            color: var(--red);
             font-size: 12px;
             font-weight: 800;
         }
@@ -319,6 +550,8 @@
             font-size: 14px;
         }
 
+        /* Search */
+
         .search-wrap {
             width: min(310px, 100%);
             min-height: 47px;
@@ -333,8 +566,8 @@
         }
 
         .search-wrap:focus-within {
-            border-color: var(--line-orange);
-            box-shadow: 0 0 0 3px rgba(244,119,67,.07);
+            border-color: rgba(42,138,207,.5);
+            box-shadow: 0 0 0 3px rgba(42,138,207,.07);
         }
 
         .search-wrap input {
@@ -343,11 +576,14 @@
             outline: 0;
             color: var(--text);
             background: transparent;
-            font: inherit;
             font-size: 13px;
         }
 
-        .search-wrap input::placeholder { color: #887e77; }
+        .search-wrap input::placeholder {
+            color: #888;
+        }
+
+        /* Articles */
 
         .articles-grid {
             display: grid;
@@ -360,7 +596,11 @@
             overflow: hidden;
             border: 1px solid var(--line);
             border-radius: 21px;
-            background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018));
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,.065),
+                rgba(255,255,255,.018)
+            );
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             box-shadow: 0 16px 45px rgba(0,0,0,.15);
@@ -369,7 +609,7 @@
 
         .article-card:hover {
             transform: translateY(-6px);
-            border-color: var(--line-orange);
+            border-color: rgba(237,42,73,.45);
             box-shadow: var(--shadow);
         }
 
@@ -378,8 +618,8 @@
             height: 205px;
             overflow: hidden;
             background:
-                radial-gradient(circle at 70% 25%, rgba(244,119,67,.25), transparent 35%),
-                linear-gradient(135deg, #332018, #171210);
+                radial-gradient(circle at 70% 25%, rgba(237,42,73,.22), transparent 40%),
+                linear-gradient(135deg, #292329, #1a1a1a);
         }
 
         .article-cover img {
@@ -390,17 +630,21 @@
             transition: transform .5s ease;
         }
 
-        .article-card:hover .article-cover img { transform: scale(1.045); }
+        .article-card:hover .article-cover img {
+            transform: scale(1.045);
+        }
 
         .cover-placeholder {
             width: 100%;
             height: 100%;
             display: grid;
             place-items: center;
-            color: rgba(255,149,104,.65);
+            color: rgba(211,160,52,.65);
         }
 
-        .article-info { padding: 20px; }
+        .article-info {
+            padding: 20px;
+        }
 
         .article-category {
             display: inline-flex;
@@ -408,17 +652,17 @@
             gap: 6px;
             margin-bottom: 12px;
             padding: 5px 10px;
-            border: 1px solid var(--line-orange);
+            border: 1px solid rgba(211,160,52,.3);
             border-radius: 999px;
-            color: var(--orange-light);
-            background: rgba(244,119,67,.07);
+            color: var(--gold);
+            background: rgba(211,160,52,.07);
             font-size: 11px;
             font-weight: 700;
         }
 
         .article-info h3 {
             margin: 0 0 10px;
-            color: #f4eee8;
+            color: #f4f4f4;
             font-size: 18px;
             line-height: 1.8;
             font-weight: 800;
@@ -443,7 +687,7 @@
         }
 
         .article-date {
-            color: #8e837c;
+            color: #8e949c;
             font-size: 11px;
         }
 
@@ -451,13 +695,15 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            color: var(--orange-light);
+            color: var(--blue);
             text-decoration: none;
             font-size: 13px;
             font-weight: 800;
         }
 
-        .read-link:hover { color: #ffc0a5; }
+        .read-link:hover {
+            color: #70baf0;
+        }
 
         .state-message {
             grid-column: 1 / -1;
@@ -469,6 +715,8 @@
             background: rgba(255,255,255,.025);
         }
 
+        /* About */
+
         .about-panel {
             display: grid;
             grid-template-columns: 1.2fr .8fr;
@@ -478,7 +726,7 @@
             border: 1px solid var(--line);
             border-radius: 25px;
             background:
-                radial-gradient(ellipse at 90% 10%, rgba(244,119,67,.12), transparent 45%),
+                radial-gradient(ellipse at 90% 10%, rgba(42,138,207,.13), transparent 45%),
                 rgba(255,255,255,.035);
             backdrop-filter: blur(16px);
         }
@@ -499,13 +747,15 @@
             min-height: 150px;
             display: grid;
             place-items: center;
-            color: rgba(255,149,104,.7);
+            color: var(--gold);
         }
+
+        /* Footer */
 
         .site-footer {
             margin-top: 35px;
             border-top: 1px solid var(--line);
-            background: rgba(8,7,6,.35);
+            background: rgba(8,8,8,.35);
         }
 
         .footer-inner {
@@ -514,12 +764,12 @@
             justify-content: space-between;
             gap: 20px;
             padding: 27px 0;
-            color: #948982;
+            color: #949494;
             font-size: 12px;
         }
 
         .footer-brand {
-            color: var(--orange);
+            color: var(--red);
             font-size: 17px;
             font-weight: 900;
         }
@@ -531,23 +781,90 @@
             place-items: center;
             border: 1px solid var(--line);
             border-radius: 13px;
-            color: var(--orange-light);
+            color: var(--gold);
             text-decoration: none;
         }
 
+        /* Responsive */
+
         @media (max-width: 950px) {
-            .nav-links { gap: 0; }
-            .nav-link { padding: 10px 8px; font-size: 12px; }
-            .articles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .nav-links {
+                gap: 0;
+            }
+
+            .nav-link {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+
+            .articles-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 800px) {
+            .hero-layout {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .hero-content {
+                text-align: center;
+                margin-inline: auto;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-portrait {
+                min-height: 430px;
+            }
+
+            .portrait-frame {
+                width: 270px;
+                height: 370px;
+            }
+
+            .portrait-decoration {
+                width: 285px;
+                height: 390px;
+            }
         }
 
         @media (max-width: 700px) {
-            .container { width: min(100% - 26px, 560px); }
-            .site-header { top: 7px; padding-top: 7px; }
-            .navbar { min-height: 64px; padding: 9px 12px; border-radius: 18px; }
-            .brand { font-size: 19px; }
-            .brand-mark { width: 35px; height: 35px; }
-            .menu-toggle { display: inline-grid; }
+            .container {
+                width: min(100% - 26px, 560px);
+            }
+
+            .site-header {
+                top: 7px;
+                padding-top: 7px;
+            }
+
+            .navbar {
+                min-height: 64px;
+                padding: 9px 12px;
+                border-radius: 18px;
+            }
+
+            .brand {
+                font-size: 19px;
+            }
+
+            .brand-mark {
+                width: 35px;
+                height: 35px;
+            }
+
+            .menu-toggle {
+                display: inline-grid;
+            }
+
             .nav-links {
                 position: absolute;
                 top: calc(100% + 8px);
@@ -558,289 +875,111 @@
                 padding: 10px;
                 border: 1px solid var(--line);
                 border-radius: 18px;
-                background: rgba(18,14,12,.96);
+                background: rgba(18,18,18,.96);
                 backdrop-filter: blur(20px);
                 box-shadow: var(--shadow);
             }
-            .nav-links.open { display: flex; flex-direction: column; }
-            .nav-link { padding: 12px; font-size: 14px; }
-            .nav-actions .icon-button:not(.menu-toggle) { display: none; }
-            .hero { min-height: 490px; padding: 85px 10px 70px; }
-            .hero h1 { letter-spacing: -1px; }
-            .section { padding: 35px 0 55px; }
-            .section-heading { align-items: stretch; flex-direction: column; }
-            .search-wrap { width: 100%; }
-            .articles-grid { grid-template-columns: 1fr; gap: 16px; }
-            .article-cover { height: 220px; }
-            .about-panel { grid-template-columns: 1fr; padding: 25px; }
-            .about-symbol { min-height: 90px; }
-            .footer-inner { align-items: flex-start; }
+
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .nav-link {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .nav-actions .icon-button:not(.menu-toggle) {
+                display: none;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 75px 10px 55px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .categories-section {
+                width: calc(100% - 26px);
+                padding: 35px 0 45px;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .category-card {
+                padding: 17px;
+            }
+
+            .category-card h3 {
+                font-size: 14px;
+            }
+
+            .category-card p {
+                font-size: 11px;
+            }
+
+            .category-link {
+                font-size: 11px;
+            }
+
+            .section {
+                padding: 35px 0 55px;
+            }
+
+            .section-heading {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .search-wrap {
+                width: 100%;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .article-cover {
+                height: 220px;
+            }
+
+            .about-panel {
+                grid-template-columns: 1fr;
+                padding: 25px;
+            }
+
+            .about-symbol {
+                min-height: 90px;
+            }
+
+            .footer-inner {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
+            *,
+            *::before,
+            *::after {
                 scroll-behavior: auto !important;
                 transition-duration: .01ms !important;
             }
         }
-
-/* Identity Colors */
-
-.brand,
-.footer-brand {
-    color: #ed2a49;
-}
-
-.brand-mark {
-    color: #d3a034;
-    border-color: rgba(211, 160, 52, .35);
-    background: rgba(211, 160, 52, .08);
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: #2a8acf;
-    border-color: rgba(42, 138, 207, .3);
-    background: rgba(42, 138, 207, .08);
-}
-
-.hero h1 span {
-    color: #d3a034;
-}
-
-.eyebrow {
-    color: #d3a034;
-    border-color: rgba(211, 160, 52, .35);
-    background: rgba(211, 160, 52, .07);
-}
-
-.button-primary {
-    background: linear-gradient(
-        135deg,
-        #ed2a49,
-        #bd1935
-    );
-    color: #ffffff;
-}
-
-.button-primary:hover {
-    box-shadow: 0 15px 35px rgba(237, 42, 73, .25);
-}
-
-.button-ghost:hover {
-    border-color: rgba(42, 138, 207, .4);
-    background: rgba(42, 138, 207, .08);
-}
-
-.article-card:hover {
-    border-color: rgba(237, 42, 73, .45);
-}
-
-.article-category {
-    color: #d3a034;
-    border-color: rgba(211, 160, 52, .3);
-    background: rgba(211, 160, 52, .07);
-}
-
-.read-link {
-    color: #2a8acf;
-}
-
-.read-link:hover {
-    color: #70baf0;
-}
-
-.article-cover {
-    background:
-        radial-gradient(
-            circle at 70% 25%,
-            rgba(237, 42, 73, .22),
-            transparent 40%
-        ),
-        linear-gradient(135deg, #292329, #1a1a1a);
-}
-
-.about-panel {
-    background:
-        radial-gradient(
-            ellipse at 90% 10%,
-            rgba(42, 138, 207, .13),
-            transparent 45%
-        ),
-        rgba(255, 255, 255, .035);
-}
-
-.about-symbol {
-    color: #d3a034;
-}
-
-        /* Hero Portrait */
-
-.hero {
-    min-height: 570px;
-    padding: 75px 20px;
-}
-
-.hero-layout {
-    width: min(1150px, 100%);
-    margin: auto;
-
-    display: grid;
-    grid-template-columns: 1.15fr .85fr;
-
-    align-items: center;
-    gap: 55px;
-}
-
-.hero-content {
-    text-align: right;
-    position: relative;
-    z-index: 2;
-}
-
-.hero-portrait {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 460px;
-}
-
-.portrait-frame {
-    position: relative;
-    width: 310px;
-    height: 410px;
-
-    padding: 9px;
-
-    border: 1px solid rgba(211,160,52,.45);
-    border-radius: 25px;
-
-    background: rgba(255,255,255,.055);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.45),
-        0 0 45px rgba(237,42,73,.10);
-
-    transform: rotate(-2deg);
-    transition: .4s ease;
-}
-
-.portrait-frame:hover {
-    transform: rotate(0deg) translateY(-8px);
-    border-color: #d3a034;
-}
-
-.portrait-frame img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-    object-position: center top;
-
-    border-radius: 18px;
-    display: block;
-}
-
-.portrait-caption {
-    position: absolute;
-
-    bottom: 20px;
-    right: 20px;
-    left: 20px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 13px 16px;
-
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 13px;
-
-    background: rgba(26,26,26,.78);
-
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-}
-
-.portrait-caption span {
-    color: #fff;
-    font-weight: 800;
-    font-size: 13px;
-}
-
-.portrait-caption small {
-    color: #d3a034;
-    font-size: 12px;
-}
-
-.portrait-glow {
-    position: absolute;
-
-    width: 340px;
-    height: 340px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(237,42,73,.23),
-            rgba(42,138,207,.10),
-            transparent 70%
-        );
-
-    filter: blur(35px);
-}
-
-.portrait-decoration {
-    position: absolute;
-
-    width: 330px;
-    height: 430px;
-
-    border: 1px solid rgba(42,138,207,.25);
-    border-radius: 30px;
-
-    transform: rotate(5deg);
-    z-index: -1;
-}
-
-@media(max-width: 800px) {
-
-    .hero-layout {
-        grid-template-columns: 1fr;
-        gap: 35px;
-    }
-
-    .hero-content {
-        text-align: center;
-    }
-
-    .hero-content .hero-actions {
-        justify-content: center;
-    }
-
-    .hero-portrait {
-        min-height: 430px;
-    }
-
-    .portrait-frame {
-        width: 270px;
-        height: 370px;
-    }
-
-    .portrait-decoration {
-        width: 285px;
-        height: 390px;
-    }
-
-}
-        
     </style>
 </head>
 
@@ -849,294 +988,516 @@
     <header class="site-header">
         <div class="container">
             <nav class="navbar" aria-label="منوی اصلی">
+
                 <a class="brand" href="#top" aria-label="آریامهر گرافی، صفحه اصلی">
-                    <span class="brand-mark"><i data-lucide="landmark"></i></span>
+                    <span class="brand-mark">
+                        <i data-lucide="landmark"></i>
+                    </span>
                     <span>آریامهر گرافی</span>
                 </a>
 
                 <div class="nav-links" id="navLinks">
-                    <a class="nav-link active" href="#top"><i data-lucide="house" size="17"></i> خانه</a>
-                    <a class="nav-link" href="#articles-section"><i data-lucide="book-open" size="17"></i> مجله</a>
-                    <a class="nav-link" href="#about"><i data-lucide="info" size="17"></i> درباره ما</a>
+                    <a class="nav-link active" href="#top">
+                        <i data-lucide="house" size="17"></i>
+                        خانه
+                    </a>
+
+                    <a class="nav-link" href="#articles-section">
+                        <i data-lucide="book-open" size="17"></i>
+                        مجله
+                    </a>
+
+                    <a class="nav-link" href="#categories">
+                        <i data-lucide="layers" size="17"></i>
+                        آرشیو
+                    </a>
+
+                    <a class="nav-link" href="#about">
+                        <i data-lucide="info" size="17"></i>
+                        درباره ما
+                    </a>
                 </div>
 
                 <div class="nav-actions">
+
                     <button class="icon-button" id="focusSearch" type="button" aria-label="جست‌وجوی مقاله">
                         <i data-lucide="search"></i>
                     </button>
+
                     <button class="icon-button menu-toggle" id="menuToggle" type="button" aria-label="باز کردن منو" aria-expanded="false">
                         <i data-lucide="menu"></i>
                     </button>
+
                 </div>
             </nav>
         </div>
     </header>
 
     <main>
-       <section class="hero">
-    <div class="hero-layout">
 
-        <div class="hero-content">
+        <!-- Hero -->
 
-            <div class="eyebrow">
-                <i data-lucide="landmark" size="16"></i>
-                آرشیو مستقل تاریخ و هویت ایران
-            </div>
+        <section class="hero">
 
-            <h1>
-                روایت تاریخ ایران،
-                <br>
-                با <span>سند، تصویر و پژوهش</span>
-            </h1>
+            <div class="hero-layout">
 
-            <p class="hero-description">
-                آریامهر گرافی آرشیوی مستقل برای گردآوری،
-                معرفی و بررسی اسناد، تصاویر و روایت‌های تاریخی ایران است.
-            </p>
+                <div class="hero-content">
 
-            <div class="hero-actions">
+                    <div class="eyebrow">
+                        <i data-lucide="landmark" size="16"></i>
+                        آرشیو مستقل تاریخ و هویت ایران
+                    </div>
 
-                <a class="button button-primary" href="#articles-section">
-                    مشاهده مطالب
-                    <i data-lucide="arrow-left" size="17"></i>
-                </a>
+                    <h1>
+                        روایت تاریخ ایران،
+                        <br>
+                        با <span>سند، تصویر و پژوهش</span>
+                    </h1>
 
-                <a class="button button-ghost" href="#about">
-                    درباره آریامهر گرافی
-                    <i data-lucide="move-up-left" size="16"></i>
-                </a>
+                    <p class="hero-description">
+                        آریامهر گرافی آرشیوی مستقل برای گردآوری،
+                        معرفی و بررسی اسناد، تصاویر و روایت‌های تاریخی ایران است.
+                    </p>
 
-            </div>
+                    <div class="hero-actions">
 
-        </div>
+                        <a class="button button-primary" href="#articles-section">
+                            مشاهده مطالب
+                            <i data-lucide="arrow-left" size="17"></i>
+                        </a>
 
-        <div class="hero-portrait">
+                        <a class="button button-ghost" href="#about">
+                            درباره آریامهر گرافی
+                            <i data-lucide="move-up-left" size="16"></i>
+                        </a>
 
-            <div class="portrait-glow"></div>
+                    </div>
 
-            <div class="portrait-frame">
+                </div>
 
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg/960px-Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg"
-                    alt="پرتره رسمی محمدرضاشاه پهلوی، ۱۹۷۳"
-                >
+                <div class="hero-portrait">
 
-                <div class="portrait-caption">
-                    <span>محمدرضاشاه پهلوی</span>
-                    <small>۱۹۷۳</small>
+                    <div class="portrait-glow"></div>
+
+                    <div class="portrait-frame">
+
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg/960px-Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg"
+                            alt="پرتره رسمی محمدرضاشاه پهلوی، ۱۹۷۳"
+                        >
+
+                        <div class="portrait-caption">
+                            <span>محمدرضاشاه پهلوی</span>
+                            <small>۱۹۷۳</small>
+                        </div>
+
+                    </div>
+
+                    <div class="portrait-decoration"></div>
+
                 </div>
 
             </div>
 
-            <div class="portrait-decoration"></div>
+        </section>
 
-        </div>
+        <!-- Categories -->
 
-    </div>
-</section>
+        <section class="categories-section" id="categories">
 
-<section class="categories-section" id="categories">
-    <div class="section-heading">
-        <div>
-            <span class="section-eyebrow">آرشیو آریامهر گرافی</span>
-            <h2>در دنیای تاریخ <span>کاوش کنید</span></h2>
-            <p>مجموعه‌ای از اسناد، تصاویر و روایت‌های تاریخی ایران</p>
-        </div>
-    </div>
-
-    <div class="categories-grid">
-
-        <a href="#articles" class="category-card">
-            <div class="category-icon red">
-                <i data-lucide="newspaper"></i>
-            </div>
-            <h3>مقالات تاریخی</h3>
-            <p>مطالعات، پژوهش‌ها و روایت‌های تاریخی</p>
-            <span class="category-link">مشاهده مطالب <i data-lucide="arrow-left"></i></span>
-        </a>
-
-        <a href="#articles" class="category-card">
-            <div class="category-icon gold">
-                <i data-lucide="file-text"></i>
-            </div>
-            <h3>اسناد و مدارک</h3>
-            <p>اسناد رسمی، نامه‌ها و مدارک تاریخی</p>
-            <span class="category-link">مشاهده آرشیو <i data-lucide="arrow-left"></i></span>
-        </a>
-
-        <a href="#articles" class="category-card">
-            <div class="category-icon blue">
-                <i data-lucide="images"></i>
-            </div>
-            <h3>آرشیو تصاویر</h3>
-            <p>تصاویر تاریخی و مجموعه‌های تصویری</p>
-            <span class="category-link">مشاهده تصاویر <i data-lucide="arrow-left"></i></span>
-        </a>
-
-        <a href="#articles" class="category-card">
-            <div class="category-icon white">
-                <i data-lucide="film"></i>
-            </div>
-            <h3>فیلم و ویدئو</h3>
-            <p>ویدئوهای تاریخی و مستندهای آرشیوی</p>
-            <span class="category-link">مشاهده ویدئوها <i data-lucide="arrow-left"></i></span>
-        </a>
-
-    </div>
-</section>
-        
-        <section class="section container" id="articles-section">
             <div class="section-heading">
+
+                <div>
+                    <span class="section-eyebrow">آرشیو آریامهر گرافی</span>
+
+                    <h2>
+                        در دنیای تاریخ
+                        <span>کاوش کنید</span>
+                    </h2>
+
+                    <p>
+                        مجموعه‌ای از اسناد، تصاویر و روایت‌های تاریخی ایران
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="categories-grid">
+
+                <a href="#articles-section" class="category-card">
+
+                    <div class="category-icon red">
+                        <i data-lucide="newspaper"></i>
+                    </div>
+
+                    <h3>مقالات تاریخی</h3>
+
+                    <p>
+                        مطالعات، پژوهش‌ها و روایت‌های تاریخی
+                    </p>
+
+                    <span class="category-link">
+                        مشاهده مطالب
+                        <i data-lucide="arrow-left"></i>
+                    </span>
+
+                </a>
+
+                <a href="#articles-section" class="category-card">
+
+                    <div class="category-icon gold">
+                        <i data-lucide="file-text"></i>
+                    </div>
+
+                    <h3>اسناد و مدارک</h3>
+
+                    <p>
+                        اسناد رسمی، نامه‌ها و مدارک تاریخی
+                    </p>
+
+                    <span class="category-link">
+                        مشاهده آرشیو
+                        <i data-lucide="arrow-left"></i>
+                    </span>
+
+                </a>
+
+                <a href="#articles-section" class="category-card">
+
+                    <div class="category-icon blue">
+                        <i data-lucide="images"></i>
+                    </div>
+
+                    <h3>آرشیو تصاویر</h3>
+
+                    <p>
+                        تصاویر تاریخی و مجموعه‌های تصویری
+                    </p>
+
+                    <span class="category-link">
+                        مشاهده تصاویر
+                        <i data-lucide="arrow-left"></i>
+                    </span>
+
+                </a>
+
+                <a href="#articles-section" class="category-card">
+
+                    <div class="category-icon white">
+                        <i data-lucide="film"></i>
+                    </div>
+
+                    <h3>فیلم و ویدئو</h3>
+
+                    <p>
+                        ویدئوهای تاریخی و مستندهای آرشیوی
+                    </p>
+
+                    <span class="category-link">
+                        مشاهده ویدئوها
+                        <i data-lucide="arrow-left"></i>
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- Articles -->
+
+        <section class="section container" id="articles-section">
+
+            <div class="section-heading">
+
                 <div>
                     <p class="section-kicker">مجله آریامهر</p>
                     <h2>تازه‌ترین مطالب</h2>
-                    <p class="section-subtitle">مقاله‌ها و مطالب منتشرشده را دنبال کنید.</p>
+                    <p class="section-subtitle">
+                        مقاله‌ها و مطالب منتشرشده را دنبال کنید.
+                    </p>
                 </div>
 
                 <label class="search-wrap">
                     <i data-lucide="search" size="18"></i>
-                    <input id="articleSearch" type="search" placeholder="جست‌وجو در عنوان و توضیحات..." autocomplete="off">
+
+                    <input
+                        id="articleSearch"
+                        type="search"
+                        placeholder="جست‌وجو در عنوان و توضیحات..."
+                        autocomplete="off"
+                    >
                 </label>
+
             </div>
 
             <div class="articles-grid" id="articles">
                 <div class="state-message">در حال دریافت مطالب...</div>
             </div>
+
         </section>
 
+        <!-- About -->
+
         <section class="section container" id="about">
+
             <div class="about-panel">
+
                 <div>
                     <p class="section-kicker">درباره پروژه</p>
+
                     <h2>آریامهر گرافی چیست؟</h2>
+
                     <p>
                         این وب‌سایت با هدف ایجاد آرشیوی منظم و قابل جست‌وجو از مطالب تاریخی،
                         اسناد و تصاویر ایران راه‌اندازی شده است. تلاش ما ارائه محتوا با ذکر
                         منبع و تفکیک سند، روایت و تحلیل است.
                     </p>
                 </div>
+
                 <div class="about-symbol" aria-hidden="true">
                     <i data-lucide="scroll-text" width="92" height="92" stroke-width="1"></i>
                 </div>
+
             </div>
+
         </section>
+
     </main>
 
+    <!-- Footer -->
+
     <footer class="site-footer">
+
         <div class="container footer-inner">
+
             <div>
                 <div class="footer-brand">آریامهر گرافی</div>
                 <div>رسانه‌ای برای تاریخ، اسناد و تصاویر ایران</div>
             </div>
-            <div>تمامی حقوق این وب‌سایت محفوظ است.</div>
-            <a class="back-top" href="#top" aria-label="بازگشت به بالا"><i data-lucide="arrow-up"></i></a>
+
+            <div>
+                تمامی حقوق این وب‌سایت محفوظ است.
+            </div>
+
+            <a class="back-top" href="#top" aria-label="بازگشت به بالا">
+                <i data-lucide="arrow-up"></i>
+            </a>
+
         </div>
+
     </footer>
+
+    <!-- Libraries -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
+
+        // Supabase Configuration
+
         const SUPABASE_URL = "https://dtndnnogjrtufjezwety.supabase.co";
+
         const SUPABASE_KEY = "sb_publishable_Z3VyIdDrg5Rdrg9REKRqZw_oUSVG04a";
 
-        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const db = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
         const articlesContainer = document.getElementById("articles");
+
         const searchInput = document.getElementById("articleSearch");
+
         let allArticles = [];
 
+
+        // Refresh Icons
+
         function refreshIcons() {
+
             if (window.lucide) {
                 lucide.createIcons();
             }
+
         }
 
+
+        // Format Date
+
         function formatDate(value) {
+
             if (!value) return "";
+
             const date = new Date(value);
+
             if (Number.isNaN(date.getTime())) return "";
+
             return new Intl.DateTimeFormat("fa-IR", {
                 year: "numeric",
                 month: "long",
                 day: "numeric"
             }).format(date);
+
         }
 
+
+        // Render Articles
+
         function renderArticles(items) {
+
             articlesContainer.innerHTML = "";
 
             if (!items.length) {
+
                 articlesContainer.innerHTML =
                     '<div class="state-message">مطلبی با این عبارت پیدا نشد.</div>';
+
                 return;
+
             }
 
             items.forEach(function(article) {
+
                 const card = document.createElement("article");
+
                 card.className = "article-card";
 
+
+                // Cover
+
                 const cover = document.createElement("div");
+
                 cover.className = "article-cover";
 
+
                 if (article.cover_image) {
+
                     const image = document.createElement("img");
+
                     image.src = article.cover_image;
+
                     image.alt = article.title || "تصویر مقاله";
+
                     image.loading = "lazy";
+
                     image.onerror = function() {
-                        cover.innerHTML = '<div class="cover-placeholder"><i data-lucide="image" width="48" height="48"></i></div>';
+
+                        cover.innerHTML =
+                            '<div class="cover-placeholder"><i data-lucide="image" width="48" height="48"></i></div>';
+
                         refreshIcons();
+
                     };
+
                     cover.appendChild(image);
+
                 } else {
-                    cover.innerHTML = '<div class="cover-placeholder"><i data-lucide="image" width="48" height="48"></i></div>';
+
+                    cover.innerHTML =
+                        '<div class="cover-placeholder"><i data-lucide="image" width="48" height="48"></i></div>';
+
                 }
 
+
+                // Article Info
+
                 const info = document.createElement("div");
+
                 info.className = "article-info";
 
+
+                // Category
+
                 const category = document.createElement("span");
+
                 category.className = "article-category";
+
                 category.innerHTML = '<i data-lucide="bookmark" size="13"></i>';
-                category.appendChild(document.createTextNode(article.category || "مقاله"));
+
+                category.appendChild(
+                    document.createTextNode(article.category || "مقاله")
+                );
+
+
+                // Title
 
                 const title = document.createElement("h3");
+
                 title.textContent = article.title || "بدون عنوان";
 
+
+                // Description
+
                 const description = document.createElement("p");
-                description.textContent = article.description || "برای مطالعه این مطلب وارد صفحه مقاله شوید.";
+
+                description.textContent =
+                    article.description || "برای مطالعه این مطلب وارد صفحه مقاله شوید.";
+
+
+                // Footer
 
                 const footer = document.createElement("div");
+
                 footer.className = "article-footer";
 
+
+                // Date
+
                 const date = document.createElement("span");
+
                 date.className = "article-date";
+
                 date.textContent = formatDate(article.created_at);
 
+
+                // Read Link
+
                 const link = document.createElement("a");
+
                 link.className = "read-link";
+
                 link.href = "article.html?id=" + encodeURIComponent(article.id);
+
                 link.textContent = "مطالعه مقاله";
+
                 link.innerHTML += ' <i data-lucide="arrow-left" size="15"></i>';
 
+
+                // Build Card
+
                 footer.appendChild(date);
+
                 footer.appendChild(link);
 
                 info.appendChild(category);
+
                 info.appendChild(title);
+
                 info.appendChild(description);
+
                 info.appendChild(footer);
 
                 card.appendChild(cover);
+
                 card.appendChild(info);
+
                 articlesContainer.appendChild(card);
+
             });
 
             refreshIcons();
+
         }
 
+
+        // Load Articles from Supabase
+
         async function loadArticles() {
-            articlesContainer.innerHTML = '<div class="state-message">در حال دریافت مطالب...</div>';
+
+            articlesContainer.innerHTML =
+                '<div class="state-message">در حال دریافت مطالب...</div>';
 
             const { data, error } = await db
                 .from("articles")
@@ -1144,54 +1505,114 @@
                 .eq("status", "published")
                 .order("created_at", { ascending: false });
 
+
             if (error) {
+
                 console.error("Articles loading error:", error);
+
                 articlesContainer.innerHTML =
                     '<div class="state-message">دریافت مطالب با مشکل مواجه شد. لطفاً بعداً دوباره تلاش کنید.</div>';
+
                 return;
+
             }
 
             allArticles = data || [];
+
             renderArticles(allArticles);
+
         }
 
+
+        // Live Search
+
         searchInput.addEventListener("input", function() {
+
             const query = this.value.trim().toLocaleLowerCase("fa");
+
             const filtered = allArticles.filter(function(article) {
+
                 const title = (article.title || "").toLocaleLowerCase("fa");
+
                 const description = (article.description || "").toLocaleLowerCase("fa");
+
                 const category = (article.category || "").toLocaleLowerCase("fa");
-                return title.includes(query) || description.includes(query) || category.includes(query);
+
+                return (
+                    title.includes(query) ||
+                    description.includes(query) ||
+                    category.includes(query)
+                );
+
             });
+
             renderArticles(filtered);
+
         });
+
+
+        // Search Button
 
         document.getElementById("focusSearch").addEventListener("click", function() {
-            document.getElementById("articles-section").scrollIntoView({ behavior: "smooth" });
-            setTimeout(function() { searchInput.focus(); }, 450);
+
+            document.getElementById("articles-section").scrollIntoView({
+                behavior: "smooth"
+            });
+
+            setTimeout(function() {
+                searchInput.focus();
+            }, 450);
+
         });
+
+
+        // Mobile Menu
 
         const menuToggle = document.getElementById("menuToggle");
+
         const navLinks = document.getElementById("navLinks");
 
+
         menuToggle.addEventListener("click", function() {
+
             const isOpen = navLinks.classList.toggle("open");
+
             menuToggle.setAttribute("aria-expanded", String(isOpen));
-            menuToggle.innerHTML = isOpen ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+
+            menuToggle.innerHTML = isOpen
+                ? '<i data-lucide="x"></i>'
+                : '<i data-lucide="menu"></i>';
+
             refreshIcons();
+
         });
+
+
+        // Close Mobile Menu after Click
 
         navLinks.querySelectorAll("a").forEach(function(link) {
+
             link.addEventListener("click", function() {
+
                 navLinks.classList.remove("open");
+
                 menuToggle.setAttribute("aria-expanded", "false");
+
                 menuToggle.innerHTML = '<i data-lucide="menu"></i>';
+
                 refreshIcons();
+
             });
+
         });
 
+
+        // Initialize
+
         loadArticles();
+
         refreshIcons();
+
     </script>
 
 </body>
