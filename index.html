@@ -7,56 +7,113 @@
     <title>آریامهر گرافی</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            padding: 30px;
             background: #101114;
-            color: #ffffff;
+            color: #fff;
             font-family: Tahoma, sans-serif;
         }
 
         header {
             text-align: center;
-            padding: 35px 15px;
+            padding: 45px 20px;
             border-bottom: 1px solid #b99750;
         }
 
         header h1 {
             color: #d5b56b;
+            font-size: 32px;
+        }
+
+        header p {
+            color: #bbb;
+        }
+
+        .section-title {
+            max-width: 1100px;
+            margin: 40px auto 25px;
+            padding: 0 20px;
+            color: #d5b56b;
         }
 
         #articles {
-            max-width: 900px;
-            margin: 35px auto;
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
         }
 
         .article {
             background: #1b1d22;
             border: 1px solid #34363b;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            overflow: hidden;
+            transition: 0.25s;
         }
 
-        .article h2 {
-            color: #d5b56b;
-        }
-
-        .article p {
-            color: #cccccc;
-            line-height: 2;
+        .article:hover {
+            transform: translateY(-5px);
+            border-color: #b99750;
         }
 
         .article img {
             width: 100%;
-            max-height: 350px;
+            height: 190px;
             object-fit: cover;
-            border-radius: 8px;
+            display: block;
         }
 
-        .empty {
+        .article-body {
+            padding: 20px;
+        }
+
+        .article h2 {
+            color: #d5b56b;
+            font-size: 19px;
+            margin-top: 0;
+        }
+
+        .article p {
+            color: #bbb;
+            font-size: 14px;
+            line-height: 2;
+        }
+
+        .read-button {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 9px 18px;
+            background: #b99750;
+            color: #101114;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .read-button:hover {
+            background: #d5b56b;
+        }
+
+        .message {
             text-align: center;
             color: #aaa;
+            grid-column: 1 / -1;
+            padding: 35px 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            border-top: 1px solid #34363b;
+            color: #888;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -68,9 +125,15 @@
         <p>رسانه‌ای برای تاریخ، اسناد و تصاویر ایران</p>
     </header>
 
+    <h2 class="section-title">آخرین مطالب</h2>
+
     <main id="articles">
-        <p class="empty">در حال دریافت مطالب...</p>
+        <p class="message">در حال دریافت مطالب...</p>
     </main>
+
+    <footer>
+        تمامی حقوق برای آریامهر گرافی محفوظ است.
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -92,38 +155,51 @@
                 .order("created_at", { ascending: false });
 
             if (error) {
-                container.innerHTML = '<p class="empty">دریافت مطالب با مشکل مواجه شد.</p>';
+                container.innerHTML = '<p class="message">دریافت مطالب با مشکل مواجه شد.</p>';
                 console.error(error);
                 return;
             }
 
             if (!data || data.length === 0) {
-                container.innerHTML = '<p class="empty">هنوز مقاله‌ای منتشر نشده است.</p>';
+                container.innerHTML = '<p class="message">هنوز مقاله‌ای منتشر نشده است.</p>';
                 return;
             }
 
-            container.innerHTML = data.map(article => `
-                <article class="article">
+            container.innerHTML = "";
 
-                    ${article.cover_image ? `<img src="${article.cover_image}" alt="">` : ""}
+            data.forEach(function(article) {
 
-                    <h2>${escapeHTML(article.title)}</h2>
+                const card = document.createElement("article");
+                card.className = "article";
 
-                    <p>${escapeHTML(article.description || "")}</p>
+                if (article.cover_image) {
+                    const image = document.createElement("img");
+                    image.src = article.cover_image;
+                    image.alt = article.title || "تصویر مقاله";
+                    card.appendChild(image);
+                }
 
-                </article>
-            `).join("");
-        }
+                const body = document.createElement("div");
+                body.className = "article-body";
 
-        function escapeHTML(text) {
-            return String(text).replace(/[&<>"']/g, function(char) {
-                return {
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    ">": "&gt;",
-                    '"': "&quot;",
-                    "'": "&#039;"
-                }[char];
+                const title = document.createElement("h2");
+                title.textContent = article.title;
+
+                const description = document.createElement("p");
+                description.textContent = article.description || "";
+
+                const button = document.createElement("a");
+                button.className = "read-button";
+                button.textContent = "مطالعه مقاله";
+                button.href = "article.html?id=" + encodeURIComponent(article.id);
+
+                body.appendChild(title);
+                body.appendChild(description);
+                body.appendChild(button);
+
+                card.appendChild(body);
+                container.appendChild(card);
+
             });
         }
 
