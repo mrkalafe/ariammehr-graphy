@@ -12,20 +12,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            color-scheme: dark;
-            --bg: #120e0c;
-            --surface: rgba(29, 22, 19, .68);
-            --surface-strong: rgba(35, 26, 22, .92);
-            --line: rgba(255, 255, 255, .09);
-            --line-orange: rgba(239, 111, 57, .32);
-            --text: #f4eee8;
-            --muted: #aaa09a;
-            --orange: #f47743;
-            --orange-light: #ff9568;
-            --gold: #d7b477;
-            --shadow: 0 24px 80px rgba(0, 0, 0, .32);
-        }
+       :root {
+    color-scheme: dark;
+
+    --bg: #1a1a1a;
+    --surface: rgba(255, 255, 255, .055);
+    --surface-strong: rgba(26, 26, 26, .96);
+
+    --line: rgba(255, 255, 255, .10);
+    --line-orange: rgba(237, 42, 73, .35);
+
+    --text: #ffffff;
+    --muted: #b8bdc5;
+
+    --orange: #ed2a49;
+    --orange-light: #ff6179;
+
+    --gold: #d3a034;
+    --blue: #2a8acf;
+
+    --shadow: 0 24px 80px rgba(0, 0, 0, .38);
+}
 
         * { box-sizing: border-box; }
 
@@ -38,12 +45,23 @@
             margin: 0;
             min-height: 100vh;
             color: var(--text);
-            background:
-                radial-gradient(ellipse at 88% 5%, rgba(173, 73, 35, .25), transparent 32rem),
-                radial-gradient(ellipse at 8% 38%, rgba(110, 55, 34, .18), transparent 34rem),
-                linear-gradient(145deg, #100d0b 0%, #1b120e 48%, #100d0b 100%);
-            font-family: "Vazirmatn", Tahoma, sans-serif;
-            overflow-x: hidden;
+           background:
+    radial-gradient(
+        ellipse at 90% 5%,
+        rgba(42, 138, 207, .16),
+        transparent 35rem
+    ),
+    radial-gradient(
+        ellipse at 5% 40%,
+        rgba(237, 42, 73, .13),
+        transparent 35rem
+    ),
+    radial-gradient(
+        ellipse at 55% 100%,
+        rgba(211, 160, 52, .09),
+        transparent 30rem
+    ),
+    #1a1a1a;
         }
 
         body::before {
@@ -565,6 +583,97 @@
                 transition-duration: .01ms !important;
             }
         }
+
+/* Identity Colors */
+
+.brand,
+.footer-brand {
+    color: #ed2a49;
+}
+
+.brand-mark {
+    color: #d3a034;
+    border-color: rgba(211, 160, 52, .35);
+    background: rgba(211, 160, 52, .08);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #2a8acf;
+    border-color: rgba(42, 138, 207, .3);
+    background: rgba(42, 138, 207, .08);
+}
+
+.hero h1 span {
+    color: #d3a034;
+}
+
+.eyebrow {
+    color: #d3a034;
+    border-color: rgba(211, 160, 52, .35);
+    background: rgba(211, 160, 52, .07);
+}
+
+.button-primary {
+    background: linear-gradient(
+        135deg,
+        #ed2a49,
+        #bd1935
+    );
+    color: #ffffff;
+}
+
+.button-primary:hover {
+    box-shadow: 0 15px 35px rgba(237, 42, 73, .25);
+}
+
+.button-ghost:hover {
+    border-color: rgba(42, 138, 207, .4);
+    background: rgba(42, 138, 207, .08);
+}
+
+.article-card:hover {
+    border-color: rgba(237, 42, 73, .45);
+}
+
+.article-category {
+    color: #d3a034;
+    border-color: rgba(211, 160, 52, .3);
+    background: rgba(211, 160, 52, .07);
+}
+
+.read-link {
+    color: #2a8acf;
+}
+
+.read-link:hover {
+    color: #70baf0;
+}
+
+.article-cover {
+    background:
+        radial-gradient(
+            circle at 70% 25%,
+            rgba(237, 42, 73, .22),
+            transparent 40%
+        ),
+        linear-gradient(135deg, #292329, #1a1a1a);
+}
+
+.about-panel {
+    background:
+        radial-gradient(
+            ellipse at 90% 10%,
+            rgba(42, 138, 207, .13),
+            transparent 45%
+        ),
+        rgba(255, 255, 255, .035);
+}
+
+.about-symbol {
+    color: #d3a034;
+}
+        
     </style>
 </head>
 
