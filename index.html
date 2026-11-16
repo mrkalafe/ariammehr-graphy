@@ -3,12 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>آریامهر گرافی</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #101114;
+            color: #ffffff;
+            font-family: Tahoma, sans-serif;
+        }
+
+        header {
+            text-align: center;
+            padding: 35px 15px;
+            border-bottom: 1px solid #b99750;
+        }
+
+        header h1 {
+            color: #d5b56b;
+        }
+
+        #articles {
+            max-width: 900px;
+            margin: 35px auto;
+        }
+
+        .article {
+            background: #1b1d22;
+            border: 1px solid #34363b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .article h2 {
+            color: #d5b56b;
+        }
+
+        .article p {
+            color: #cccccc;
+            line-height: 2;
+        }
+
+        .article img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #aaa;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>آریامهر گرافی</h1>
-    <p>رسانه‌ای برای تاریخ، اسناد و تصاویر ایران</p>
+    <header>
+        <h1>آریامهر گرافی</h1>
+        <p>رسانه‌ای برای تاریخ، اسناد و تصاویر ایران</p>
+    </header>
+
+    <main id="articles">
+        <p class="empty">در حال دریافت مطالب...</p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        const SUPABASE_URL = "https://dtndnnogjrtufjezwety.supabase.co";
+
+        const SUPABASE_KEY = "sb_publishable_Z3VyIdDrg5Rdrg9REKRqZw_oUSVG04a";
+
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadArticles() {
+
+            const container = document.getElementById("articles");
+
+            const { data, error } = await db
+                .from("articles")
+                .select("*")
+                .eq("status", "published")
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                container.innerHTML = '<p class="empty">دریافت مطالب با مشکل مواجه شد.</p>';
+                console.error(error);
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p class="empty">هنوز مقاله‌ای منتشر نشده است.</p>';
+                return;
+            }
+
+            container.innerHTML = data.map(article => `
+                <article class="article">
+
+                    ${article.cover_image ? `<img src="${article.cover_image}" alt="">` : ""}
+
+                    <h2>${escapeHTML(article.title)}</h2>
+
+                    <p>${escapeHTML(article.description || "")}</p>
+
+                </article>
+            `).join("");
+        }
+
+        function escapeHTML(text) {
+            return String(text).replace(/[&<>"']/g, function(char) {
+                return {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#039;"
+                }[char];
+            });
+        }
+
+        loadArticles();
+    </script>
 
 </body>
 </html>
