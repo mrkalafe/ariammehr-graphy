@@ -1,1 +1,91 @@
+\<!DOCTYPE html>
 
+\<html lang="fa" dir="rtl"> \<head>     \<meta charset="UTF-8">     \<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>مقاله | آریامهر گرافی</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 20px;
+        background: #101114;
+        color: #fff;
+        font-family: Tahoma, sans-serif;
+        line-height: 2;
+    }
+
+    header {
+        text-align: center;
+        padding: 25px 10px;
+        border-bottom: 1px solid #b99750;
+    }
+
+    header h1 {
+        color: #d5b56b;
+    }
+
+    header a {
+        color: #d5b56b;
+        text-decoration: none;
+    }
+
+    main {
+        max-width: 850px;
+        margin: 40px auto;
+    }
+
+    #cover {
+        width: 100%;
+        max-height: 450px;
+        object-fit: cover;
+        border-radius: 12px;
+        display: none;
+    }
+
+    #title {
+        color: #d5b56b;
+        font-size: 30px;
+        margin-top: 25px;
+    }
+
+    #description {
+        color: #aaa;
+        font-size: 17px;
+    }
+
+    #content {
+        margin-top: 35px;
+        font-size: 16px;
+        line-height: 2.5;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .message {
+        text-align: center;
+        color: #aaa;
+        padding: 40px 10px;
+    }
+</style>
+```
+
+\</head>
+
+\<body>
+
+\<header>     \<h1>آریامهر گرافی\</h1>     \<a href="index.html">بازگشت به صفحه اصلی\</a> \</header>
+
+\<main id="article">
+&#x20;   \<p class="message">در حال دریافت مقاله...\</p>
+\</main>
+
+\<script src="[https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2](https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2)">\</script>
+
+\<script>     const SUPABASE_URL = "[https://dtndnnogjrtufjezwety.supabase.co](https://dtndnnogjrtufjezwety.supabase.co)";     const SUPABASE_KEY = "sb_publishable_Z3VyIdDrg5Rdrg9REKRqZw_oUSVG04a";      const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);      async function loadArticle() {          const params = new URLSearchParams(window\.location.search);         const id = params.get("id");          const container = document.getElementById("article");          if (!id) {             container.innerHTML = '\<p class="message">شناسه مقاله مشخص نیست.\</p>';             return;         }          const { data, error } = await db             .from("articles")             .select("\*")             .eq("id", id)             .eq("status", "published")             .single();          if (error || !data) {             container.innerHTML = '\<p class="message">مقاله موردنظر پیدا نشد.\</p>';             return;         }          document.title = data.title + " | آریامهر گرافی";          container.innerHTML = \`             ${data.cover_image ? '\<img id="cover" src="" alt="">' : ''}              \<h1 id="title">\</h1>              \<p id="description">\</p>              \<div id="content">\</div>         \`;          if (data.cover_image) {             const cover = document.getElementById("cover");             cover.src = data.cover_image;             cover.style.display = "block";         }          document.getElementById("title").textContent = data.title;         document.getElementById("description").textContent = data.description || "";         document.getElementById("content").textContent = data.content || "";     }      loadArticle(); \</script>
+
+\</body> \</html>
