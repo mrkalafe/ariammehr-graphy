@@ -673,6 +673,173 @@
 .about-symbol {
     color: #d3a034;
 }
+
+        /* Hero Portrait */
+
+.hero {
+    min-height: 570px;
+    padding: 75px 20px;
+}
+
+.hero-layout {
+    width: min(1150px, 100%);
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+
+    align-items: center;
+    gap: 55px;
+}
+
+.hero-content {
+    text-align: right;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-portrait {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 460px;
+}
+
+.portrait-frame {
+    position: relative;
+    width: 310px;
+    height: 410px;
+
+    padding: 9px;
+
+    border: 1px solid rgba(211,160,52,.45);
+    border-radius: 25px;
+
+    background: rgba(255,255,255,.055);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.45),
+        0 0 45px rgba(237,42,73,.10);
+
+    transform: rotate(-2deg);
+    transition: .4s ease;
+}
+
+.portrait-frame:hover {
+    transform: rotate(0deg) translateY(-8px);
+    border-color: #d3a034;
+}
+
+.portrait-frame img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center top;
+
+    border-radius: 18px;
+    display: block;
+}
+
+.portrait-caption {
+    position: absolute;
+
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 13px 16px;
+
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 13px;
+
+    background: rgba(26,26,26,.78);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.portrait-caption span {
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.portrait-caption small {
+    color: #d3a034;
+    font-size: 12px;
+}
+
+.portrait-glow {
+    position: absolute;
+
+    width: 340px;
+    height: 340px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(237,42,73,.23),
+            rgba(42,138,207,.10),
+            transparent 70%
+        );
+
+    filter: blur(35px);
+}
+
+.portrait-decoration {
+    position: absolute;
+
+    width: 330px;
+    height: 430px;
+
+    border: 1px solid rgba(42,138,207,.25);
+    border-radius: 30px;
+
+    transform: rotate(5deg);
+    z-index: -1;
+}
+
+@media(max-width: 800px) {
+
+    .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
+    .hero-content .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-portrait {
+        min-height: 430px;
+    }
+
+    .portrait-frame {
+        width: 270px;
+        height: 370px;
+    }
+
+    .portrait-decoration {
+        width: 285px;
+        height: 390px;
+    }
+
+}
         
     </style>
 </head>
@@ -706,25 +873,67 @@
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <div class="eyebrow"><i data-lucide="archive" size="16"></i> روایت تاریخ با تکیه بر سند و تصویر</div>
-                <h1>تاریخ را <span>دقیق‌تر</span> ببینیم؛<br>فراتر از روایت‌های تکراری</h1>
-                <p class="hero-description">
-                    آریامهر گرافی تلاشی مستقل برای گردآوری، معرفی و بررسی اسناد،
-                    تصاویر و روایت‌های تاریخی ایران است.
-                </p>
-                <div class="hero-actions">
-                    <a class="button button-primary" href="#articles-section">
-                        مشاهده مطالب <i data-lucide="arrow-left" size="17"></i>
-                    </a>
-                    <a class="button button-ghost" href="#about">
-                        آشنایی با آریامهر گرافی <i data-lucide="move-up-left" size="16"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
+       <section class="hero">
+    <div class="hero-layout">
 
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                <i data-lucide="landmark" size="16"></i>
+                آرشیو مستقل تاریخ و هویت ایران
+            </div>
+
+            <h1>
+                روایت تاریخ ایران،
+                <br>
+                با <span>سند، تصویر و پژوهش</span>
+            </h1>
+
+            <p class="hero-description">
+                آریامهر گرافی آرشیوی مستقل برای گردآوری،
+                معرفی و بررسی اسناد، تصاویر و روایت‌های تاریخی ایران است.
+            </p>
+
+            <div class="hero-actions">
+
+                <a class="button button-primary" href="#articles-section">
+                    مشاهده مطالب
+                    <i data-lucide="arrow-left" size="17"></i>
+                </a>
+
+                <a class="button button-ghost" href="#about">
+                    درباره آریامهر گرافی
+                    <i data-lucide="move-up-left" size="16"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="hero-portrait">
+
+            <div class="portrait-glow"></div>
+
+            <div class="portrait-frame">
+
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg/960px-Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg"
+                    alt="پرتره رسمی محمدرضاشاه پهلوی، ۱۹۷۳"
+                >
+
+                <div class="portrait-caption">
+                    <span>محمدرضاشاه پهلوی</span>
+                    <small>۱۹۷۳</small>
+                </div>
+
+            </div>
+
+            <div class="portrait-decoration"></div>
+
+        </div>
+
+    </div>
+</section>
         <section class="section container" id="articles-section">
             <div class="section-heading">
                 <div>
