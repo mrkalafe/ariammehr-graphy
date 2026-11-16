@@ -526,7 +526,7 @@ th {
                 <tbody id="articlesTable">
 
                     <tr>
-                        <td colspan="4" class="empty">
+                        <td colspan="5" class="empty">
                             در حال دریافت اطلاعات...
                         </td>
                     </tr>
@@ -872,12 +872,25 @@ const articleForm = document.getElementById("articleForm");
 const articleMessage = document.getElementById("articleMessage");
 
 
-// Open Article Form
+/* New Article Button */
 
 document.getElementById("newArticleButton").addEventListener("click", function() {
 
+    // خروج از حالت ویرایش
+    editingArticleId = null;
+
+    // پاک کردن فرم
     articleForm.reset();
+
+    // پاک کردن پیام قبلی
     articleMessage.textContent = "";
+
+    // بازگرداندن متن دکمه ذخیره
+    const saveButton = document.getElementById("saveArticleButton");
+    saveButton.disabled = false;
+    saveButton.textContent = "ذخیره مقاله";
+
+    // نمایش فرم
     articleModal.style.display = "flex";
 
 });
@@ -991,51 +1004,7 @@ articleForm.addEventListener("submit", async function(event) {
 });
 
 
-    const { data, error } = await db
-        .from("articles")
-        .insert([article])
-        .select();
 
-
-    if (error) {
-
-        console.error(error);
-
-        articleMessage.style.color = "#d32f2f";
-
-        if (error.code === "23505") {
-
-            articleMessage.textContent = "این نشانی اختصاصی قبلاً استفاده شده است.";
-
-        } else {
-
-            articleMessage.textContent = "خطا در ذخیره مقاله: " + error.message;
-
-        }
-
-    } else {
-
-        articleMessage.style.color = "#388e3c";
-
-        articleMessage.textContent = "مقاله با موفقیت ذخیره شد!";
-
-        articleForm.reset();
-
-        await loadDashboard();
-
-        setTimeout(function() {
-
-            articleModal.style.display = "none";
-
-        }, 1200);
-
-    }
-
-
-    saveButton.disabled = false;
-    saveButton.textContent = "ذخیره مقاله";
-
-});
 
 /* Initial Session Check */
 
@@ -1062,26 +1031,7 @@ async function initialize() {
 }
 
 
-/* New Article Button */
 
-document.getElementById("newArticleButton").addEventListener("click", function() {
-
-    // خروج از حالت ویرایش
-    editingArticleId = null;
-
-    // پاک کردن فرم
-    articleForm.reset();
-
-    // پاک کردن پیام قبلی
-    articleMessage.textContent = "";
-
-    // بازگرداندن متن دکمه ذخیره
-    document.getElementById("saveArticleButton").textContent = "ذخیره مقاله";
-
-    // نمایش فرم
-    articleModal.style.display = "flex";
-
-});
 
 
 initialize();
