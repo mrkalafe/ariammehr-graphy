@@ -513,14 +513,15 @@ th {
 
             <table>
 
-                <thead>
-                    <tr>
-                        <th>عنوان مطلب</th>
-                        <th>دسته‌بندی</th>
-                        <th>وضعیت</th>
-                        <th>تاریخ</th>
-                    </tr>
-                </thead>
+<thead>
+    <tr>
+        <th>عنوان مطلب</th>
+        <th>دسته‌بندی</th>
+        <th>وضعیت</th>
+        <th>تاریخ</th>
+        <th>عملیات</th>
+    </tr>
+</thead>
 
                 <tbody id="articlesTable">
 
@@ -716,7 +717,7 @@ function renderArticles(articles) {
         const row = document.createElement("tr");
         const cell = document.createElement("td");
 
-        cell.colSpan = 4;
+        cell.colSpan = 5;
         cell.className = "empty";
         cell.textContent = "هنوز مطلبی ثبت نشده است.";
 
@@ -724,7 +725,6 @@ function renderArticles(articles) {
         table.appendChild(row);
 
         return;
-
     }
 
     articles.slice(0, 5).forEach(function(article) {
@@ -743,38 +743,49 @@ function renderArticles(articles) {
         status.className = "status";
 
         if (article.status === "published") {
-
             status.textContent = "منتشرشده";
-
         } else {
-
             status.textContent = "پیش‌نویس";
             status.classList.add("draft");
-
         }
 
         statusCell.appendChild(status);
 
         const date = document.createElement("td");
 
-        if (article.created_at) {
+        date.textContent = article.created_at
+            ? new Date(article.created_at).toLocaleDateString("fa-IR")
+            : "-";
 
-            date.textContent = new Date(
-                article.created_at
-            ).toLocaleDateString("fa-IR");
+        const actions = document.createElement("td");
 
-        } else {
+        const editButton = document.createElement("button");
+        editButton.textContent = "ویرایش";
+        editButton.className = "btn";
+        editButton.dataset.action = "edit";
+        editButton.dataset.id = article.id;
 
-            date.textContent = "-";
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "حذف";
+        deleteButton.className = "btn";
+        deleteButton.style.background = "#f5dddd";
+        deleteButton.style.marginRight = "5px";
+        deleteButton.dataset.action = "delete";
+        deleteButton.dataset.id = article.id;
 
-        }
+        actions.append(editButton, deleteButton);
 
-        row.append(title, category, statusCell, date);
+        row.append(
+            title,
+            category,
+            statusCell,
+            date,
+            actions
+        );
 
         table.appendChild(row);
 
     });
-
 }
 
     /* Article Management */
