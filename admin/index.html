@@ -790,6 +790,83 @@ function renderArticles(articles) {
 
     /* Article Management */
 
+    let editingArticleId = null;
+
+
+/* Article Actions */
+
+document.getElementById("articlesTable").addEventListener("click", async function(event) {
+
+    const button = event.target.closest("button[data-action]");
+
+    if (!button) return;
+
+    const articleId = button.dataset.id;
+    const action = button.dataset.action;
+
+    // Edit Article
+
+    if (action === "edit") {
+
+        const { data, error } = await db
+            .from("articles")
+            .select("*")
+            .eq("id", articleId)
+            .single();
+
+        if (error || !data) {
+            alert("دریافت اطلاعات مقاله ناموفق بود.");
+            return;
+        }
+
+        editingArticleId = data.id;
+
+        document.getElementById("articleTitle").value = data.title || "";
+        document.getElementById("articleSlug").value = data.slug || "";
+        document.getElementById("articleCategory").value = data.category || "";
+        document.getElementById("articleCover").value = data.cover_image || "";
+        document.getElementById("articleDescription").value = data.description || "";
+        document.getElementById("articleContent").value = data.content || "";
+        document.getElementById("articleStatus").value = data.status || "draft";
+
+        document.getElementById("articleMessage").textContent = "";
+
+        document.getElementById("saveArticleButton").textContent = "ذخیره تغییرات";
+
+        document.getElementById("articleModal").style.display = "flex";
+
+    }
+
+
+    // Delete Article
+
+    if (action === "delete") {
+
+        const confirmed = confirm("آیا از حذف این مقاله مطمئن هستید؟");
+
+        if (!confirmed) return;
+
+        const { error } = await db
+            .from("articles")
+            .delete()
+            .eq("id", articleId);
+
+        if (error) {
+
+            alert("حذف مقاله ناموفق بود: " + error.message);
+
+        } else {
+
+            alert("مقاله با موفقیت حذف شد.");
+
+            await loadDashboard();
+
+        }
+
+    }
+
+});
+
 const articleModal = document.getElementById("articleModal");
 const articleForm = document.getElementById("articleForm");
 const articleMessage = document.getElementById("articleMessage");
