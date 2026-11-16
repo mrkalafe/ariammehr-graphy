@@ -375,6 +375,49 @@ th {
 
 </div>
 
+    <!-- New Article Modal -->
+
+<div id="articleModal" class="login-screen" style="display:none; position:fixed; inset:0; z-index:1000; background:#17243acc;">
+
+    <div class="login-box" style="max-width:650px; max-height:90vh; overflow-y:auto; text-align:right;">
+
+        <h2>ایجاد مقاله جدید</h2>
+        <p>اطلاعات مقاله را وارد کنید.</p>
+
+        <form id="articleForm">
+
+            <input type="text" id="articleTitle" placeholder="عنوان مقاله" required>
+
+            <input type="text" id="articleSlug" placeholder="نشانی اختصاصی انگلیسی (مثلاً tarikh-iran)" required>
+
+            <input type="text" id="articleCategory" placeholder="دسته‌بندی">
+
+            <input type="text" id="articleCover" placeholder="لینک تصویر جلد">
+
+            <textarea id="articleDescription" placeholder="توضیحات کوتاه" style="width:100%;height:90px;padding:12px;margin-bottom:13px;border:1px solid #ddd;border-radius:7px;resize:vertical;"></textarea>
+
+            <textarea id="articleContent" placeholder="متن کامل مقاله" required style="width:100%;height:220px;padding:12px;margin-bottom:13px;border:1px solid #ddd;border-radius:7px;resize:vertical;"></textarea>
+
+            <select id="articleStatus" style="width:100%;padding:13px;margin-bottom:15px;border:1px solid #ddd;border-radius:7px;">
+                <option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+                <option value="published">انتشار مقاله</option>
+            </select>
+
+            <button type="submit" class="btn" id="saveArticleButton">
+                ذخیره مقاله
+            </button>
+
+            <button type="button" class="btn" id="closeArticleModal" style="background:#eee;margin-right:8px;">
+                انصراف
+            </button>
+
+            <p id="articleMessage" style="margin-top:15px;font-size:12px;"></p>
+
+        </form>
+
+    </div>
+
+</div>
 
 <!-- Admin Dashboard -->
 
