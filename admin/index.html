@@ -919,9 +919,76 @@ articleForm.addEventListener("submit", async function(event) {
 
         content: document.getElementById("articleContent").value.trim(),
 
-        status: document.getElementById("articleStatus").value
+        status: document.getElementById("articleStatus").value,
+
+        updated_at: new Date().toISOString()
 
     };
+
+    let error;
+
+    if (editingArticleId !== null) {
+
+        const result = await db
+            .from("articles")
+            .update(article)
+            .eq("id", editingArticleId);
+
+        error = result.error;
+
+    } else {
+
+        const result = await db
+            .from("articles")
+            .insert([article]);
+
+        error = result.error;
+
+    }
+
+    if (error) {
+
+        console.error(error);
+
+        articleMessage.style.color = "#d32f2f";
+
+        if (error.code === "23505") {
+
+            articleMessage.textContent = "این نشانی اختصاصی قبلاً استفاده شده است.";
+
+        } else {
+
+            articleMessage.textContent = "خطا در ذخیره: " + error.message;
+
+        }
+
+    } else {
+
+        articleMessage.style.color = "#388e3c";
+
+        articleMessage.textContent = editingArticleId !== null
+            ? "تغییرات با موفقیت ذخیره شد!"
+            : "مقاله با موفقیت ذخیره شد!";
+
+        editingArticleId = null;
+
+        articleForm.reset();
+
+        saveButton.textContent = "ذخیره مقاله";
+
+        await loadDashboard();
+
+        setTimeout(function() {
+
+            articleModal.style.display = "none";
+
+        }, 1200);
+
+    }
+
+    saveButton.disabled = false;
+
+});
 
 
     const { data, error } = await db
