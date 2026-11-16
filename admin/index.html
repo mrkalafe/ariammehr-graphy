@@ -1066,7 +1066,20 @@ async function initialize() {
 
 document.getElementById("newArticleButton").addEventListener("click", function() {
 
-    alert("بخش ایجاد مطلب در مرحله بعد راه‌اندازی می‌شود.");
+    // خروج از حالت ویرایش
+    editingArticleId = null;
+
+    // پاک کردن فرم
+    articleForm.reset();
+
+    // پاک کردن پیام قبلی
+    articleMessage.textContent = "";
+
+    // بازگرداندن متن دکمه ذخیره
+    document.getElementById("saveArticleButton").textContent = "ذخیره مقاله";
+
+    // نمایش فرم
+    articleModal.style.display = "flex";
 
 });
 
