@@ -777,6 +777,110 @@ function renderArticles(articles) {
 
 }
 
+    /* Article Management */
+
+const articleModal = document.getElementById("articleModal");
+const articleForm = document.getElementById("articleForm");
+const articleMessage = document.getElementById("articleMessage");
+
+
+// Open Article Form
+
+document.getElementById("newArticleButton").addEventListener("click", function() {
+
+    articleForm.reset();
+    articleMessage.textContent = "";
+    articleModal.style.display = "flex";
+
+});
+
+
+// Close Article Form
+
+document.getElementById("closeArticleModal").addEventListener("click", function() {
+
+    articleModal.style.display = "none";
+
+});
+
+
+// Save Article
+
+articleForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const saveButton = document.getElementById("saveArticleButton");
+
+    saveButton.disabled = true;
+    saveButton.textContent = "در حال ذخیره...";
+
+    articleMessage.textContent = "";
+
+    const article = {
+
+        title: document.getElementById("articleTitle").value.trim(),
+
+        slug: document.getElementById("articleSlug").value.trim(),
+
+        category: document.getElementById("articleCategory").value.trim(),
+
+        cover_image: document.getElementById("articleCover").value.trim(),
+
+        description: document.getElementById("articleDescription").value.trim(),
+
+        content: document.getElementById("articleContent").value.trim(),
+
+        status: document.getElementById("articleStatus").value
+
+    };
+
+
+    const { data, error } = await db
+        .from("articles")
+        .insert([article])
+        .select();
+
+
+    if (error) {
+
+        console.error(error);
+
+        articleMessage.style.color = "#d32f2f";
+
+        if (error.code === "23505") {
+
+            articleMessage.textContent = "این نشانی اختصاصی قبلاً استفاده شده است.";
+
+        } else {
+
+            articleMessage.textContent = "خطا در ذخیره مقاله: " + error.message;
+
+        }
+
+    } else {
+
+        articleMessage.style.color = "#388e3c";
+
+        articleMessage.textContent = "مقاله با موفقیت ذخیره شد!";
+
+        articleForm.reset();
+
+        await loadDashboard();
+
+        setTimeout(function() {
+
+            articleModal.style.display = "none";
+
+        }, 1200);
+
+    }
+
+
+    saveButton.disabled = false;
+    saveButton.textContent = "ذخیره مقاله";
+
+});
 
 /* Initial Session Check */
 
