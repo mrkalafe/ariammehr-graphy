@@ -3,164 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="description" content="مطالعه مقاله در آریامهر گرافی؛ آرشیوی برای تاریخ، اسناد و روایت‌های ایران.">
     <title>مقاله | آریامهر گرافی</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
+        :root{color-scheme:dark;--bg:#1a1a1a;--surface:rgba(255,255,255,.055);--line:rgba(255,255,255,.10);--text:#fff;--muted:#b8bdc5;--red:#ed2a49;--gold:#d3a034;--blue:#2a8acf;--shadow:0 24px 80px rgba(0,0,0,.38)}
+        *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:110px}
+        body{margin:0;min-height:100vh;color:var(--text);font-family:'Vazirmatn',sans-serif;background:radial-gradient(ellipse at 90% 5%,rgba(42,138,207,.16),transparent 35rem),radial-gradient(ellipse at 5% 40%,rgba(237,42,73,.13),transparent 35rem),radial-gradient(ellipse at 55% 100%,rgba(211,160,52,.09),transparent 30rem),#1a1a1a}
+        body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.18;background-image:radial-gradient(rgba(255,255,255,.18) .6px,transparent .6px);background-size:6px 6px;mask-image:linear-gradient(to bottom,black,transparent 75%)}
+        a{color:inherit}button{font-family:inherit}.container{width:min(1180px,calc(100% - 40px));margin-inline:auto}
+        .site-header{position:sticky;top:14px;z-index:20;padding-top:14px}.navbar{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:12px 20px;border:1px solid var(--line);border-radius:23px;background:rgba(17,17,17,.78);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 12px 45px rgba(0,0,0,.2)}
+        .brand{display:inline-flex;align-items:center;gap:11px;color:var(--red);text-decoration:none;white-space:nowrap;font-size:23px;font-weight:900}.brand-mark{width:39px;height:39px;display:grid;place-items:center;border:1px solid rgba(211,160,52,.35);border-radius:13px;background:rgba(211,160,52,.08);color:var(--gold)}
+        .nav-links{display:flex;align-items:center;justify-content:center;gap:7px}.nav-link{display:inline-flex;align-items:center;gap:8px;padding:11px 13px;color:#c0c0c0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid transparent;border-radius:14px;transition:.2s ease}.nav-link:hover,.nav-link.active{color:var(--blue);border-color:rgba(42,138,207,.3);background:rgba(42,138,207,.08)}
+        .nav-actions{display:flex;align-items:center;gap:8px}.icon-button{width:40px;height:40px;display:inline-grid;place-items:center;border:1px solid transparent;border-radius:13px;background:transparent;color:#b8bdc5;text-decoration:none;cursor:pointer}.icon-button:hover{color:var(--gold);border-color:rgba(211,160,52,.3);background:rgba(211,160,52,.08)}
+        .article-main{width:min(940px,calc(100% - 40px));margin:48px auto 80px}.article-shell{overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:var(--shadow)}
+        .article-cover-wrap{position:relative;background:rgba(0,0,0,.25);min-height:12px}.article-cover{display:block;width:100%;max-height:510px;object-fit:cover}.article-inner{padding:clamp(22px,5vw,52px)}
+        .article-breadcrumb{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:#999;font-size:12px;margin-bottom:22px}.article-breadcrumb a{color:var(--blue);text-decoration:none}.article-breadcrumb a:hover{color:var(--gold)}
+        .article-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:17px}.article-category{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid rgba(42,138,207,.28);border-radius:9px;background:rgba(42,138,207,.09);color:#78bce8;font-size:12px;font-weight:700}.article-date{color:#929292;font-size:12px}
+        #title{margin:0 0 18px;color:#fff;font-size:clamp(25px,4vw,39px);font-weight:900;line-height:1.8}.article-description{margin:0;padding:17px 19px;border-right:3px solid var(--gold);border-radius:0 12px 12px 0;background:rgba(211,160,52,.065);color:#c4c4c4;font-size:15px;line-height:2.2}
+        .article-divider{height:1px;margin:30px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent)}#content{color:#dedede;font-size:16px;line-height:2.65;white-space:pre-wrap;overflow-wrap:anywhere;min-height:90px}#content:empty{display:none}
+        .article-state{min-height:280px;display:grid;place-items:center;padding:40px;text-align:center;color:#aaa;font-size:14px;line-height:2.2}.article-state strong{display:block;color:#fff;font-size:20px;margin-bottom:8px}.article-state a{color:var(--gold);text-decoration:none}
+        .article-end{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.09)}.back-home{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(42,138,207,.3);border-radius:11px;background:rgba(42,138,207,.08);color:#8ac9f1;text-decoration:none;font-size:13px;font-weight:700}.back-home:hover{background:rgba(42,138,207,.15)}.article-end-note{color:#777;font-size:11px}
+        @media(max-width:950px){.navbar{gap:10px}.nav-links{gap:2px}.nav-link{padding:10px 8px;font-size:12px}.brand{font-size:19px}}
+        @media(max-width:700px){.site-header{top:7px;padding-top:7px}.container{width:calc(100% - 24px)}.navbar{min-height:62px;padding:9px 12px;border-radius:17px;flex-wrap:wrap}.nav-links{order:3;width:100%;justify-content:space-between;overflow-x:auto}.nav-link{font-size:11px;padding:8px 7px;white-space:nowrap}.nav-link i{display:none}.brand{font-size:18px}.article-main{width:calc(100% - 24px);margin:28px auto 50px}.article-shell{border-radius:18px}.article-cover{max-height:300px}.article-inner{padding:22px 18px}#content{font-size:15px;line-height:2.45}.article-end{align-items:flex-start}.article-end-note{width:100%}}
+        /* Contact area integrated into the footer */
+        .site-footer {
+            margin-top: 76px;
+            padding: 46px 0 0;
+            border-top: 1px solid rgba(255,255,255,.09);
+            background: linear-gradient(180deg, rgba(20,20,20,.96), rgba(10,10,10,.99));
+        }
+        .footer-contact {
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,.11);
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+            box-shadow: 0 18px 55px rgba(0,0,0,.22);
+        }
+        .footer-contact-heading {
+            display:flex; align-items:center; justify-content:space-between; gap:20px;
+            padding-bottom:22px; margin-bottom:24px;
+            border-bottom:1px solid rgba(255,255,255,.09);
+        }
+        .footer-contact-heading .section-kicker { margin:0 0 8px; color:var(--red); font-size:12px; font-weight:800; }
+        .footer-contact-heading h2 { margin:0 0 8px; font-size:clamp(22px,3vw,30px); color:#fff; }
+        .footer-contact-heading p:last-child { margin:0; color:#a6a6a6; font-size:13px; }
+        .footer-contact-mark {
+            width:54px; height:54px; flex:0 0 54px; display:grid; place-items:center;
+            border:1px solid rgba(211,160,52,.28); border-radius:16px;
+            color:var(--gold); background:rgba(211,160,52,.08);
+        }
+        .footer-contact-mark svg { width:25px; height:25px; }
+        .footer-contact-grid { display:grid; grid-template-columns:minmax(240px,.82fr) minmax(0,1.5fr); gap:34px; }
+        .footer-contact-grid h3 { margin:0 0 8px; color:#f4f4f4; font-size:16px; }
+        .footer-contact-note { margin:0 0 17px; color:#929292; font-size:12px; line-height:1.9; }
+        .footer-contact-info { min-width:0; }
+        .contact-link-card {
+            min-width:0; display:flex; align-items:center; gap:12px; padding:13px 14px; margin-top:10px;
+            border:1px solid rgba(255,255,255,.09); border-radius:13px;
+            background:rgba(0,0,0,.2); color:#eee; text-decoration:none;
+            transition:border-color .2s ease, background .2s ease;
+        }
+        .contact-link-card:hover { border-color:rgba(211,160,52,.35); background:rgba(255,255,255,.045); }
+        .contact-brand-icon { width:36px; height:36px; flex:0 0 36px; display:grid; place-items:center; border-radius:11px; background:rgba(255,255,255,.07); }
+        .contact-brand-icon svg { width:25px; height:25px; }
+        .whatsapp-icon { color:#25D366; }
+        .contact-link-copy { display:flex; flex:1; min-width:0; flex-direction:column; gap:3px; }
+        .contact-link-copy small { color:#929292; font-size:10px; }
+        .contact-link-copy bdi { overflow-wrap:anywhere; font-size:13px; font-weight:700; }
+        .contact-copy-button,.contact-email-action {
+            flex:0 0 auto; padding:7px 10px; border:1px solid rgba(255,255,255,.12);
+            border-radius:8px; background:rgba(255,255,255,.07); color:#ddd;
+            font:inherit; font-size:11px; text-decoration:none; cursor:pointer;
+        }
+        .contact-email-action { color:var(--gold); }
+        .footer-contact-form-wrap { min-width:0; }
+        .contact-form { display:flex; flex-direction:column; gap:11px; }
+        .contact-form-row { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+        .contact-form input,.contact-form textarea {
+            width:100%; min-width:0; padding:12px 14px; border:1px solid rgba(255,255,255,.13);
+            border-radius:10px; outline:none; background:rgba(0,0,0,.28); color:#f3f3f3;
+            font:inherit; font-size:13px; transition:border-color .2s ease, background .2s ease;
+        }
+        .contact-form input { min-height:44px; }
+        .contact-form textarea { min-height:112px; resize:vertical; }
+        .contact-form input:focus,.contact-form textarea:focus { border-color:var(--gold); background:rgba(0,0,0,.4); }
+        .contact-form input::placeholder,.contact-form textarea::placeholder { color:#777; }
+        .contact-form-actions { display:flex; align-items:center; flex-wrap:wrap; gap:14px; }
+        .contact-submit {
+            display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px;
+            padding:10px 19px; border:0; border-radius:10px; background:var(--gold);
+            color:#17130a; font:inherit; font-size:13px; font-weight:800; cursor:pointer;
+            transition:filter .2s ease, transform .2s ease;
+        }
+        .contact-submit:hover { filter:brightness(1.08); transform:translateY(-1px); }
+        .contact-submit:disabled { opacity:.6; cursor:wait; transform:none; }
+        .contact-form-message { margin:0; color:#9ac9a9; font-size:12px; }
+        .footer-bottom {
+            display:flex; align-items:center; justify-content:space-between; gap:18px;
+            padding:25px 0; color:#858585; font-size:11px;
+        }
+        .footer-brand { margin-bottom:4px; color:var(--red); font-size:15px; font-weight:900; }
+        .footer-bottom small { font-size:11px; }
+        .back-top {
+            width:38px; height:38px; flex:0 0 38px; display:grid; place-items:center;
+            border:1px solid var(--line); border-radius:12px; color:var(--gold); text-decoration:none;
+        }
+        @media(max-width:700px) {
+            .site-footer { margin-top:50px; padding-top:25px; }
+            .footer-contact { padding:20px 16px; border-radius:17px; }
+            .footer-contact-grid { grid-template-columns:1fr; gap:26px; }
+            .contact-form-row { grid-template-columns:1fr; }
+            .footer-bottom { align-items:flex-start; flex-wrap:wrap; }
+            .footer-bottom > small { order:3; width:100%; }
         }
 
-        body {
-            margin: 0;
-            padding: 20px;
-            background: #101114;
-            color: #fff;
-            font-family: Tahoma, sans-serif;
-            line-height: 2;
-        }
-
-        header {
-            text-align: center;
-            padding: 25px 10px;
-            border-bottom: 1px solid #b99750;
-        }
-
-        header h1 {
-            color: #d5b56b;
-        }
-
-        header a {
-            color: #d5b56b;
-            text-decoration: none;
-        }
-
-        main {
-            max-width: 850px;
-            margin: 40px auto;
-        }
-
-        #cover {
-            width: 100%;
-            max-height: 450px;
-            object-fit: cover;
-            border-radius: 12px;
-            display: none;
-        }
-
-        #title {
-            color: #d5b56b;
-            font-size: 30px;
-            margin-top: 25px;
-        }
-
-        #description {
-            color: #aaa;
-            font-size: 17px;
-        }
-
-        #content {
-            margin-top: 35px;
-            font-size: 16px;
-            line-height: 2.5;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-        }
-
-        .message {
-            text-align: center;
-            color: #aaa;
-            padding: 40px 10px;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 12px;
-            }
-
-            #title {
-                font-size: 24px;
-            }
-        }
     </style>
 </head>
+<body id="top">
+<header class="site-header"><div class="container"><nav class="navbar" aria-label="منوی اصلی">
+    <a class="brand" href="index.html#top" aria-label="آریامهر گرافی، صفحه اصلی"><span class="brand-mark"><i data-lucide="landmark"></i></span><span>آریامهر گرافی</span></a>
+    <div class="nav-links">
+        <a class="nav-link" href="index.html#top"><i data-lucide="house" size="17"></i>خانه</a>
+        <a class="nav-link active" href="index.html#articles-section"><i data-lucide="book-open" size="17"></i>مجله</a>
+        <a class="nav-link" href="index.html#categories"><i data-lucide="layers" size="17"></i>آرشیو</a>
+        <a class="nav-link" href="discussion.html"><i data-lucide="messages-square" size="17"></i>بحث و گفت‌وگو</a>
+        <a class="nav-link" href="index.html#about"><i data-lucide="info" size="17"></i>درباره ما</a>
+    </div>
+    <div class="nav-actions"><a class="icon-button" href="index.html#contact" aria-label="تماس با ما"><i data-lucide="mail"></i></a></div>
+</nav></div></header>
+<main class="article-main">
+    <article class="article-shell" id="articleShell">
+        <div class="article-state" id="articleState"><div>در حال دریافت مقاله...</div></div>
+    </article>
+</main>
+    <!-- Contact footer -->
+    <footer class="site-footer" id="contact">
+        <div class="container">
+            <section class="footer-contact">
+                <div class="footer-contact-heading">
+                    <div>
+                        <p class="section-kicker">ارتباط با ما</p>
+                        <h2>تماس با آریامهر گرافی</h2>
+                        <p>پیشنهاد، انتقاد یا پیام خود را از راه‌های زیر با ما در میان بگذارید.</p>
+                    </div>
+                    <span class="footer-contact-mark" aria-hidden="true"><i data-lucide="messages-square"></i></span>
+                </div>
 
-<body>
+                <div class="footer-contact-grid">
+                    <div class="footer-contact-info">
+                        <h3>راه‌های ارتباطی</h3>
+                        <p class="footer-contact-note">برای حفظ حریم خصوصی، هیچ شماره تلفنی در وب‌سایت نمایش داده نمی‌شود.</p>
 
-    <header>
-        <h1>آریامهر گرافی</h1>
-        <a href="index.html">بازگشت به صفحه اصلی</a>
-    </header>
+                        <div class="contact-link-card">
+                            <span class="contact-brand-icon whatsapp-icon" aria-hidden="true">
+                                <svg viewBox="0 0 32 32"><path fill="currentColor" d="M16 3.2A12.5 12.5 0 0 0 5.25 22.1L3.6 28.3l6.35-1.62A12.5 12.5 0 1 0 16 3.2Zm0 22.7a10.1 10.1 0 0 1-5.15-1.4l-.37-.22-3.77.96 1-3.67-.24-.38A10.1 10.1 0 1 1 16 25.9Zm5.55-7.57c-.3-.15-1.78-.88-2.05-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.96 1.18-.18.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.68-1.63-.93-2.23-.24-.58-.49-.5-.68-.51h-.58c-.2 0-.53.07-.8.37-.28.3-1.05 1.03-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.14 4.55.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35Z"/></svg>
+                            </span>
+                            <div class="contact-link-copy">
+                                <small>واتساپ</small>
+                                <bdi dir="ltr">@mrkalafe</bdi>
+                            </div>
+                            <button type="button" class="contact-copy-button" id="copyWhatsAppUsername">کپی</button>
+                        </div>
 
-    <main id="article">
-        <p class="message">در حال دریافت مقاله...</p>
-    </main>
+                        <a class="contact-link-card email-card" href="mailto:mrkalafe@gmail.com">
+                            <span class="contact-brand-icon gmail-icon" aria-hidden="true">
+                                <svg viewBox="0 0 32 32"><path fill="#4285F4" d="M4 8.2v15.6c0 1.2.8 2.2 2 2.2h3V13.2L4 8.2Z"/><path fill="#34A853" d="M23 26h3c1.2 0 2-.9 2-2.2V8.2l-5 5V26Z"/><path fill="#EA4335" d="M4 8.2 16 17l12-8.8c0-1.2-1-2.2-2.2-2.2h-.7L16 13.1 6.9 6H6.2C5 6 4 7 4 8.2Z"/><path fill="#C5221F" d="M9 13.2 16 18.3l7-5.1v-6L16 12.3 9 7.2v6Z"/></svg>
+                            </span>
+                            <div class="contact-link-copy">
+                                <small>ایمیل</small>
+                                <bdi dir="ltr">mrkalafe@gmail.com</bdi>
+                            </div>
+                            <span class="contact-email-action">ارسال ایمیل</span>
+                        </a>
+                    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+                    <div class="footer-contact-form-wrap">
+                        <h3>ارسال پیام</h3>
+                        <p class="footer-contact-note">پیامت را بنویس، از طریق همین فرم به دست ما می‌رسد.</p>
+                        <form class="contact-form" id="contactForm">
+                            <div class="contact-form-row">
+                                <input type="text" id="contactName" maxlength="100" placeholder="نام و نام خانوادگی" autocomplete="name" required>
+                                <input type="email" id="contactEmail" maxlength="254" placeholder="آدرس ایمیل" autocomplete="email" required>
+                            </div>
+                            <input type="text" id="contactSubject" maxlength="150" placeholder="موضوع پیام" required>
+                            <textarea id="contactMessage" maxlength="5000" placeholder="متن پیام شما..." required></textarea>
+                            <div class="contact-form-actions">
+                                <button class="contact-submit" id="contactSubmit" type="submit"><i data-lucide="send" size="16"></i> ارسال پیام</button>
+                                <p class="contact-form-message" id="contactFormMessage" role="status" aria-live="polite"></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
 
-    <script>
-        const SUPABASE_URL = "https://dtndnnogjrtufjezwety.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_Z3VyIdDrg5Rdrg9REKRqZw_oUSVG04a";
+            <div class="footer-bottom">
+                <div>
+                    <div class="footer-brand">آریامهر گرافی</div>
+                    <small>آرشیوی برای جملات، کتاب‌ها و رسانه‌های تاریخی ایران</small>
+                </div>
+                <small>تمامی حقوق این وب‌سایت محفوظ است.</small>
+                <a class="back-top" href="#top" aria-label="بازگشت به بالا"><i data-lucide="arrow-up"></i></a>
+            </div>
+        </div>
+    </footer>
 
-        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        async function loadArticle() {
-            const container = document.getElementById("article");
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get("id");
-
-            if (!id) {
-                container.innerHTML = '<p class="message">شناسه مقاله مشخص نیست.</p>';
-                return;
-            }
-
-            const { data, error } = await db
-                .from("articles")
-                .select("id, title, description, content, cover_image, status")
-                .eq("id", id)
-                .eq("status", "published")
-                .single();
-
-            if (error || !data) {
-                console.error("Article loading error:", error);
-                container.innerHTML = '<p class="message">مقاله موردنظر پیدا نشد یا منتشر نشده است.</p>';
-                return;
-            }
-
-            document.title = data.title + " | آریامهر گرافی";
-
-            container.innerHTML = "";
-
-            if (data.cover_image) {
-                const cover = document.createElement("img");
-                cover.id = "cover";
-                cover.alt = data.title || "تصویر مقاله";
-                cover.src = data.cover_image;
-                cover.style.display = "block";
-                container.appendChild(cover);
-            }
-
-            const title = document.createElement("h1");
-            title.id = "title";
-            title.textContent = data.title || "";
-            container.appendChild(title);
-
-            const description = document.createElement("p");
-            description.id = "description";
-            description.textContent = data.description || "";
-            container.appendChild(description);
-
-            const content = document.createElement("div");
-            content.id = "content";
-            content.textContent = data.content || "";
-            container.appendChild(content);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+(function(){
+    const SUPABASE_URL = "https://dtndnnogjrtufjezwety.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_Z3VyIdDrg5Rdrg9REKRqZw_oUSVG04a";
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const shell = document.getElementById("articleShell");
+    const state = document.getElementById("articleState");
+    function refreshIcons(){ if(window.lucide) lucide.createIcons(); }
+    function showState(title, detail){
+        state.textContent = "";
+        const box = document.createElement("div");
+        const strong = document.createElement("strong"); strong.textContent = title;
+        const p = document.createElement("p"); p.textContent = detail;
+        const link = document.createElement("a"); link.href = "index.html#articles-section"; link.textContent = "بازگشت به مطالب";
+        box.appendChild(strong); box.appendChild(p); box.appendChild(link); state.appendChild(box);
+    }
+    function formatDate(value){
+        if(!value) return "";
+        const date = new Date(value);
+        if(Number.isNaN(date.getTime())) return "";
+        try{return new Intl.DateTimeFormat("fa-IR",{year:"numeric",month:"long",day:"numeric"}).format(date);}catch(e){return date.toLocaleDateString();}
+    }
+    async function loadArticle(){
+        const id = new URLSearchParams(window.location.search).get("id");
+        if(!id){showState("شناسه مقاله مشخص نیست","برای مشاهده مقاله، از صفحه مطالب وارد یکی از مقاله‌ها شوید.");return;}
+        const {data,error} = await db.from("articles")
+            .select("id,title,description,content,category,cover_image,status,created_at")
+            .eq("id",id).eq("status","published").single();
+        if(error || !data){console.error("Article loading error:",error);showState("مقاله پیدا نشد","ممکن است مقاله حذف شده یا هنوز منتشر نشده باشد.");return;}
+        document.title = (data.title || "مقاله") + " | آریامهر گرافی";
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if(metaDescription && data.description) metaDescription.setAttribute("content",data.description.slice(0,155));
+        shell.textContent = "";
+        if(data.cover_image){
+            const coverWrap=document.createElement("div");coverWrap.className="article-cover-wrap";
+            const cover=document.createElement("img");cover.className="article-cover";cover.alt=data.title || "تصویر مقاله";cover.src=data.cover_image;cover.loading="eager";
+            cover.onerror=function(){coverWrap.remove();};coverWrap.appendChild(cover);shell.appendChild(coverWrap);
         }
-
-        loadArticle().catch(function(error) {
-            console.error("Unexpected error:", error);
-            document.getElementById("article").innerHTML =
-                '<p class="message">در دریافت مقاله مشکلی پیش آمد. لطفاً صفحه را دوباره بارگذاری کنید.</p>';
-        });
-    </script>
-
+        const inner=document.createElement("div");inner.className="article-inner";
+        const crumb=document.createElement("div");crumb.className="article-breadcrumb";
+        const home=document.createElement("a");home.href="index.html";home.textContent="صفحه اصلی";
+        const sep=document.createElement("span");sep.textContent="/";
+        const magazine=document.createElement("a");magazine.href="index.html#articles-section";magazine.textContent="مجله";
+        const current=document.createElement("span");current.textContent=data.title || "مقاله";
+        crumb.append(home,sep,magazine,sep.cloneNode(true),current);
+        const meta=document.createElement("div");meta.className="article-meta";
+        const category=document.createElement("span");category.className="article-category";
+        const catIcon=document.createElement("i");catIcon.setAttribute("data-lucide","bookmark");catIcon.setAttribute("size","14");category.append(catIcon,document.createTextNode(data.category || "مقاله"));meta.appendChild(category);
+        const dateText=formatDate(data.created_at);if(dateText){const date=document.createElement("span");date.className="article-date";const dateIcon=document.createElement("i");dateIcon.setAttribute("data-lucide","calendar-days");dateIcon.setAttribute("size","13");date.append(dateIcon,document.createTextNode(" "+dateText));meta.appendChild(date);}
+        const title=document.createElement("h1");title.id="title";title.textContent=data.title || "بدون عنوان";
+        inner.append(crumb,meta,title);
+        if(data.description){const desc=document.createElement("p");desc.className="article-description";desc.textContent=data.description;inner.appendChild(desc);}
+        const divider=document.createElement("div");divider.className="article-divider";
+        const content=document.createElement("div");content.id="content";content.textContent=data.content || "";
+        const end=document.createElement("div");end.className="article-end";
+        const back=document.createElement("a");back.className="back-home";back.href="index.html#articles-section";
+        const arrow=document.createElement("i");arrow.setAttribute("data-lucide","arrow-right");arrow.setAttribute("size","16");back.append(arrow,document.createTextNode("بازگشت به مطالب"));
+        const note=document.createElement("span");note.className="article-end-note";note.textContent="آریامهر گرافی | آرشیو تاریخ و روایت‌های ایران";
+        end.append(back,note);inner.append(divider,content,end);shell.appendChild(inner);refreshIcons();
+    }
+    loadArticle().catch(function(error){console.error("Unexpected article error:",error);showState("خطا در دریافت مقاله","لطفاً صفحه را دوباره بارگذاری کنید.");});
+    async function submitContactMessage(event){
+        event.preventDefault();const form=document.getElementById("contactForm"),button=document.getElementById("contactSubmit"),box=document.getElementById("contactFormMessage");
+        const payload={name:document.getElementById("contactName").value.trim(),email:document.getElementById("contactEmail").value.trim(),subject:document.getElementById("contactSubject").value.trim(),message:document.getElementById("contactMessage").value.trim()};
+        if(payload.name.length<2||payload.subject.length<2||payload.message.length<5||payload.email.length<5){box.style.color="#ed8797";box.textContent="لطفاً همه فیلدها را با اطلاعات معتبر تکمیل کنید.";return;}
+        button.disabled=true;button.textContent="در حال ارسال...";box.textContent="";
+        try{const {error}=await db.from("contact_messages").insert([payload]);if(error)throw error;form.reset();box.style.color="#78c99a";box.textContent="پیام شما با موفقیت ارسال شد. سپاس از ارتباطتان!";}
+        catch(error){console.error("Contact message error:",error);box.style.color="#ed8797";box.textContent="ارسال پیام انجام نشد. لطفاً کمی بعد دوباره تلاش کنید.";}
+        finally{button.disabled=false;button.textContent="ارسال پیام";}
+    }
+    document.getElementById("contactForm").addEventListener("submit",submitContactMessage);
+    document.getElementById("copyWhatsAppUsername").addEventListener("click",async function(){
+        const username="@mrkalafe",feedback=document.getElementById("contactFormMessage");
+        try{await navigator.clipboard.writeText(username);feedback.style.color="#78c99a";feedback.textContent="نام کاربری واتساپ کپی شد.";}
+        catch(error){window.prompt("نام کاربری واتساپ:",username);}
+    });
+    refreshIcons();
+})();
+</script>
 </body>
 </html>
