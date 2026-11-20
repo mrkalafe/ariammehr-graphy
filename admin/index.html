@@ -373,6 +373,33 @@ th {
 .quote-delete { background:#fde7e7; color:#a32121; }
 @media(max-width:650px) { .quote-form-grid { grid-template-columns:1fr; } .quote-form-grid .full { grid-column:auto; } }
 
+
+/* Royal books management */
+#booksAdminSection { display:none; }
+#booksAdminSection .section { background:#fff; padding:22px; border-radius:12px; margin-top:20px; }
+.book-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.book-form-grid .full { grid-column:1/-1; }
+.book-form-grid input,.book-form-grid textarea,.book-form-grid select {
+ width:100%; box-sizing:border-box; padding:12px; border:1px solid #ddd;
+ border-radius:8px; font:inherit; font-size:13px; background:#fff; color:#17243a;
+}
+.book-form-grid textarea { min-height:100px; resize:vertical; }
+.book-form-grid input[type=file] { background:#fafafa; }
+.book-actions-row { display:flex; gap:9px; margin-top:14px; flex-wrap:wrap; }
+.book-actions-row button { border:0; border-radius:7px; padding:11px 17px; cursor:pointer; font:inherit; }
+.book-save { background:#c9a227; color:#17243a; }
+.book-cancel { background:#eee; color:#333; }
+.book-note { font-size:12px; line-height:1.9; color:#666; margin-top:8px; }
+.book-message { font-size:12px; margin-top:10px; line-height:1.8; }
+.book-table-wrap { overflow-x:auto; }
+#booksAdminSection table { width:100%; min-width:760px; border-collapse:collapse; }
+#booksAdminSection th,#booksAdminSection td { padding:12px 9px; border-bottom:1px solid #eee; text-align:right; vertical-align:top; font-size:12px; }
+.book-row-actions { display:flex; gap:6px; flex-wrap:wrap; }
+.book-row-actions button { border:0; border-radius:6px; padding:7px 10px; cursor:pointer; font:inherit; font-size:11px; }
+.book-edit { background:#e5f1fb; color:#155b89; }
+.book-delete { background:#fde7e7; color:#a32121; }
+@media(max-width:650px) { .book-form-grid {grid-template-columns:1fr;} .book-form-grid .full {grid-column:auto;} }
+
 </style>
 </head>
 
@@ -477,6 +504,7 @@ th {
             <a href="#" class="active" id="dashboardNav">▦ داشبورد</a>
             <a href="#" id="discussionNav">☷ مدیریت بحث‌ها</a>
             <a href="#" id="quotesNav">❝ جملات شاهنشاه</a>
+            <a href="#" id="booksNav">▤ کتاب‌های شاهنشاه</a>
             <a href="#">▤ مدیریت مقالات</a>
             <a href="#">▧ تصاویر و اسناد</a>
             <a href="#">▷ ویدئوها</a>
@@ -597,7 +625,67 @@ th {
             </div>
         </section>
 
-        <section class="admin-section" id="quotesAdminSection">
+        
+        <section class="admin-section" id="booksAdminSection">
+            <div class="section-header">
+                <h3>مدیریت کتاب‌های شاهنشاه</h3>
+                <button class="btn" id="refreshBooks">به‌روزرسانی</button>
+            </div>
+
+            <div class="section">
+                <h3 id="bookFormHeading" style="margin:0 0 18px;">ثبت کتاب جدید</h3>
+                <form id="bookForm">
+                    <div class="book-form-grid">
+                        <div class="full">
+                            <input id="bookTitle" type="text" maxlength="250" placeholder="عنوان کتاب" required>
+                        </div>
+                        <div>
+                            <input id="bookYear" type="text" maxlength="30" placeholder="سال انتشار">
+                        </div>
+                        <div>
+                            <input id="bookPublisher" type="text" maxlength="250" placeholder="ناشر">
+                        </div>
+                        <div>
+                            <input id="bookLanguage" type="text" maxlength="80" placeholder="زبان کتاب">
+                        </div>
+                        <div>
+                            <input id="bookCover" type="url" placeholder="لینک تصویر جلد (اختیاری)">
+                        </div>
+                        <div class="full">
+                            <textarea id="bookDescription" maxlength="10000" placeholder="معرفی و توضیحات کتاب"></textarea>
+                        </div>
+                        <div class="full">
+                            <label for="bookPdf" style="display:block;font-size:13px;margin-bottom:8px;">فایل PDF کتاب</label>
+                            <input id="bookPdf" type="file" accept="application/pdf,.pdf">
+                            <p class="book-note">حداکثر حجم فایل: ۵۰ مگابایت. برای ویرایش مشخصات، اگر PDF جدید انتخاب نکنی فایل قبلی حفظ می‌شود.</p>
+                        </div>
+                        <div>
+                            <select id="bookStatus">
+                                <option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+                                <option value="published">انتشار در سایت</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="book-actions-row">
+                        <button class="book-save" id="bookSaveButton" type="submit">ذخیره کتاب</button>
+                        <button class="book-cancel" id="bookCancelButton" type="button" style="display:none;">لغو ویرایش</button>
+                    </div>
+                    <p class="book-message" id="bookMessage" role="status"></p>
+                </form>
+            </div>
+
+            <div class="section">
+                <div class="section-header"><h3>کتاب‌های ثبت‌شده</h3></div>
+                <div class="book-table-wrap">
+                    <table>
+                        <thead><tr><th>عنوان</th><th>سال</th><th>زبان</th><th>PDF</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                        <tbody id="booksAdminTable"><tr><td colspan="6">در حال دریافت...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+<section class="admin-section" id="quotesAdminSection">
             <div class="section-header">
                 <h3>مدیریت جملات شاهنشاه</h3>
                 <button class="btn" id="refreshQuotes">به‌روزرسانی</button>
@@ -1123,8 +1211,10 @@ articleForm.addEventListener("submit", async function(event) {
 const dashboardNav = document.getElementById("dashboardNav");
 const discussionNav = document.getElementById("discussionNav");
 const quotesNav = document.getElementById("quotesNav");
+const booksNav = document.getElementById("booksNav");
 const discussionAdminSection = document.getElementById("discussionAdminSection");
 const quotesAdminSection = document.getElementById("quotesAdminSection");
+const booksAdminSection = document.getElementById("booksAdminSection");
 const articlesDashboardSection = document.querySelector("#app main.main > section.section");
 const welcomePanel = document.querySelector("#app main.main > .welcome");
 const dashboardCards = document.querySelector("#app main.main > .cards");
@@ -1132,29 +1222,36 @@ const dashboardCards = document.querySelector("#app main.main > .cards");
 function showAdminArea(which) {
     const discussions = which === "discussions";
     const quotes = which === "quotes";
-    const dashboard = !discussions && !quotes;
+    const books = which === "books";
+    const dashboard = !discussions && !quotes && !books;
 
     articlesDashboardSection.style.display = dashboard ? "block" : "none";
     welcomePanel.style.display = dashboard ? "block" : "none";
     dashboardCards.style.display = dashboard ? "grid" : "none";
     discussionAdminSection.style.display = discussions ? "block" : "none";
     quotesAdminSection.style.display = quotes ? "block" : "none";
+    booksAdminSection.style.display = books ? "block" : "none";
 
     dashboardNav.classList.toggle("active", dashboard);
     discussionNav.classList.toggle("active", discussions);
     quotesNav.classList.toggle("active", quotes);
+    booksNav.classList.toggle("active", books);
 
     document.querySelector(".header h1").textContent =
-        discussions ? "مدیریت بحث‌ها" : quotes ? "جملات شاهنشاه" : "داشبورد";
+        discussions ? "مدیریت بحث‌ها" : quotes ? "جملات شاهنشاه" :
+        books ? "کتاب‌های شاهنشاه" : "داشبورد";
 
     if (discussions) loadAdminDiscussions();
     if (quotes) loadRoyalQuotes();
+    if (books) loadRoyalBooks();
 }
 dashboardNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("dashboard"); });
 discussionNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("discussions"); });
 quotesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("quotes"); });
+booksNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("books"); });
 document.getElementById("refreshDiscussions").addEventListener("click", loadAdminDiscussions);
 document.getElementById("refreshQuotes").addEventListener("click", loadRoyalQuotes);
+document.getElementById("refreshBooks").addEventListener("click", loadRoyalBooks);
 
 async function loadAdminDiscussions() {
     const table = document.getElementById("discussionsAdminTable");
@@ -1429,6 +1526,231 @@ quoteForm.addEventListener("submit", async function(event) {
     quoteMessage.style.color = "#388e3c";
     quoteMessage.textContent = "عملیات با موفقیت انجام شد.";
     await loadRoyalQuotes();
+});
+
+
+/* Royal books management */
+let editingBookId = null;
+let editingBookPdfPath = null;
+
+const bookForm = document.getElementById("bookForm");
+const bookMessage = document.getElementById("bookMessage");
+const bookSaveButton = document.getElementById("bookSaveButton");
+const bookCancelButton = document.getElementById("bookCancelButton");
+const BOOKS_BUCKET = "ariamehr-books";
+const MAX_BOOK_PDF_SIZE = 50 * 1024 * 1024;
+
+function resetBookForm() {
+    editingBookId = null;
+    editingBookPdfPath = null;
+    bookForm.reset();
+    document.getElementById("bookFormHeading").textContent = "ثبت کتاب جدید";
+    bookSaveButton.textContent = "ذخیره کتاب";
+    bookCancelButton.style.display = "none";
+    bookMessage.textContent = "";
+}
+
+bookCancelButton.addEventListener("click", resetBookForm);
+
+async function loadRoyalBooks() {
+    const table = document.getElementById("booksAdminTable");
+    table.innerHTML = "<tr><td colspan='6'>در حال دریافت کتاب‌ها...</td></tr>";
+
+    const result = await db.from("royal_books")
+        .select("id,title,publication_year,publisher,language,description,cover_image,pdf_path,pdf_file_name,status,created_at")
+        .order("created_at", {ascending:false});
+
+    if (result.error) {
+        console.error("Royal books load error:", result.error);
+        table.innerHTML = "<tr><td colspan='6'>خطا در دریافت کتاب‌ها: " +
+            escapeAdminText(result.error.message) + "</td></tr>";
+        return;
+    }
+
+    const rows = result.data || [];
+    if (!rows.length) {
+        table.innerHTML = "<tr><td colspan='6'>هنوز کتابی ثبت نشده است.</td></tr>";
+        return;
+    }
+
+    table.replaceChildren();
+    rows.forEach(function(item) {
+        const tr = document.createElement("tr");
+        const title = document.createElement("td");
+        title.textContent = item.title || "-";
+        const year = document.createElement("td");
+        year.textContent = item.publication_year || "-";
+        const language = document.createElement("td");
+        language.textContent = item.language || "-";
+        const pdf = document.createElement("td");
+        pdf.textContent = item.pdf_path ? "بارگذاری شده" : "ندارد";
+        const status = document.createElement("td");
+        status.textContent = item.status === "published" ? "منتشرشده" : "پیش‌نویس";
+
+        const actionsCell = document.createElement("td");
+        const actions = document.createElement("div");
+        actions.className = "book-row-actions";
+
+        const edit = document.createElement("button");
+        edit.className = "book-edit";
+        edit.textContent = "ویرایش";
+        edit.addEventListener("click", function() {
+            editingBookId = item.id;
+            editingBookPdfPath = item.pdf_path || null;
+            document.getElementById("bookTitle").value = item.title || "";
+            document.getElementById("bookYear").value = item.publication_year || "";
+            document.getElementById("bookPublisher").value = item.publisher || "";
+            document.getElementById("bookLanguage").value = item.language || "";
+            document.getElementById("bookCover").value = item.cover_image || "";
+            document.getElementById("bookDescription").value = item.description || "";
+            document.getElementById("bookStatus").value = item.status || "draft";
+            document.getElementById("bookPdf").value = "";
+            document.getElementById("bookFormHeading").textContent = "ویرایش کتاب";
+            bookSaveButton.textContent = "ذخیره تغییرات";
+            bookCancelButton.style.display = "inline-block";
+            bookMessage.textContent = item.pdf_file_name
+                ? "PDF فعلی: " + item.pdf_file_name + " | برای جایگزینی، فایل جدید انتخاب کن."
+                : "برای انتشار کتاب باید فایل PDF بارگذاری شود.";
+            document.getElementById("bookTitle").focus();
+            window.scrollTo({top:0, behavior:"smooth"});
+        });
+
+        const del = document.createElement("button");
+        del.className = "book-delete";
+        del.textContent = "حذف";
+        del.addEventListener("click", async function() {
+            if (!confirm("این کتاب و اطلاعات آن حذف شود؟")) return;
+
+            const deleteResult = await db.from("royal_books").delete().eq("id", item.id);
+            if (deleteResult.error) {
+                alert("حذف کتاب انجام نشد: " + deleteResult.error.message);
+                return;
+            }
+
+            if (item.pdf_path) {
+                const storageResult = await db.storage.from(BOOKS_BUCKET).remove([item.pdf_path]);
+                if (storageResult.error) {
+                    console.warn("PDF cleanup failed:", storageResult.error);
+                    alert("اطلاعات کتاب حذف شد، اما حذف فایل PDF از فضای ذخیره‌سازی ناموفق بود.");
+                }
+            }
+            if (editingBookId === item.id) resetBookForm();
+            loadRoyalBooks();
+        });
+
+        actions.append(edit, del);
+        actionsCell.append(actions);
+        tr.append(title, year, language, pdf, status, actionsCell);
+        table.append(tr);
+    });
+}
+
+bookForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById("bookTitle").value.trim();
+    const pdfFile = document.getElementById("bookPdf").files[0];
+    const status = document.getElementById("bookStatus").value;
+
+    if (!title) {
+        bookMessage.textContent = "عنوان کتاب را وارد کن.";
+        return;
+    }
+    if (pdfFile && (pdfFile.type !== "application/pdf" || !pdfFile.name.toLowerCase().endsWith(".pdf"))) {
+        bookMessage.textContent = "فقط فایل PDF قابل قبول است.";
+        return;
+    }
+    if (pdfFile && pdfFile.size > MAX_BOOK_PDF_SIZE) {
+        bookMessage.textContent = "حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.";
+        return;
+    }
+    if (status === "published" && !pdfFile && !editingBookPdfPath) {
+        bookMessage.textContent = "برای انتشار کتاب ابتدا فایل PDF آن را بارگذاری کن.";
+        return;
+    }
+
+    bookSaveButton.disabled = true;
+    bookMessage.style.color = "#555";
+    bookMessage.textContent = "در حال ذخیره اطلاعات کتاب...";
+
+    let uploadedPath = editingBookPdfPath;
+    let oldPathToRemove = null;
+
+    if (pdfFile) {
+        const safeName = pdfFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        uploadedPath = "books/" + crypto.randomUUID() + "-" + safeName;
+
+        const uploadResult = await db.storage.from(BOOKS_BUCKET).upload(uploadedPath, pdfFile, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: "application/pdf"
+        });
+
+        if (uploadResult.error) {
+            bookSaveButton.disabled = false;
+            bookMessage.style.color = "#d32f2f";
+            bookMessage.textContent = "بارگذاری PDF ناموفق بود: " + uploadResult.error.message;
+            return;
+        }
+
+        if (editingBookPdfPath && editingBookPdfPath !== uploadedPath) {
+            oldPathToRemove = editingBookPdfPath;
+        }
+    }
+
+    const payload = {
+        title: title,
+        publication_year: document.getElementById("bookYear").value.trim() || null,
+        publisher: document.getElementById("bookPublisher").value.trim() || null,
+        language: document.getElementById("bookLanguage").value.trim() || null,
+        cover_image: document.getElementById("bookCover").value.trim() || null,
+        description: document.getElementById("bookDescription").value.trim() || null,
+        pdf_path: uploadedPath,
+        pdf_file_name: pdfFile ? pdfFile.name : (editingBookPdfPath
+            ? (document.getElementById("bookMessage").dataset.currentPdfName || null) : null),
+        status: status,
+        updated_at: new Date().toISOString()
+    };
+
+    // Preserve the stored filename when the existing PDF is retained.
+    if (!pdfFile && editingBookId) {
+        const currentBook = await db.from("royal_books")
+            .select("pdf_file_name").eq("id", editingBookId).maybeSingle();
+        if (!currentBook.error && currentBook.data) {
+            payload.pdf_file_name = currentBook.data.pdf_file_name;
+        }
+    }
+
+    let saveResult;
+    if (editingBookId) {
+        saveResult = await db.from("royal_books").update(payload).eq("id", editingBookId);
+    } else {
+        saveResult = await db.from("royal_books").insert([payload]);
+    }
+
+    bookSaveButton.disabled = false;
+
+    if (saveResult.error) {
+        console.error("Royal book save error:", saveResult.error);
+        bookMessage.style.color = "#d32f2f";
+        bookMessage.textContent = "ذخیره اطلاعات کتاب ناموفق بود: " + saveResult.error.message;
+
+        // If the database write failed after a new upload, remove the orphaned upload.
+        if (pdfFile && uploadedPath) {
+            await db.storage.from(BOOKS_BUCKET).remove([uploadedPath]);
+        }
+        return;
+    }
+
+    if (oldPathToRemove) {
+        const cleanup = await db.storage.from(BOOKS_BUCKET).remove([oldPathToRemove]);
+        if (cleanup.error) console.warn("Old PDF cleanup failed:", cleanup.error);
+    }
+
+    resetBookForm();
+    bookMessage.style.color = "#388e3c";
+    bookMessage.textContent = "کتاب با موفقیت ذخیره شد.";
+    await loadRoyalBooks();
 });
 
 /* Initial Session Check */
