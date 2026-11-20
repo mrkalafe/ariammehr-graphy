@@ -655,9 +655,8 @@ th {
                             <textarea id="bookDescription" maxlength="10000" placeholder="معرفی و توضیحات کتاب"></textarea>
                         </div>
                         <div class="full">
-                            <label for="bookPdf" style="display:block;font-size:13px;margin-bottom:8px;">فایل PDF کتاب</label>
-                            <input id="bookPdf" type="file" accept="application/pdf,.pdf">
-                            <p class="book-note">حداکثر حجم فایل: ۵۰ مگابایت. برای ویرایش مشخصات، اگر PDF جدید انتخاب نکنی فایل قبلی حفظ می‌شود.</p>
+                            <input id="bookPdfUrl" type="url" placeholder="لینک مستقیم فایل PDF کتاب" required>
+                            <p class="book-note">فایل PDF باید قبلاً روی یک هاست یا سرویس ذخیره‌سازی دیگر بارگذاری شده باشد. لینک مستقیم فایل را اینجا وارد کن.</p>
                         </div>
                         <div>
                             <select id="bookStatus">
@@ -1537,8 +1536,6 @@ const bookForm = document.getElementById("bookForm");
 const bookMessage = document.getElementById("bookMessage");
 const bookSaveButton = document.getElementById("bookSaveButton");
 const bookCancelButton = document.getElementById("bookCancelButton");
-const BOOKS_BUCKET = "ariamehr-books";
-const MAX_BOOK_PDF_SIZE = 50 * 1024 * 1024;
 
 function resetBookForm() {
     editingBookId = null;
@@ -1583,7 +1580,7 @@ async function loadRoyalBooks() {
         const language = document.createElement("td");
         language.textContent = item.language || "-";
         const pdf = document.createElement("td");
-        pdf.textContent = item.pdf_path ? "بارگذاری شده" : "ندارد";
+        pdf.textContent = item.pdf_path ? "لینک ثبت شده" : "ندارد";
         const status = document.createElement("td");
         status.textContent = item.status === "published" ? "منتشرشده" : "پیش‌نویس";
 
@@ -1604,7 +1601,7 @@ async function loadRoyalBooks() {
             document.getElementById("bookCover").value = item.cover_image || "";
             document.getElementById("bookDescription").value = item.description || "";
             document.getElementById("bookStatus").value = item.status || "draft";
-            document.getElementById("bookPdf").value = "";
+            document.getElementById("bookPdfUrl").value = item.pdf_path || "";
             document.getElementById("bookFormHeading").textContent = "ویرایش کتاب";
             bookSaveButton.textContent = "ذخیره تغییرات";
             bookCancelButton.style.display = "inline-block";
@@ -1627,13 +1624,6 @@ async function loadRoyalBooks() {
                 return;
             }
 
-            if (item.pdf_path) {
-                const storageResult = await db.storage.from(BOOKS_BUCKET).remove([item.pdf_path]);
-                if (storageResult.error) {
-                    console.warn("PDF cleanup failed:", storageResult.error);
-                    alert("اطلاعات کتاب حذف شد، اما حذف فایل PDF از فضای ذخیره‌سازی ناموفق بود.");
-                }
-            }
             if (editingBookId === item.id) resetBookForm();
             loadRoyalBooks();
         });
@@ -1649,54 +1639,34 @@ bookForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const title = document.getElementById("bookTitle").value.trim();
-    const pdfFile = document.getElementById("bookPdf").files[0];
+    const pdfUrl = document.getElementById("bookPdfUrl").value.trim();
     const status = document.getElementById("bookStatus").value;
 
     if (!title) {
         bookMessage.textContent = "عنوان کتاب را وارد کن.";
         return;
     }
-    if (pdfFile && (pdfFile.type !== "application/pdf" || !pdfFile.name.toLowerCase().endsWith(".pdf"))) {
-        bookMessage.textContent = "فقط فایل PDF قابل قبول است.";
+
+    if (status === "published" && !pdfUrl) {
+        bookMessage.textContent = "برای انتشار کتاب باید لینک مستقیم PDF وارد شود.";
         return;
     }
-    if (pdfFile && pdfFile.size > MAX_BOOK_PDF_SIZE) {
-        bookMessage.textContent = "حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.";
-        return;
-    }
-    if (status === "published" && !pdfFile && !editingBookPdfPath) {
-        bookMessage.textContent = "برای انتشار کتاب ابتدا فایل PDF آن را بارگذاری کن.";
-        return;
+
+    if (pdfUrl) {
+        try {
+            const parsedUrl = new URL(pdfUrl);
+            if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
+                throw new Error("invalid protocol");
+            }
+        } catch (error) {
+            bookMessage.textContent = "لینک PDF معتبر نیست. یک آدرس کامل با https:// وارد کن.";
+            return;
+        }
     }
 
     bookSaveButton.disabled = true;
     bookMessage.style.color = "#555";
     bookMessage.textContent = "در حال ذخیره اطلاعات کتاب...";
-
-    let uploadedPath = editingBookPdfPath;
-    let oldPathToRemove = null;
-
-    if (pdfFile) {
-        const safeName = pdfFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-        uploadedPath = "books/" + crypto.randomUUID() + "-" + safeName;
-
-        const uploadResult = await db.storage.from(BOOKS_BUCKET).upload(uploadedPath, pdfFile, {
-            cacheControl: "3600",
-            upsert: false,
-            contentType: "application/pdf"
-        });
-
-        if (uploadResult.error) {
-            bookSaveButton.disabled = false;
-            bookMessage.style.color = "#d32f2f";
-            bookMessage.textContent = "بارگذاری PDF ناموفق بود: " + uploadResult.error.message;
-            return;
-        }
-
-        if (editingBookPdfPath && editingBookPdfPath !== uploadedPath) {
-            oldPathToRemove = editingBookPdfPath;
-        }
-    }
 
     const payload = {
         title: title,
@@ -1705,21 +1675,11 @@ bookForm.addEventListener("submit", async function(event) {
         language: document.getElementById("bookLanguage").value.trim() || null,
         cover_image: document.getElementById("bookCover").value.trim() || null,
         description: document.getElementById("bookDescription").value.trim() || null,
-        pdf_path: uploadedPath,
-        pdf_file_name: pdfFile ? pdfFile.name : (editingBookPdfPath
-            ? (document.getElementById("bookMessage").dataset.currentPdfName || null) : null),
+        pdf_path: pdfUrl || null,
+        pdf_file_name: null,
         status: status,
         updated_at: new Date().toISOString()
     };
-
-    // Preserve the stored filename when the existing PDF is retained.
-    if (!pdfFile && editingBookId) {
-        const currentBook = await db.from("royal_books")
-            .select("pdf_file_name").eq("id", editingBookId).maybeSingle();
-        if (!currentBook.error && currentBook.data) {
-            payload.pdf_file_name = currentBook.data.pdf_file_name;
-        }
-    }
 
     let saveResult;
     if (editingBookId) {
@@ -1734,17 +1694,7 @@ bookForm.addEventListener("submit", async function(event) {
         console.error("Royal book save error:", saveResult.error);
         bookMessage.style.color = "#d32f2f";
         bookMessage.textContent = "ذخیره اطلاعات کتاب ناموفق بود: " + saveResult.error.message;
-
-        // If the database write failed after a new upload, remove the orphaned upload.
-        if (pdfFile && uploadedPath) {
-            await db.storage.from(BOOKS_BUCKET).remove([uploadedPath]);
-        }
         return;
-    }
-
-    if (oldPathToRemove) {
-        const cleanup = await db.storage.from(BOOKS_BUCKET).remove([oldPathToRemove]);
-        if (cleanup.error) console.warn("Old PDF cleanup failed:", cleanup.error);
     }
 
     resetBookForm();
