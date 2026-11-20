@@ -1063,6 +1063,39 @@
             .pdf-modal-panel { height:94vh; }
         }
 
+
+        /* Image and video archive cards */
+        .media-card { display:flex; flex-direction:column; gap:12px; overflow:hidden; }
+        .media-card h3 { margin:0; font-size:16px; line-height:1.8; }
+        .media-card p { margin:0; color:var(--text-muted,#aaa); font-size:13px; line-height:2; }
+        .media-card-image {
+            width:100%; height:220px; object-fit:cover; border-radius:12px;
+            background:rgba(255,255,255,.05); cursor:zoom-in;
+        }
+        .media-card-meta { color:var(--text-muted,#aaa); font-size:12px; line-height:1.9; }
+        .media-card-link {
+            display:inline-flex; align-items:center; justify-content:center;
+            border-radius:9px; padding:9px 13px; background:rgba(255,255,255,.1);
+            color:inherit; text-decoration:none; font-size:12px; margin-top:auto;
+        }
+        .video-frame-wrap {
+            position:relative; width:100%; aspect-ratio:16/9; overflow:hidden;
+            border-radius:12px; background:#080808;
+        }
+        .video-frame-wrap iframe,.video-frame-wrap video {
+            width:100%; height:100%; border:0; display:block;
+        }
+        .image-lightbox {
+            position:fixed; inset:0; z-index:10000; display:none; align-items:center;
+            justify-content:center; padding:24px; background:rgba(0,0,0,.92);
+        }
+        .image-lightbox.open { display:flex; }
+        .image-lightbox img { max-width: min(1100px,95vw); max-height:85vh; object-fit:contain; border-radius:10px; }
+        .image-lightbox button {
+            position:absolute; top:18px; left:18px; border:0; border-radius:8px;
+            padding:10px 14px; color:#fff; background:rgba(255,255,255,.14); cursor:pointer;
+        }
+
 </style>
 </head>
 
@@ -1281,28 +1314,39 @@
             </div>
         </section>
 
-        <!-- Future archive sections -->
+
+        <!-- Images archive -->
         <section class="section container" id="images-section">
             <div class="section-heading">
                 <div>
                     <p class="section-kicker">آرشیو رسانه</p>
                     <h2>آرشیو تصاویر</h2>
-                    <p class="section-subtitle">این بخش در مرحله بعد به پنل مدیریت تصاویر متصل می‌شود.</p>
+                    <p class="section-subtitle">مجموعه‌ای از تصاویر تاریخی همراه با اطلاعات و منابع.</p>
                 </div>
             </div>
-            <div class="archive-state">آرشیو تصاویر به‌زودی راه‌اندازی می‌شود.</div>
+            <div class="archive-grid" id="archiveImages">
+                <div class="archive-state">در حال دریافت تصاویر...</div>
+            </div>
         </section>
 
+        <!-- Videos archive -->
         <section class="section container" id="videos-section">
             <div class="section-heading">
                 <div>
                     <p class="section-kicker">آرشیو رسانه</p>
                     <h2>فیلم و ویدئو</h2>
-                    <p class="section-subtitle">این بخش در مرحله بعد به پنل مدیریت ویدئوها متصل می‌شود.</p>
+                    <p class="section-subtitle">فیلم‌ها و ویدئوهای تاریخی و آرشیوی.</p>
                 </div>
             </div>
-            <div class="archive-state">آرشیو فیلم و ویدئو به‌زودی راه‌اندازی می‌شود.</div>
+            <div class="archive-grid" id="archiveVideos">
+                <div class="archive-state">در حال دریافت ویدئوها...</div>
+            </div>
         </section>
+
+        <div class="image-lightbox" id="imageLightbox" role="dialog" aria-modal="true" aria-label="نمایش تصویر">
+            <button type="button" id="closeImageLightbox">بستن ✕</button>
+            <img id="lightboxImage" src="" alt="نمایش تصویر آرشیوی">
+        </div>
 
         <!-- PDF Reader Modal -->
         <div class="pdf-modal" id="pdfModal" role="dialog" aria-modal="true" aria-label="مطالعه کتاب">
@@ -1885,14 +1929,209 @@
             if (event.target === this) closePdfViewer();
         });
         document.addEventListener("keydown", function(event) {
-            if (event.key === "Escape") closePdfViewer();
+            if (event.key === "Escape") { closePdfViewer(); closeImageLightbox(); }
         });
+
+
+        async function loadArchiveImages() {
+            const container = document.getElementById("archiveImages");
+            const { data, error } = await db.from("archive_images")
+                .select("id,title,image_url,description,category,event_date,location,source")
+                .eq("status", "published")
+                .order("created_at", {ascending:false})
+                .limit(24);
+
+            if (error) {
+                console.error("Archive images loading error:", error);
+                container.innerHTML = '<div class="archive-state">دریافت تصاویر با مشکل مواجه شد.</div>';
+                return;
+            }
+            if (!data || !data.length) {
+                container.innerHTML = '<div class="archive-state">هنوز تصویری برای نمایش منتشر نشده است.</div>';
+                return;
+            }
+
+            container.replaceChildren();
+            data.forEach(function(item) {
+                const card = document.createElement("article");
+                card.className = "archive-card media-card";
+
+                const image = document.createElement("img");
+                image.className = "media-card-image";
+                image.src = item.image_url;
+                image.alt = item.title || "تصویر آرشیوی";
+                image.loading = "lazy";
+                image.addEventListener("click", function() { openImageLightbox(item.image_url, item.title); });
+                image.onerror = function() {
+                    image.removeAttribute("src");
+                    image.alt = "تصویر در دسترس نیست";
+                    image.style.cursor = "default";
+                    image.style.objectFit = "contain";
+                };
+                card.appendChild(image);
+
+                const title = document.createElement("h3");
+                title.textContent = item.title || "بدون عنوان";
+                card.appendChild(title);
+
+                const metaParts = [];
+                if (item.event_date) metaParts.push("تاریخ: " + item.event_date);
+                if (item.location) metaParts.push("محل: " + item.location);
+                if (item.category) metaParts.push(item.category);
+                if (metaParts.length) {
+                    const meta = document.createElement("div");
+                    meta.className = "media-card-meta";
+                    meta.textContent = metaParts.join(" | ");
+                    card.appendChild(meta);
+                }
+                if (item.description) {
+                    const description = document.createElement("p");
+                    description.textContent = item.description;
+                    card.appendChild(description);
+                }
+                if (item.source) {
+                    const source = document.createElement("div");
+                    source.className = "media-card-meta";
+                    source.textContent = "منبع: " + item.source;
+                    card.appendChild(source);
+                }
+                container.appendChild(card);
+            });
+        }
+
+        function openImageLightbox(url, title) {
+            const lightbox = document.getElementById("imageLightbox");
+            const image = document.getElementById("lightboxImage");
+            image.src = url;
+            image.alt = title || "تصویر آرشیوی";
+            lightbox.classList.add("open");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeImageLightbox() {
+            document.getElementById("imageLightbox").classList.remove("open");
+            document.getElementById("lightboxImage").src = "";
+            document.body.style.overflow = "";
+        }
+
+        document.getElementById("closeImageLightbox").addEventListener("click", closeImageLightbox);
+        document.getElementById("imageLightbox").addEventListener("click", function(event) {
+            if (event.target === this) closeImageLightbox();
+        });
+
+        function getVideoEmbedInfo(rawUrl) {
+            try {
+                const url = new URL(rawUrl);
+                const host = url.hostname.toLowerCase().replace(/^www\./, "");
+                if (host === "youtu.be") {
+                    const id = url.pathname.split("/").filter(Boolean)[0];
+                    if (id) return {type:"embed", url:"https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id)};
+                }
+                if (host.endsWith("youtube.com")) {
+                    let id = url.searchParams.get("v");
+                    if (!id && url.pathname.startsWith("/embed/")) id = url.pathname.split("/")[2];
+                    if (!id && url.pathname.startsWith("/shorts/")) id = url.pathname.split("/")[2];
+                    if (id) return {type:"embed", url:"https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id)};
+                }
+                if (host === "vimeo.com" || host === "player.vimeo.com") {
+                    const parts = url.pathname.split("/").filter(Boolean);
+                    const id = host === "player.vimeo.com" ? parts[1] : parts[0];
+                    if (id && /^\d+$/.test(id)) return {type:"embed", url:"https://player.vimeo.com/video/" + id};
+                }
+                if (/\.(mp4|webm|ogg)(?:$|[?#])/i.test(url.href)) return {type:"file", url:url.href};
+                return {type:"embed", url:url.href};
+            } catch (_) {
+                return null;
+            }
+        }
+
+        async function loadArchiveVideos() {
+            const container = document.getElementById("archiveVideos");
+            const { data, error } = await db.from("archive_videos")
+                .select("id,title,video_url,thumbnail_url,description,category,event_date,source")
+                .eq("status", "published")
+                .order("created_at", {ascending:false})
+                .limit(18);
+
+            if (error) {
+                console.error("Archive videos loading error:", error);
+                container.innerHTML = '<div class="archive-state">دریافت ویدئوها با مشکل مواجه شد.</div>';
+                return;
+            }
+            if (!data || !data.length) {
+                container.innerHTML = '<div class="archive-state">هنوز ویدئویی برای نمایش منتشر نشده است.</div>';
+                return;
+            }
+
+            container.replaceChildren();
+            data.forEach(function(item) {
+                const card = document.createElement("article");
+                card.className = "archive-card media-card";
+
+                const playerWrap = document.createElement("div");
+                playerWrap.className = "video-frame-wrap";
+                const info = getVideoEmbedInfo(item.video_url);
+
+                if (info && info.type === "file") {
+                    const video = document.createElement("video");
+                    video.controls = true;
+                    video.preload = "metadata";
+                    video.playsInline = true;
+                    video.src = info.url;
+                    if (item.thumbnail_url) video.poster = item.thumbnail_url;
+                    playerWrap.appendChild(video);
+                } else if (info) {
+                    const iframe = document.createElement("iframe");
+                    iframe.src = info.url;
+                    iframe.title = item.title || "ویدئوی آرشیوی";
+                    iframe.loading = "lazy";
+                    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+                    iframe.allowFullscreen = true;
+                    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+                    playerWrap.appendChild(iframe);
+                } else {
+                    const unavailable = document.createElement("div");
+                    unavailable.className = "archive-state";
+                    unavailable.textContent = "لینک ویدئو معتبر نیست.";
+                    playerWrap.appendChild(unavailable);
+                }
+                card.appendChild(playerWrap);
+
+                const title = document.createElement("h3");
+                title.textContent = item.title || "بدون عنوان";
+                card.appendChild(title);
+
+                const metaParts = [];
+                if (item.event_date) metaParts.push("تاریخ: " + item.event_date);
+                if (item.category) metaParts.push(item.category);
+                if (metaParts.length) {
+                    const meta = document.createElement("div");
+                    meta.className = "media-card-meta";
+                    meta.textContent = metaParts.join(" | ");
+                    card.appendChild(meta);
+                }
+                if (item.description) {
+                    const description = document.createElement("p");
+                    description.textContent = item.description;
+                    card.appendChild(description);
+                }
+                if (item.source) {
+                    const source = document.createElement("div");
+                    source.className = "media-card-meta";
+                    source.textContent = "منبع: " + item.source;
+                    card.appendChild(source);
+                }
+                container.appendChild(card);
+            });
+        }
 
         // Initialize
 
         loadArticles();
         loadRoyalQuotes();
         loadRoyalBooks();
+        loadArchiveImages();
+        loadArchiveVideos();
 
         refreshIcons();
 
