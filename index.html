@@ -1354,8 +1354,12 @@
                     <div class="portrait-frame">
 
                         <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg/960px-Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg/640px-Shah_Mohammad_Reza_Pahlavi%2C_1973.jpg"
                             alt="پرتره رسمی محمدرضاشاه پهلوی، ۱۹۷۳"
+                            width="310"
+                            height="410"
+                            fetchpriority="high"
+                            decoding="async"
                         >
 
                         <div class="portrait-caption">
@@ -2189,6 +2193,7 @@
                 image.src = item.image_url;
                 image.alt = "تصویر آرشیوی آریامهر";
                 image.loading = "lazy";
+                image.decoding = "async";
                 image.addEventListener("click", function() {
                     openImageLightbox(item.image_url);
                 });
