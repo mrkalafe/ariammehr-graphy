@@ -348,6 +348,31 @@ th {
 .admin-section .admin-reply:last-child { border-bottom:0; }
 .admin-section .reply-delete { border:0; background:#fde7e7; color:#a32121; padding:5px 8px; border-radius:5px; cursor:pointer; margin-right:8px; }
 
+
+/* Royal quotes management */
+#quotesAdminSection { display:none; }
+#quotesAdminSection .section { background:#fff; padding:22px; border-radius:12px; margin-top:20px; }
+.quote-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.quote-form-grid .full { grid-column:1/-1; }
+.quote-form-grid input, .quote-form-grid textarea, .quote-form-grid select {
+    width:100%; box-sizing:border-box; padding:12px; border:1px solid #ddd;
+    border-radius:8px; font:inherit; font-size:13px; background:#fff; color:#17243a;
+}
+.quote-form-grid textarea { min-height:115px; resize:vertical; }
+.quote-form-actions { display:flex; gap:9px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+.quote-form-actions button { border:0; border-radius:7px; padding:11px 17px; cursor:pointer; font:inherit; }
+.quote-save { background:#c9a227; color:#17243a; }
+.quote-cancel { background:#eee; color:#333; }
+.quote-status { font-size:12px; margin-top:10px; }
+.quote-table-wrap { overflow-x:auto; }
+#quotesAdminSection table { width:100%; min-width:700px; border-collapse:collapse; }
+#quotesAdminSection th,#quotesAdminSection td { padding:12px 9px; border-bottom:1px solid #eee; text-align:right; vertical-align:top; font-size:12px; }
+.quote-actions { display:flex; gap:6px; flex-wrap:wrap; }
+.quote-actions button { border:0; border-radius:6px; padding:7px 10px; cursor:pointer; font:inherit; font-size:11px; }
+.quote-edit { background:#e5f1fb; color:#155b89; }
+.quote-delete { background:#fde7e7; color:#a32121; }
+@media(max-width:650px) { .quote-form-grid { grid-template-columns:1fr; } .quote-form-grid .full { grid-column:auto; } }
+
 </style>
 </head>
 
@@ -451,6 +476,7 @@ th {
         <nav class="menu">
             <a href="#" class="active" id="dashboardNav">▦ داشبورد</a>
             <a href="#" id="discussionNav">☷ مدیریت بحث‌ها</a>
+            <a href="#" id="quotesNav">❝ جملات شاهنشاه</a>
             <a href="#">▤ مدیریت مقالات</a>
             <a href="#">▧ تصاویر و اسناد</a>
             <a href="#">▷ ویدئوها</a>
@@ -568,6 +594,59 @@ th {
                     <thead><tr><th>بحث</th><th>نویسنده و ایمیل</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
                     <tbody id="discussionsAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody>
                 </table>
+            </div>
+        </section>
+
+        <section class="admin-section" id="quotesAdminSection">
+            <div class="section-header">
+                <h3>مدیریت جملات شاهنشاه</h3>
+                <button class="btn" id="refreshQuotes">به‌روزرسانی</button>
+            </div>
+
+            <div class="section">
+                <h3 id="quoteFormHeading" style="margin:0 0 18px;">ثبت جمله جدید</h3>
+                <form id="quoteForm">
+                    <div class="quote-form-grid">
+                        <div class="full">
+                            <textarea id="quoteText" maxlength="5000" placeholder="متن جمله شاهنشاه..." required></textarea>
+                        </div>
+                        <div>
+                            <input type="date" id="quoteDate" aria-label="تاریخ بیان">
+                        </div>
+                        <div>
+                            <input type="text" id="quoteOccasion" maxlength="300" placeholder="مناسبت یا محل بیان">
+                        </div>
+                        <div class="full">
+                            <input type="text" id="quoteSource" maxlength="1000" placeholder="منبع و مأخذ جمله">
+                        </div>
+                        <div class="full">
+                            <input type="url" id="quoteImage" placeholder="لینک تصویر مرتبط (اختیاری)">
+                        </div>
+                        <div>
+                            <select id="quoteStatus">
+                                <option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+                                <option value="published">انتشار در سایت</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="quote-form-actions">
+                        <button class="quote-save" type="submit" id="quoteSaveButton">ذخیره جمله</button>
+                        <button class="quote-cancel" type="button" id="quoteCancelButton" style="display:none;">لغو ویرایش</button>
+                    </div>
+                    <p class="quote-status" id="quoteMessage" role="status"></p>
+                </form>
+            </div>
+
+            <div class="section" style="margin-top:18px;">
+                <div class="section-header">
+                    <h3>جملات ثبت‌شده</h3>
+                </div>
+                <div class="quote-table-wrap">
+                    <table>
+                        <thead><tr><th>متن جمله</th><th>تاریخ</th><th>منبع</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                        <tbody id="quotesAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>
@@ -1043,21 +1122,39 @@ articleForm.addEventListener("submit", async function(event) {
 /* Discussion moderation */
 const dashboardNav = document.getElementById("dashboardNav");
 const discussionNav = document.getElementById("discussionNav");
+const quotesNav = document.getElementById("quotesNav");
 const discussionAdminSection = document.getElementById("discussionAdminSection");
+const quotesAdminSection = document.getElementById("quotesAdminSection");
 const articlesDashboardSection = document.querySelector("#app main.main > section.section");
+const welcomePanel = document.querySelector("#app main.main > .welcome");
+const dashboardCards = document.querySelector("#app main.main > .cards");
 
 function showAdminArea(which) {
     const discussions = which === "discussions";
-    articlesDashboardSection.style.display = discussions ? "none" : "block";
+    const quotes = which === "quotes";
+    const dashboard = !discussions && !quotes;
+
+    articlesDashboardSection.style.display = dashboard ? "block" : "none";
+    welcomePanel.style.display = dashboard ? "block" : "none";
+    dashboardCards.style.display = dashboard ? "grid" : "none";
     discussionAdminSection.style.display = discussions ? "block" : "none";
-    dashboardNav.classList.toggle("active", !discussions);
+    quotesAdminSection.style.display = quotes ? "block" : "none";
+
+    dashboardNav.classList.toggle("active", dashboard);
     discussionNav.classList.toggle("active", discussions);
-    document.querySelector(".header h1").textContent = discussions ? "مدیریت بحث‌ها" : "داشبورد";
+    quotesNav.classList.toggle("active", quotes);
+
+    document.querySelector(".header h1").textContent =
+        discussions ? "مدیریت بحث‌ها" : quotes ? "جملات شاهنشاه" : "داشبورد";
+
     if (discussions) loadAdminDiscussions();
+    if (quotes) loadRoyalQuotes();
 }
 dashboardNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("dashboard"); });
 discussionNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("discussions"); });
+quotesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("quotes"); });
 document.getElementById("refreshDiscussions").addEventListener("click", loadAdminDiscussions);
+document.getElementById("refreshQuotes").addEventListener("click", loadRoyalQuotes);
 
 async function loadAdminDiscussions() {
     const table = document.getElementById("discussionsAdminTable");
@@ -1182,6 +1279,157 @@ function toggleAdminReplies(replies, host) {
     });
     host.append(box);
 }
+
+
+/* Royal quotes management */
+let editingQuoteId = null;
+
+const quoteForm = document.getElementById("quoteForm");
+const quoteMessage = document.getElementById("quoteMessage");
+const quoteSaveButton = document.getElementById("quoteSaveButton");
+const quoteCancelButton = document.getElementById("quoteCancelButton");
+
+function resetQuoteForm() {
+    editingQuoteId = null;
+    quoteForm.reset();
+    document.getElementById("quoteFormHeading").textContent = "ثبت جمله جدید";
+    quoteSaveButton.textContent = "ذخیره جمله";
+    quoteCancelButton.style.display = "none";
+    quoteMessage.textContent = "";
+}
+
+quoteCancelButton.addEventListener("click", resetQuoteForm);
+
+async function loadRoyalQuotes() {
+    const table = document.getElementById("quotesAdminTable");
+    table.innerHTML = "<tr><td colspan='5'>در حال دریافت جملات...</td></tr>";
+
+    const result = await db.from("royal_quotes")
+        .select("id,quote_text,spoken_at,occasion,source,image_url,status,created_at")
+        .order("created_at", {ascending:false});
+
+    if (result.error) {
+        console.error("Royal quotes load error:", result.error);
+        table.innerHTML = "<tr><td colspan='5'>خطا در دریافت جملات: " +
+            escapeAdminText(result.error.message) + "</td></tr>";
+        return;
+    }
+
+    const rows = result.data || [];
+    if (!rows.length) {
+        table.innerHTML = "<tr><td colspan='5'>هنوز جمله‌ای ثبت نشده است.</td></tr>";
+        return;
+    }
+
+    table.replaceChildren();
+    rows.forEach(function(item) {
+        const tr = document.createElement("tr");
+        const textCell = document.createElement("td");
+        textCell.textContent = item.quote_text.length > 180
+            ? item.quote_text.slice(0, 180) + "…" : item.quote_text;
+
+        const dateCell = document.createElement("td");
+        dateCell.textContent = item.spoken_at || "ثبت نشده";
+
+        const sourceCell = document.createElement("td");
+        sourceCell.textContent = item.source || "ثبت نشده";
+
+        const statusCell = document.createElement("td");
+        statusCell.textContent = item.status === "published" ? "منتشرشده" : "پیش‌نویس";
+
+        const actionsCell = document.createElement("td");
+        const actions = document.createElement("div");
+        actions.className = "quote-actions";
+
+        const edit = document.createElement("button");
+        edit.className = "quote-edit";
+        edit.textContent = "ویرایش";
+        edit.addEventListener("click", function() {
+            editingQuoteId = item.id;
+            document.getElementById("quoteText").value = item.quote_text || "";
+            document.getElementById("quoteDate").value = item.spoken_at || "";
+            document.getElementById("quoteOccasion").value = item.occasion || "";
+            document.getElementById("quoteSource").value = item.source || "";
+            document.getElementById("quoteImage").value = item.image_url || "";
+            document.getElementById("quoteStatus").value = item.status || "draft";
+            document.getElementById("quoteFormHeading").textContent = "ویرایش جمله";
+            quoteSaveButton.textContent = "ذخیره تغییرات";
+            quoteCancelButton.style.display = "inline-block";
+            quoteMessage.textContent = "";
+            document.getElementById("quoteText").focus();
+            window.scrollTo({top:0, behavior:"smooth"});
+        });
+
+        const del = document.createElement("button");
+        del.className = "quote-delete";
+        del.textContent = "حذف";
+        del.addEventListener("click", async function() {
+            if (!confirm("این جمله حذف شود؟ این عملیات قابل بازگشت نیست.")) return;
+            const deleteResult = await db.from("royal_quotes").delete().eq("id", item.id);
+            if (deleteResult.error) {
+                alert("حذف جمله انجام نشد: " + deleteResult.error.message);
+                return;
+            }
+            if (editingQuoteId === item.id) resetQuoteForm();
+            loadRoyalQuotes();
+        });
+
+        actions.append(edit, del);
+        actionsCell.append(actions);
+        tr.append(textCell, dateCell, sourceCell, statusCell, actionsCell);
+        table.append(tr);
+    });
+}
+
+quoteForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const quoteText = document.getElementById("quoteText").value.trim();
+    if (!quoteText) {
+        quoteMessage.textContent = "متن جمله را وارد کنید.";
+        return;
+    }
+
+    const payload = {
+        quote_text: quoteText,
+        spoken_at: document.getElementById("quoteDate").value || null,
+        occasion: document.getElementById("quoteOccasion").value.trim() || null,
+        source: document.getElementById("quoteSource").value.trim() || null,
+        image_url: document.getElementById("quoteImage").value.trim() || null,
+        status: document.getElementById("quoteStatus").value,
+        updated_at: new Date().toISOString()
+    };
+
+    quoteSaveButton.disabled = true;
+    quoteMessage.style.color = "#555";
+    quoteMessage.textContent = "در حال ذخیره...";
+
+    let result;
+    if (editingQuoteId) {
+        result = await db.from("royal_quotes").update(payload).eq("id", editingQuoteId);
+    } else {
+        result = await db.from("royal_quotes").insert([payload]);
+    }
+
+    quoteSaveButton.disabled = false;
+
+    if (result.error) {
+        console.error("Royal quote save error:", result.error);
+        quoteMessage.style.color = "#d32f2f";
+        quoteMessage.textContent = "ذخیره انجام نشد: " + result.error.message;
+        return;
+    }
+
+    quoteMessage.style.color = "#388e3c";
+    quoteMessage.textContent = editingQuoteId
+        ? "تغییرات جمله با موفقیت ذخیره شد."
+        : "جمله با موفقیت ثبت شد.";
+
+    resetQuoteForm();
+    quoteMessage.style.color = "#388e3c";
+    quoteMessage.textContent = "عملیات با موفقیت انجام شد.";
+    await loadRoyalQuotes();
+});
 
 /* Initial Session Check */
 
