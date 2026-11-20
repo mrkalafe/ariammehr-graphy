@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1a1a1a">
     <meta name="description" content="مطالعه مقاله در آریامهر گرافی؛ آرشیوی برای تاریخ، اسناد و روایت‌های ایران.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta property="og:locale" content="fa_IR">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="آریامهر گرافی">
+    <meta property="og:title" content="مقاله | آریامهر گرافی">
+    <meta property="og:description" content="مطالعه مقاله در آریامهر گرافی؛ آرشیوی برای تاریخ، اسناد و روایت‌های ایران.">
+    <meta property="og:image" content="https://mrkalafe.github.io/ariammehr-graphy/images/og-default.jpg">
+    <meta property="og:url" content="https://mrkalafe.github.io/ariammehr-graphy/article.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="مقاله | آریامهر گرافی">
+    <meta name="twitter:description" content="مطالعه مقاله در آریامهر گرافی؛ آرشیوی برای تاریخ، اسناد و روایت‌های ایران.">
     <title>مقاله | آریامهر گرافی</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -307,9 +318,31 @@
             .select("id,title,description,content,category,cover_image,status,created_at")
             .eq("id",id).eq("status","published").single();
         if(error || !data){console.error("Article loading error:",error);showState("مقاله پیدا نشد","ممکن است مقاله حذف شده یا هنوز منتشر نشده باشد.");return;}
-        document.title = (data.title || "مقاله") + " | آریامهر گرافی";
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if(metaDescription && data.description) metaDescription.setAttribute("content",data.description.slice(0,155));
+        const pageTitle = (data.title || "مقاله") + " | آریامهر گرافی";
+        const pageDescription = (data.description || "مطالعه مقاله در آریامهر گرافی؛ آرشیوی برای تاریخ، اسناد و روایت‌های ایران.").slice(0, 155);
+        document.title = pageTitle;
+
+        function setMeta(selector, attribute, value) {
+            const element = document.querySelector(selector);
+            if (element && value) element.setAttribute(attribute, value);
+        }
+
+        setMeta('meta[name="description"]', "content", pageDescription);
+        setMeta('meta[property="og:title"]', "content", pageTitle);
+        setMeta('meta[property="og:description"]', "content", pageDescription);
+        setMeta('meta[property="og:image"]', "content", data.cover_image || "https://mrkalafe.github.io/ariammehr-graphy/images/og-default.jpg");
+        setMeta('meta[name="twitter:title"]', "content", pageTitle);
+        setMeta('meta[name="twitter:description"]', "content", pageDescription);
+
+        const canonicalUrl = window.location.origin + window.location.pathname + "?id=" + encodeURIComponent(data.id);
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+            canonical = document.createElement("link");
+            canonical.rel = "canonical";
+            document.head.appendChild(canonical);
+        }
+        canonical.href = canonicalUrl;
+        setMeta('meta[property="og:url"]', "content", canonicalUrl);
         shell.textContent = "";
         if(data.cover_image){
             const coverWrap=document.createElement("div");coverWrap.className="article-cover-wrap";
