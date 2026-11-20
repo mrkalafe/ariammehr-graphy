@@ -980,7 +980,90 @@
                 transition-duration: .01ms !important;
             }
         }
-    </style>
+    
+        /* Royal quotes and books */
+        .archive-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:18px;
+        }
+        .archive-card {
+            background:rgba(255,255,255,.045);
+            border:1px solid rgba(255,255,255,.1);
+            border-radius:18px;
+            padding:22px;
+            min-width:0;
+        }
+        .quote-card blockquote {
+            margin:0;
+            color:var(--text-primary, #fff);
+            font-size:16px;
+            line-height:2.2;
+            white-space:pre-wrap;
+        }
+        .quote-card .quote-meta {
+            margin-top:16px;
+            padding-top:12px;
+            border-top:1px solid rgba(255,255,255,.1);
+            color:var(--text-muted, #aaa);
+            font-size:12px;
+            line-height:2;
+        }
+        .quote-card .quote-source { color:#d3a034; }
+        .book-card { display:flex; flex-direction:column; gap:13px; }
+        .book-cover {
+            width:100%;
+            height:220px;
+            object-fit:contain;
+            border-radius:12px;
+            background:rgba(255,255,255,.04);
+        }
+        .book-cover-placeholder {
+            height:180px;
+            display:grid;
+            place-items:center;
+            color:#d3a034;
+            background:rgba(255,255,255,.04);
+            border-radius:12px;
+        }
+        .book-card h3 { margin:0; font-size:17px; }
+        .book-card p { margin:0; color:var(--text-muted, #aaa); font-size:13px; line-height:2; }
+        .book-meta { color:var(--text-muted, #aaa); font-size:12px; line-height:1.9; }
+        .book-buttons { display:flex; gap:9px; flex-wrap:wrap; margin-top:auto; }
+        .book-buttons button,.book-buttons a {
+            border:0; border-radius:9px; padding:10px 13px;
+            font:inherit; font-size:12px; cursor:pointer; text-decoration:none;
+        }
+        .book-read { background:#d3a034; color:#171717; }
+        .book-download { background:rgba(255,255,255,.1); color:inherit; }
+        .archive-more { text-align:center; margin-top:22px; }
+        .archive-state { grid-column:1/-1; text-align:center; padding:28px; color:var(--text-muted, #aaa); }
+        .pdf-modal {
+            position:fixed; inset:0; z-index:9999; display:none;
+            align-items:center; justify-content:center; padding:18px;
+            background:rgba(0,0,0,.86);
+        }
+        .pdf-modal.open { display:flex; }
+        .pdf-modal-panel {
+            width:min(1100px,100%); height:min(90vh,850px);
+            background:#17191f; border:1px solid rgba(255,255,255,.15);
+            border-radius:16px; overflow:hidden; display:flex; flex-direction:column;
+        }
+        .pdf-modal-head {
+            display:flex; align-items:center; justify-content:space-between;
+            gap:12px; padding:12px 16px; color:#fff;
+        }
+        .pdf-modal-head button {
+            border:0; border-radius:8px; padding:8px 12px;
+            cursor:pointer; background:rgba(255,255,255,.12); color:#fff;
+        }
+        .pdf-modal iframe { width:100%; flex:1; border:0; background:#fff; }
+        @media(max-width:600px) {
+            .pdf-modal { padding:6px; }
+            .pdf-modal-panel { height:94vh; }
+        }
+
+</style>
 </head>
 
 <body id="top">
@@ -1129,85 +1212,108 @@
 
             <div class="categories-grid">
 
-                <a href="#articles-section" class="category-card">
-
+                <a href="#quotes-section" class="category-card">
                     <div class="category-icon red">
-                        <i data-lucide="newspaper"></i>
+                        <i data-lucide="quote"></i>
                     </div>
-
-                    <h3>مقالات تاریخی</h3>
-
-                    <p>
-                        مطالعات، پژوهش‌ها و روایت‌های تاریخی
-                    </p>
-
-                    <span class="category-link">
-                        مشاهده مطالب
-                        <i data-lucide="arrow-left"></i>
-                    </span>
-
+                    <h3>جملات شاهنشاه</h3>
+                    <p>گزیده‌ای از سخنان و دیدگاه‌های محمدرضاشاه پهلوی</p>
+                    <span class="category-link">مشاهده جملات <i data-lucide="arrow-left"></i></span>
                 </a>
 
-                <a href="#articles-section" class="category-card">
-
+                <a href="#books-section" class="category-card">
                     <div class="category-icon gold">
-                        <i data-lucide="file-text"></i>
+                        <i data-lucide="book-open"></i>
                     </div>
-
-                    <h3>اسناد و مدارک</h3>
-
-                    <p>
-                        اسناد رسمی، نامه‌ها و مدارک تاریخی
-                    </p>
-
-                    <span class="category-link">
-                        مشاهده آرشیو
-                        <i data-lucide="arrow-left"></i>
-                    </span>
-
+                    <h3>کتاب‌های شاهنشاه</h3>
+                    <p>کتاب‌های تألیف‌شده توسط محمدرضاشاه پهلوی</p>
+                    <span class="category-link">ورود به کتابخانه <i data-lucide="arrow-left"></i></span>
                 </a>
 
-                <a href="#articles-section" class="category-card">
-
+                <a href="#images-section" class="category-card">
                     <div class="category-icon blue">
                         <i data-lucide="images"></i>
                     </div>
-
                     <h3>آرشیو تصاویر</h3>
-
-                    <p>
-                        تصاویر تاریخی و مجموعه‌های تصویری
-                    </p>
-
-                    <span class="category-link">
-                        مشاهده تصاویر
-                        <i data-lucide="arrow-left"></i>
-                    </span>
-
+                    <p>تصاویر تاریخی و مجموعه‌های تصویری</p>
+                    <span class="category-link">مشاهده تصاویر <i data-lucide="arrow-left"></i></span>
                 </a>
 
-                <a href="#articles-section" class="category-card">
-
+                <a href="#videos-section" class="category-card">
                     <div class="category-icon white">
                         <i data-lucide="film"></i>
                     </div>
-
                     <h3>فیلم و ویدئو</h3>
-
-                    <p>
-                        ویدئوهای تاریخی و مستندهای آرشیوی
-                    </p>
-
-                    <span class="category-link">
-                        مشاهده ویدئوها
-                        <i data-lucide="arrow-left"></i>
-                    </span>
-
+                    <p>ویدئوهای تاریخی و مستندهای آرشیوی</p>
+                    <span class="category-link">مشاهده ویدئوها <i data-lucide="arrow-left"></i></span>
                 </a>
 
             </div>
 
         </section>
+
+
+        <!-- Royal Quotes -->
+        <section class="section container" id="quotes-section">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">گزیده سخنان</p>
+                    <h2>جملات شاهنشاه</h2>
+                    <p class="section-subtitle">سخنان ثبت‌شده همراه با تاریخ، مناسبت و منبع.</p>
+                </div>
+            </div>
+            <div class="archive-grid" id="royalQuotes">
+                <div class="archive-state">در حال دریافت جملات...</div>
+            </div>
+        </section>
+
+        <!-- Royal Books -->
+        <section class="section container" id="books-section">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">کتابخانه</p>
+                    <h2>کتاب‌های شاهنشاه</h2>
+                    <p class="section-subtitle">آثار تألیف‌شده توسط محمدرضاشاه پهلوی.</p>
+                </div>
+            </div>
+            <div class="archive-grid" id="royalBooks">
+                <div class="archive-state">در حال دریافت کتاب‌ها...</div>
+            </div>
+        </section>
+
+        <!-- Future archive sections -->
+        <section class="section container" id="images-section">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">آرشیو رسانه</p>
+                    <h2>آرشیو تصاویر</h2>
+                    <p class="section-subtitle">این بخش در مرحله بعد به پنل مدیریت تصاویر متصل می‌شود.</p>
+                </div>
+            </div>
+            <div class="archive-state">آرشیو تصاویر به‌زودی راه‌اندازی می‌شود.</div>
+        </section>
+
+        <section class="section container" id="videos-section">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">آرشیو رسانه</p>
+                    <h2>فیلم و ویدئو</h2>
+                    <p class="section-subtitle">این بخش در مرحله بعد به پنل مدیریت ویدئوها متصل می‌شود.</p>
+                </div>
+            </div>
+            <div class="archive-state">آرشیو فیلم و ویدئو به‌زودی راه‌اندازی می‌شود.</div>
+        </section>
+
+        <!-- PDF Reader Modal -->
+        <div class="pdf-modal" id="pdfModal" role="dialog" aria-modal="true" aria-label="مطالعه کتاب">
+            <div class="pdf-modal-panel">
+                <div class="pdf-modal-head">
+                    <strong id="pdfModalTitle">مطالعه کتاب</strong>
+                    <button type="button" id="closePdfModal">بستن ✕</button>
+                </div>
+                <iframe id="pdfFrame" title="نمایش فایل PDF" src="about:blank"></iframe>
+            </div>
+        </div>
 
         <!-- Articles -->
 
@@ -1254,9 +1360,7 @@
                     <h2>آریامهر گرافی چیست؟</h2>
 
                     <p>
-                        این وب‌سایت با هدف ایجاد آرشیوی منظم و قابل جست‌وجو از مطالب تاریخی،
-                        اسناد و تصاویر ایران راه‌اندازی شده است. تلاش ما ارائه محتوا با ذکر
-                        منبع و تفکیک سند، روایت و تحلیل است.
+                        این وب‌سایت با هدف گردآوری و معرفی جملات، کتاب‌ها، تصاویر و ویدئوهای تاریخی مرتبط با ایران راه‌اندازی شده است. تلاش ما ارائه محتوای مستند همراه با ذکر منبع و مأخذ است.
                     </p>
                 </div>
 
@@ -1278,7 +1382,7 @@
 
             <div>
                 <div class="footer-brand">آریامهر گرافی</div>
-                <div>رسانه‌ای برای تاریخ، اسناد و تصاویر ایران</div>
+                <div>آرشیوی برای جملات، کتاب‌ها و رسانه‌های تاریخی ایران</div>
             </div>
 
             <div>
@@ -1612,9 +1716,183 @@
         });
 
 
+
+        // Load published royal quotes.
+        async function loadRoyalQuotes() {
+            const container = document.getElementById("royalQuotes");
+            const { data, error } = await db
+                .from("royal_quotes")
+                .select("id,quote_text,spoken_at,occasion,source,image_url")
+                .eq("status", "published")
+                .order("created_at", { ascending: false })
+                .limit(6);
+
+            if (error) {
+                console.error("Royal quotes loading error:", error);
+                container.innerHTML = '<div class="archive-state">دریافت جملات با مشکل مواجه شد.</div>';
+                return;
+            }
+
+            if (!data || !data.length) {
+                container.innerHTML = '<div class="archive-state">هنوز جمله‌ای برای نمایش منتشر نشده است.</div>';
+                return;
+            }
+
+            container.replaceChildren();
+            data.forEach(function(item) {
+                const card = document.createElement("article");
+                card.className = "archive-card quote-card";
+
+                const quote = document.createElement("blockquote");
+                quote.textContent = "«" + (item.quote_text || "") + "»";
+                card.appendChild(quote);
+
+                const meta = document.createElement("div");
+                meta.className = "quote-meta";
+                const details = [];
+                if (item.spoken_at) details.push("تاریخ: " + item.spoken_at);
+                if (item.occasion) details.push(item.occasion);
+                if (details.length) {
+                    const line = document.createElement("div");
+                    line.textContent = details.join(" | ");
+                    meta.appendChild(line);
+                }
+                if (item.source) {
+                    const source = document.createElement("div");
+                    source.className = "quote-source";
+                    source.textContent = "منبع: " + item.source;
+                    meta.appendChild(source);
+                }
+                card.appendChild(meta);
+                container.appendChild(card);
+            });
+        }
+
+        // Public book cards use external PDF URLs. No PDF is uploaded to this website.
+        async function loadRoyalBooks() {
+            const container = document.getElementById("royalBooks");
+            const { data, error } = await db
+                .from("royal_books")
+                .select("id,title,cover_image,publication_year,publisher,language,description,pdf_path")
+                .eq("status", "published")
+                .order("created_at", { ascending: false })
+                .limit(12);
+
+            if (error) {
+                console.error("Royal books loading error:", error);
+                container.innerHTML = '<div class="archive-state">دریافت کتاب‌ها با مشکل مواجه شد.</div>';
+                return;
+            }
+
+            if (!data || !data.length) {
+                container.innerHTML = '<div class="archive-state">هنوز کتابی برای نمایش منتشر نشده است.</div>';
+                return;
+            }
+
+            container.replaceChildren();
+            data.forEach(function(book) {
+                const card = document.createElement("article");
+                card.className = "archive-card book-card";
+
+                if (book.cover_image) {
+                    const cover = document.createElement("img");
+                    cover.className = "book-cover";
+                    cover.src = book.cover_image;
+                    cover.alt = "جلد " + (book.title || "کتاب");
+                    cover.loading = "lazy";
+                    cover.onerror = function() {
+                        const placeholder = document.createElement("div");
+                        placeholder.className = "book-cover-placeholder";
+                        placeholder.innerHTML = '<i data-lucide="book-open" width="48" height="48"></i>';
+                        cover.replaceWith(placeholder);
+                        refreshIcons();
+                    };
+                    card.appendChild(cover);
+                } else {
+                    const placeholder = document.createElement("div");
+                    placeholder.className = "book-cover-placeholder";
+                    placeholder.innerHTML = '<i data-lucide="book-open" width="48" height="48"></i>';
+                    card.appendChild(placeholder);
+                }
+
+                const title = document.createElement("h3");
+                title.textContent = book.title || "بدون عنوان";
+                card.appendChild(title);
+
+                const meta = document.createElement("div");
+                meta.className = "book-meta";
+                const details = [];
+                if (book.publication_year) details.push("سال انتشار: " + book.publication_year);
+                if (book.publisher) details.push("ناشر: " + book.publisher);
+                if (book.language) details.push("زبان: " + book.language);
+                meta.textContent = details.join(" | ");
+                card.appendChild(meta);
+
+                if (book.description) {
+                    const description = document.createElement("p");
+                    description.textContent = book.description;
+                    card.appendChild(description);
+                }
+
+                const buttons = document.createElement("div");
+                buttons.className = "book-buttons";
+
+                if (book.pdf_path) {
+                    const read = document.createElement("button");
+                    read.type = "button";
+                    read.className = "book-read";
+                    read.textContent = "مطالعه آنلاین";
+                    read.addEventListener("click", function() {
+                        openPdfViewer(book.title || "مطالعه کتاب", book.pdf_path);
+                    });
+
+                    const download = document.createElement("a");
+                    download.className = "book-download";
+                    download.href = book.pdf_path;
+                    download.target = "_blank";
+                    download.rel = "noopener noreferrer";
+                    download.textContent = "دریافت PDF";
+                    buttons.append(read, download);
+                } else {
+                    const unavailable = document.createElement("span");
+                    unavailable.className = "book-meta";
+                    unavailable.textContent = "فایل PDF در دسترس نیست.";
+                    buttons.appendChild(unavailable);
+                }
+
+                card.appendChild(buttons);
+                container.appendChild(card);
+            });
+            refreshIcons();
+        }
+
+        function openPdfViewer(title, url) {
+            const modal = document.getElementById("pdfModal");
+            document.getElementById("pdfModalTitle").textContent = title;
+            document.getElementById("pdfFrame").src = url;
+            modal.classList.add("open");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closePdfViewer() {
+            document.getElementById("pdfModal").classList.remove("open");
+            document.getElementById("pdfFrame").src = "about:blank";
+            document.body.style.overflow = "";
+        }
+
+        document.getElementById("closePdfModal").addEventListener("click", closePdfViewer);
+        document.getElementById("pdfModal").addEventListener("click", function(event) {
+            if (event.target === this) closePdfViewer();
+        });
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") closePdfViewer();
+        });
+
         // Initialize
 
         loadArticles();
+        loadRoyalQuotes();
+        loadRoyalBooks();
 
         refreshIcons();
 
