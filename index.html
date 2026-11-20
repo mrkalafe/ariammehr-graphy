@@ -1477,29 +1477,58 @@
 
         </section>
 
+
+        <!-- Contact -->
+        <section class="section container" id="contact">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">ارتباط با ما</p>
+                    <h2>تماس با آریامهر گرافی</h2>
+                    <p class="section-subtitle">پیشنهاد، انتقاد یا پیام خود را برای ما ارسال کنید.</p>
+                </div>
+            </div>
+            <div class="contact-panel">
+                <div class="contact-details">
+                    <h3>راه‌های ارتباطی</h3>
+                    <p>برای ارتباط از طریق نام کاربری واتساپ یا ایمیل اقدام کنید. هیچ شماره تلفنی در این وب‌سایت نمایش داده نمی‌شود.</p>
+                    <div class="contact-method">
+                        <span>واتساپ: <bdi dir="ltr">@mrkalafe</bdi></span>
+                        <button type="button" id="copyWhatsAppUsername">کپی نام کاربری</button>
+                    </div>
+                    <div class="contact-method">
+                        <span><bdi dir="ltr">mrkalafe@gmail.com</bdi></span>
+                        <a href="mailto:mrkalafe@gmail.com">ارسال ایمیل</a>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" id="contactName" maxlength="100" placeholder="نام و نام خانوادگی" autocomplete="name" required>
+                    <input type="email" id="contactEmail" maxlength="254" placeholder="آدرس ایمیل" autocomplete="email" required>
+                    <input class="full" type="text" id="contactSubject" maxlength="150" placeholder="موضوع پیام" required>
+                    <textarea class="full" id="contactMessage" maxlength="5000" placeholder="متن پیام شما..." required></textarea>
+                    <div class="full"><button class="contact-submit" id="contactSubmit" type="submit">ارسال پیام</button></div>
+                    <p class="contact-form-message" id="contactFormMessage" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
 
     <footer class="site-footer">
-
         <div class="container footer-inner">
-
             <div>
                 <div class="footer-brand">آریامهر گرافی</div>
                 <div>آرشیوی برای جملات، کتاب‌ها و رسانه‌های تاریخی ایران</div>
+                <div style="margin-top:9px;display:flex;gap:14px;flex-wrap:wrap;">
+                    <a href="#contact" style="color:var(--muted);text-decoration:none;">تماس با ما</a>
+                    <a href="mailto:mrkalafe@gmail.com" style="color:var(--muted);text-decoration:none;">mrkalafe@gmail.com</a>
+                    <button type="button" id="footerCopyWhatsApp" style="border:0;background:none;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;padding:0;">واتساپ: @mrkalafe</button>
+                </div>
             </div>
-
-            <div>
-                تمامی حقوق این وب‌سایت محفوظ است.
-            </div>
-
-            <a class="back-top" href="#top" aria-label="بازگشت به بالا">
-                <i data-lucide="arrow-up"></i>
-            </a>
-
+            <div>تمامی حقوق این وب‌سایت محفوظ است.</div>
+            <a class="back-top" href="#top" aria-label="بازگشت به بالا"><i data-lucide="arrow-up"></i></a>
         </div>
-
     </footer>
 
     <!-- Libraries -->
@@ -2209,7 +2238,59 @@
 
         refreshIcons();
 
-    </script>
+    
+        // Contact form submission
+        async function submitContactMessage(event) {
+            event.preventDefault();
+            const form = document.getElementById("contactForm");
+            const button = document.getElementById("contactSubmit");
+            const messageBox = document.getElementById("contactFormMessage");
+            const payload = {
+                name: document.getElementById("contactName").value.trim(),
+                email: document.getElementById("contactEmail").value.trim(),
+                subject: document.getElementById("contactSubject").value.trim(),
+                message: document.getElementById("contactMessage").value.trim()
+            };
+            if (payload.name.length < 2 || payload.subject.length < 2 || payload.message.length < 5 || payload.email.length < 5) {
+                messageBox.style.color = "#ed8797";
+                messageBox.textContent = "لطفاً همه فیلدها را با اطلاعات معتبر تکمیل کنید.";
+                return;
+            }
+            button.disabled = true;
+            button.textContent = "در حال ارسال...";
+            messageBox.textContent = "";
+            const { error } = await db.from("contact_messages").insert([payload]);
+            button.disabled = false;
+            button.textContent = "ارسال پیام";
+            if (error) {
+                console.error("Contact message error:", error);
+                messageBox.style.color = "#ed8797";
+                messageBox.textContent = "ارسال پیام انجام نشد. لطفاً کمی بعد دوباره تلاش کنید.";
+                return;
+            }
+            form.reset();
+            messageBox.style.color = "#78c99a";
+            messageBox.textContent = "پیام شما با موفقیت ارسال شد. سپاس از ارتباطتان!";
+        }
+        document.getElementById("contactForm").addEventListener("submit", submitContactMessage);
+
+        async function copyWhatsAppUsername() {
+            const username = "@mrkalafe";
+            const feedback = document.getElementById("contactFormMessage");
+            try {
+                await navigator.clipboard.writeText(username);
+                if (feedback) {
+                    feedback.style.color = "#78c99a";
+                    feedback.textContent = "نام کاربری واتساپ کپی شد.";
+                }
+            } catch (error) {
+                window.prompt("نام کاربری واتساپ:", username);
+            }
+        }
+        document.getElementById("copyWhatsAppUsername").addEventListener("click", copyWhatsAppUsername);
+        document.getElementById("footerCopyWhatsApp").addEventListener("click", copyWhatsAppUsername);
+
+</script>
 
 </body>
 </html>
