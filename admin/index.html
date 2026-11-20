@@ -1062,43 +1062,89 @@ document.getElementById("refreshDiscussions").addEventListener("click", loadAdmi
 async function loadAdminDiscussions() {
     const table = document.getElementById("discussionsAdminTable");
     table.innerHTML = "<tr><td colspan='5'>در حال دریافت بحث‌ها...</td></tr>";
-    const result = await db.from("discussions")
-        .select("id,name,title,body,category,created_at,is_pinned,is_closed,discussion_contacts(email),discussion_replies(id,name,body,created_at,reply_contacts(email))")
-        .order("is_pinned", {ascending:false}).order("created_at", {ascending:false});
-    if (result.error) {
-        table.innerHTML = "<tr><td colspan='5'>خطا: " + escapeAdminText(result.error.message) + "</td></tr>";
-        return;
+
+    try {
+        // دریافت جداگانه اطلاعات برای جلوگیری از مشکل تشخیص رابطه‌های تو‌در‌توی Supabase
+        const discussionsResult = await db.from("discussions")
+            .select("id,name,title,body,category,created_at,is_pinned,is_closed")
+            .order("is_pinned", {ascending:false})
+            .order("created_at", {ascending:false});
+
+        if (discussionsResult.error) throw discussionsResult.error;
+        const data = discussionsResult.data || [];
+        if (!data.length) {
+            table.innerHTML = "<tr><td colspan='5'>هنوز بحثی ثبت نشده است.</td></tr>";
+            return;
+        }
+
+        const discussionIds = data.map(item => item.id);
+        const [contactsResult, repliesResult] = await Promise.all([
+            db.from("discussion_contacts").select("discussion_id,email").in("discussion_id", discussionIds),
+            db.from("discussion_replies").select("id,discussion_id,name,body,created_at").in("discussion_id", discussionIds).order("created_at", {ascending:true})
+        ]);
+        if (contactsResult.error) throw contactsResult.error;
+        if (repliesResult.error) throw repliesResult.error;
+
+        const contactsByDiscussion = {};
+        (contactsResult.data || []).forEach(contact => {
+            contactsByDiscussion[String(contact.discussion_id)] = contact.email;
+        });
+
+        const replies = repliesResult.data || [];
+        const replyIds = replies.map(reply => reply.id);
+        let replyContacts = [];
+        if (replyIds.length) {
+            const replyContactsResult = await db.from("reply_contacts")
+                .select("reply_id,email").in("reply_id", replyIds);
+            if (replyContactsResult.error) throw replyContactsResult.error;
+            replyContacts = replyContactsResult.data || [];
+        }
+        const emailByReply = {};
+        replyContacts.forEach(contact => { emailByReply[String(contact.reply_id)] = contact.email; });
+
+        const repliesByDiscussion = {};
+        replies.forEach(reply => {
+            reply.email = emailByReply[String(reply.id)] || "";
+            const key = String(reply.discussion_id);
+            if (!repliesByDiscussion[key]) repliesByDiscussion[key] = [];
+            repliesByDiscussion[key].push(reply);
+        });
+
+        table.replaceChildren();
+        data.forEach(function(item) {
+            const itemReplies = repliesByDiscussion[String(item.id)] || [];
+            const tr = document.createElement("tr");
+            const topic = document.createElement("td");
+            const title = document.createElement("strong"); title.textContent = item.title;
+            const body = document.createElement("div"); body.className = "small-muted"; body.textContent = item.body;
+            topic.append(title, body);
+            const author = document.createElement("td");
+            author.textContent = item.name + " | " + (contactsByDiscussion[String(item.id)] || "ایمیل ثبت نشده");
+            const date = document.createElement("td"); date.textContent = new Date(item.created_at).toLocaleString("fa-IR");
+            const state = document.createElement("td");
+            state.textContent = (item.is_pinned ? "📌 سنجاق‌شده · " : "") + (item.is_closed ? "بسته" : "باز");
+            const actionsCell = document.createElement("td");
+            const actions = document.createElement("div"); actions.className = "moderation-actions";
+            const pin = document.createElement("button"); pin.className = "pin-action";
+            pin.textContent = item.is_pinned ? "برداشتن سنجاق" : "سنجاق‌کردن";
+            pin.onclick = () => updateDiscussion(item.id, {is_pinned:!item.is_pinned});
+            const close = document.createElement("button"); close.className = "close-action";
+            close.textContent = item.is_closed ? "بازکردن پاسخ‌ها" : "بستن پاسخ‌ها";
+            close.onclick = () => updateDiscussion(item.id, {is_closed:!item.is_closed});
+            const repliesButton = document.createElement("button"); repliesButton.className = "btn";
+            repliesButton.textContent = "پاسخ‌ها (" + itemReplies.length + ")";
+            repliesButton.onclick = () => toggleAdminReplies(itemReplies, actionsCell);
+            const del = document.createElement("button"); del.className = "delete-action"; del.textContent = "حذف بحث";
+            del.onclick = () => deleteDiscussion(item.id);
+            actions.append(pin, close, repliesButton, del);
+            actionsCell.append(actions);
+            tr.append(topic, author, date, state, actionsCell);
+            table.append(tr);
+        });
+    } catch (error) {
+        console.error("Admin discussions load error:", error);
+        table.innerHTML = "<tr><td colspan='5'>خطا در دریافت اطلاعات: " + escapeAdminText(error.message || error) + "</td></tr>";
     }
-    const data = result.data || [];
-    if (!data.length) { table.innerHTML = "<tr><td colspan='5'>هنوز بحثی ثبت نشده است.</td></tr>"; return; }
-    table.replaceChildren();
-    data.forEach(function(item) {
-        const tr = document.createElement("tr");
-        const topic = document.createElement("td");
-        const title = document.createElement("strong"); title.textContent = item.title;
-        const body = document.createElement("div"); body.className = "small-muted"; body.textContent = item.body;
-        topic.append(title, body);
-        const author = document.createElement("td");
-        author.textContent = item.name + " | " + ((item.discussion_contacts || [])[0]?.email || "ایمیل ثبت نشده");
-        const date = document.createElement("td"); date.textContent = new Date(item.created_at).toLocaleString("fa-IR");
-        const state = document.createElement("td");
-        state.textContent = (item.is_pinned ? "📌 سنجاق‌شده · " : "") + (item.is_closed ? "بسته" : "باز");
-        const actionsCell = document.createElement("td");
-        const actions = document.createElement("div"); actions.className = "moderation-actions";
-        const pin = document.createElement("button"); pin.className = "pin-action";
-        pin.textContent = item.is_pinned ? "برداشتن سنجاق" : "سنجاق‌کردن";
-        pin.onclick = () => updateDiscussion(item.id, {is_pinned:!item.is_pinned});
-        const close = document.createElement("button"); close.className = "close-action";
-        close.textContent = item.is_closed ? "بازکردن پاسخ‌ها" : "بستن پاسخ‌ها";
-        close.onclick = () => updateDiscussion(item.id, {is_closed:!item.is_closed});
-        const replies = document.createElement("button"); replies.className = "btn";
-        replies.textContent = "پاسخ‌ها (" + ((item.discussion_replies || []).length) + ")";
-        replies.onclick = () => toggleAdminReplies(item.discussion_replies || [], actionsCell);
-        const del = document.createElement("button"); del.className = "delete-action"; del.textContent = "حذف بحث";
-        del.onclick = () => deleteDiscussion(item.id);
-        actions.append(pin, close, replies, del); actionsCell.append(actions);
-        tr.append(topic, author, date, state, actionsCell); table.append(tr);
-    });
 }
 function escapeAdminText(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -1124,7 +1170,7 @@ function toggleAdminReplies(replies, host) {
         const text = document.createElement("div");
         text.textContent = reply.name + " · " + new Date(reply.created_at).toLocaleString("fa-IR") + " · " + reply.body;
         const email = document.createElement("div"); email.className = "small-muted";
-        email.textContent = "ایمیل: " + (((reply.reply_contacts || [])[0] || {}).email || "ثبت نشده");
+        email.textContent = "ایمیل: " + (reply.email || "ثبت نشده");
         const del = document.createElement("button"); del.className = "reply-delete"; del.textContent = "حذف پاسخ";
         del.onclick = async function() {
             if (!confirm("این پاسخ حذف شود؟")) return;
