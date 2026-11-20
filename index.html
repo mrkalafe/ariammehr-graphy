@@ -1096,6 +1096,64 @@
             padding:10px 14px; color:#fff; background:rgba(255,255,255,.14); cursor:pointer;
         }
 
+
+        /* Horizontal image gallery */
+        #archiveImages.image-gallery-track {
+            display:flex;
+            flex-wrap:nowrap;
+            gap:16px;
+            overflow-x:auto;
+            overflow-y:hidden;
+            padding:8px 2px 18px;
+            scroll-snap-type:x mandatory;
+            scrollbar-width:thin;
+            -webkit-overflow-scrolling:touch;
+        }
+        #archiveImages.image-gallery-track .image-gallery-item {
+            flex:0 0 245px;
+            width:245px;
+            min-width:245px;
+            scroll-snap-align:start;
+            overflow:hidden;
+            border-radius:14px;
+            background:rgba(255,255,255,.045);
+            border:1px solid rgba(255,255,255,.09);
+            padding:8px;
+        }
+        #archiveImages .media-card-image {
+            display:block;
+            width:100%;
+            height:170px;
+            object-fit:cover;
+            border-radius:10px;
+            cursor:zoom-in;
+        }
+        .image-gallery-controls {
+            display:flex;
+            justify-content:center;
+            margin-top:12px;
+        }
+        .image-gallery-toggle {
+            border:1px solid rgba(255,255,255,.18);
+            border-radius:9px;
+            padding:10px 22px;
+            color:inherit;
+            background:rgba(255,255,255,.07);
+            font:inherit;
+            font-size:13px;
+            cursor:pointer;
+            transition:background .2s ease;
+        }
+        .image-gallery-toggle:hover { background:rgba(255,255,255,.13); }
+        @media(max-width:600px) {
+            #archiveImages.image-gallery-track .image-gallery-item {
+                flex-basis:210px;
+                width:210px;
+                min-width:210px;
+            }
+            #archiveImages .media-card-image { height:145px; }
+        }
+
 </style>
 </head>
 
@@ -1321,11 +1379,14 @@
                 <div>
                     <p class="section-kicker">آرشیو رسانه</p>
                     <h2>آرشیو تصاویر</h2>
-                    <p class="section-subtitle">مجموعه‌ای از تصاویر تاریخی همراه با اطلاعات و منابع.</p>
+                    <p class="section-subtitle">گالری تصاویر آریامهر</p>
                 </div>
             </div>
-            <div class="archive-grid" id="archiveImages">
+            <div class="image-gallery-track" id="archiveImages">
                 <div class="archive-state">در حال دریافت تصاویر...</div>
+            </div>
+            <div class="image-gallery-controls" id="imageGalleryControls" style="display:none;">
+                <button type="button" class="image-gallery-toggle" id="toggleAllImages">دیدن همه</button>
             </div>
         </section>
 
@@ -1933,77 +1994,90 @@
         });
 
 
+        let allArchiveImages = [];
+        let showAllArchiveImages = false;
+        const INITIAL_IMAGE_COUNT = 6;
+
         async function loadArchiveImages() {
             const container = document.getElementById("archiveImages");
+            const controls = document.getElementById("imageGalleryControls");
+            controls.style.display = "none";
+            container.classList.add("image-gallery-track");
+            container.innerHTML = '<div class="archive-state">در حال دریافت تصاویر...</div>';
+
             const { data, error } = await db.from("archive_images")
-                .select("id,title,image_url,description,category,event_date,location,source")
+                .select("id,image_url,created_at")
                 .eq("status", "published")
                 .order("created_at", {ascending:false})
-                .limit(24);
+                .limit(1000);
 
             if (error) {
                 console.error("Archive images loading error:", error);
                 container.innerHTML = '<div class="archive-state">دریافت تصاویر با مشکل مواجه شد.</div>';
                 return;
             }
-            if (!data || !data.length) {
+            allArchiveImages = data || [];
+            showAllArchiveImages = false;
+
+            if (!allArchiveImages.length) {
                 container.innerHTML = '<div class="archive-state">هنوز تصویری برای نمایش منتشر نشده است.</div>';
                 return;
             }
 
+            renderArchiveImages();
+        }
+
+        function renderArchiveImages() {
+            const container = document.getElementById("archiveImages");
+            const controls = document.getElementById("imageGalleryControls");
+            const toggle = document.getElementById("toggleAllImages");
+            const visibleImages = showAllArchiveImages
+                ? allArchiveImages
+                : allArchiveImages.slice(0, INITIAL_IMAGE_COUNT);
+
             container.replaceChildren();
-            data.forEach(function(item) {
+            container.classList.add("image-gallery-track");
+
+            visibleImages.forEach(function(item) {
                 const card = document.createElement("article");
-                card.className = "archive-card media-card";
+                card.className = "image-gallery-item";
 
                 const image = document.createElement("img");
                 image.className = "media-card-image";
                 image.src = item.image_url;
-                image.alt = item.title || "تصویر آرشیوی";
+                image.alt = "تصویر آرشیوی آریامهر";
                 image.loading = "lazy";
-                image.addEventListener("click", function() { openImageLightbox(item.image_url, item.title); });
+                image.addEventListener("click", function() {
+                    openImageLightbox(item.image_url);
+                });
                 image.onerror = function() {
-                    image.removeAttribute("src");
-                    image.alt = "تصویر در دسترس نیست";
-                    image.style.cursor = "default";
-                    image.style.objectFit = "contain";
+                    card.remove();
                 };
                 card.appendChild(image);
-
-                const title = document.createElement("h3");
-                title.textContent = item.title || "بدون عنوان";
-                card.appendChild(title);
-
-                const metaParts = [];
-                if (item.event_date) metaParts.push("تاریخ: " + item.event_date);
-                if (item.location) metaParts.push("محل: " + item.location);
-                if (item.category) metaParts.push(item.category);
-                if (metaParts.length) {
-                    const meta = document.createElement("div");
-                    meta.className = "media-card-meta";
-                    meta.textContent = metaParts.join(" | ");
-                    card.appendChild(meta);
-                }
-                if (item.description) {
-                    const description = document.createElement("p");
-                    description.textContent = item.description;
-                    card.appendChild(description);
-                }
-                if (item.source) {
-                    const source = document.createElement("div");
-                    source.className = "media-card-meta";
-                    source.textContent = "منبع: " + item.source;
-                    card.appendChild(source);
-                }
                 container.appendChild(card);
             });
+
+            if (allArchiveImages.length > INITIAL_IMAGE_COUNT) {
+                controls.style.display = "flex";
+                toggle.textContent = showAllArchiveImages ? "نمایش کمتر" : "دیدن همه";
+            } else {
+                controls.style.display = "none";
+            }
         }
 
-        function openImageLightbox(url, title) {
+        document.getElementById("toggleAllImages").addEventListener("click", function() {
+            showAllArchiveImages = !showAllArchiveImages;
+            renderArchiveImages();
+            if (!showAllArchiveImages) {
+                document.getElementById("images-section").scrollIntoView({behavior:"smooth", block:"start"});
+            }
+        });
+
+        function openImageLightbox(url) {
             const lightbox = document.getElementById("imageLightbox");
             const image = document.getElementById("lightboxImage");
             image.src = url;
-            image.alt = title || "تصویر آرشیوی";
+            image.alt = "تصویر آرشیوی آریامهر";
             lightbox.classList.add("open");
             document.body.style.overflow = "hidden";
         }
