@@ -400,6 +400,41 @@ th {
 .book-delete { background:#fde7e7; color:#a32121; }
 @media(max-width:650px) { .book-form-grid {grid-template-columns:1fr;} .book-form-grid .full {grid-column:auto;} }
 
+
+/* Media archive management */
+#imagesAdminSection,#videosAdminSection { display:none; }
+#imagesAdminSection .section,#videosAdminSection .section {
+    background:#fff; padding:22px; border-radius:12px; margin-top:20px;
+}
+.media-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.media-form-grid .full { grid-column:1/-1; }
+.media-form-grid input,.media-form-grid textarea,.media-form-grid select {
+    width:100%; box-sizing:border-box; padding:12px; border:1px solid #ddd;
+    border-radius:8px; font:inherit; font-size:13px; background:#fff; color:#17243a;
+}
+.media-form-grid textarea { min-height:95px; resize:vertical; }
+.media-note { font-size:12px; color:#666; line-height:1.9; margin:7px 0 0; }
+.media-actions-row { display:flex; gap:9px; margin-top:14px; flex-wrap:wrap; }
+.media-actions-row button { border:0; border-radius:7px; padding:11px 17px; cursor:pointer; font:inherit; }
+.media-save { background:#158ffe; color:#fff; }
+.media-cancel { background:#eee; color:#333; }
+.media-message { font-size:12px; margin-top:10px; line-height:1.8; }
+.media-table-wrap { overflow-x:auto; }
+#imagesAdminSection table,#videosAdminSection table { width:100%; min-width:760px; border-collapse:collapse; }
+#imagesAdminSection th,#imagesAdminSection td,
+#videosAdminSection th,#videosAdminSection td {
+    padding:12px 9px; border-bottom:1px solid #eee; text-align:right;
+    vertical-align:top; font-size:12px;
+}
+.media-row-actions { display:flex; gap:6px; flex-wrap:wrap; }
+.media-row-actions button { border:0; border-radius:6px; padding:7px 10px; cursor:pointer; font:inherit; font-size:11px; }
+.media-edit { background:#e5f1fb; color:#155b89; }
+.media-delete { background:#fde7e7; color:#a32121; }
+@media(max-width:650px) {
+    .media-form-grid {grid-template-columns:1fr;}
+    .media-form-grid .full {grid-column:auto;}
+}
+
 </style>
 </head>
 
@@ -505,6 +540,8 @@ th {
             <a href="#" id="discussionNav">☷ مدیریت بحث‌ها</a>
             <a href="#" id="quotesNav">❝ جملات شاهنشاه</a>
             <a href="#" id="booksNav">▤ کتاب‌های شاهنشاه</a>
+            <a href="#" id="imagesNav">▧ آرشیو تصاویر</a>
+            <a href="#" id="videosNav">▷ فیلم و ویدئو</a>
             <a href="#">▤ مدیریت مقالات</a>
             <a href="#">▧ تصاویر و اسناد</a>
             <a href="#">▷ ویدئوها</a>
@@ -684,7 +721,78 @@ th {
             </div>
         </section>
 
-<section class="admin-section" id="quotesAdminSection">
+
+        <section class="admin-section" id="imagesAdminSection">
+            <div class="section-header">
+                <h3>مدیریت آرشیو تصاویر</h3>
+                <button class="btn" id="refreshImages">به‌روزرسانی</button>
+            </div>
+            <div class="section">
+                <h3 id="imageFormHeading" style="margin:0 0 18px;">ثبت تصویر جدید</h3>
+                <form id="imageForm">
+                    <div class="media-form-grid">
+                        <div class="full"><input id="imageTitle" type="text" maxlength="250" placeholder="عنوان تصویر یا مجموعه" required></div>
+                        <div class="full"><input id="imageUrl" type="url" placeholder="لینک مستقیم تصویر" required></div>
+                        <div><input id="imageCategory" type="text" maxlength="120" placeholder="دسته‌بندی (مثلاً مراسم رسمی)"></div>
+                        <div><input id="imageDate" type="text" maxlength="80" placeholder="تاریخ یا سال تصویر"></div>
+                        <div><input id="imageLocation" type="text" maxlength="200" placeholder="محل ثبت تصویر"></div>
+                        <div><input id="imageSource" type="text" maxlength="300" placeholder="منبع تصویر"></div>
+                        <div class="full"><textarea id="imageDescription" maxlength="5000" placeholder="توضیحات تصویر"></textarea></div>
+                        <div><select id="imageStatus"><option value="draft">ذخیره به‌صورت پیش‌نویس</option><option value="published">انتشار در سایت</option></select></div>
+                    </div>
+                    <p class="media-note">تصویر را ابتدا روی هاست دلخواه بارگذاری کن و لینک مستقیم آن را اینجا قرار بده. خود فایل روی سایت یا Supabase آپلود نمی‌شود.</p>
+                    <div class="media-actions-row">
+                        <button class="media-save" id="imageSaveButton" type="submit">ذخیره تصویر</button>
+                        <button class="media-cancel" id="imageCancelButton" type="button" style="display:none;">لغو ویرایش</button>
+                    </div>
+                    <p class="media-message" id="imageMessage" role="status"></p>
+                </form>
+            </div>
+            <div class="section">
+                <div class="section-header"><h3>تصاویر ثبت‌شده</h3></div>
+                <div class="media-table-wrap">
+                    <table><thead><tr><th>عنوان</th><th>دسته‌بندی</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                    <tbody id="imagesAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody></table>
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-section" id="videosAdminSection">
+            <div class="section-header">
+                <h3>مدیریت فیلم و ویدئو</h3>
+                <button class="btn" id="refreshVideos">به‌روزرسانی</button>
+            </div>
+            <div class="section">
+                <h3 id="videoFormHeading" style="margin:0 0 18px;">ثبت ویدئوی جدید</h3>
+                <form id="videoForm">
+                    <div class="media-form-grid">
+                        <div class="full"><input id="videoTitle" type="text" maxlength="250" placeholder="عنوان ویدئو" required></div>
+                        <div class="full"><input id="videoUrl" type="url" placeholder="لینک ویدئو یا لینک Embed" required></div>
+                        <div class="full"><input id="videoThumbnail" type="url" placeholder="لینک تصویر پیش‌نمایش (اختیاری)"></div>
+                        <div><input id="videoCategory" type="text" maxlength="120" placeholder="دسته‌بندی"></div>
+                        <div><input id="videoDate" type="text" maxlength="80" placeholder="تاریخ یا سال ویدئو"></div>
+                        <div class="full"><input id="videoSource" type="text" maxlength="300" placeholder="منبع ویدئو"></div>
+                        <div class="full"><textarea id="videoDescription" maxlength="5000" placeholder="توضیحات ویدئو"></textarea></div>
+                        <div><select id="videoStatus"><option value="draft">ذخیره به‌صورت پیش‌نویس</option><option value="published">انتشار در سایت</option></select></div>
+                    </div>
+                    <p class="media-note">لینک مستقیم فایل MP4 یا لینک Embed یوتیوب/Vimeo را وارد کن. برای پخش بهتر، لینک Embed پلتفرم میزبان پیشنهاد می‌شود. فایل ویدئو روی سایت یا Supabase آپلود نمی‌شود.</p>
+                    <div class="media-actions-row">
+                        <button class="media-save" id="videoSaveButton" type="submit">ذخیره ویدئو</button>
+                        <button class="media-cancel" id="videoCancelButton" type="button" style="display:none;">لغو ویرایش</button>
+                    </div>
+                    <p class="media-message" id="videoMessage" role="status"></p>
+                </form>
+            </div>
+            <div class="section">
+                <div class="section-header"><h3>ویدئوهای ثبت‌شده</h3></div>
+                <div class="media-table-wrap">
+                    <table><thead><tr><th>عنوان</th><th>دسته‌بندی</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                    <tbody id="videosAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody></table>
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-section" id="quotesAdminSection">
             <div class="section-header">
                 <h3>مدیریت جملات شاهنشاه</h3>
                 <button class="btn" id="refreshQuotes">به‌روزرسانی</button>
@@ -1211,9 +1319,13 @@ const dashboardNav = document.getElementById("dashboardNav");
 const discussionNav = document.getElementById("discussionNav");
 const quotesNav = document.getElementById("quotesNav");
 const booksNav = document.getElementById("booksNav");
+const imagesNav = document.getElementById("imagesNav");
+const videosNav = document.getElementById("videosNav");
 const discussionAdminSection = document.getElementById("discussionAdminSection");
 const quotesAdminSection = document.getElementById("quotesAdminSection");
 const booksAdminSection = document.getElementById("booksAdminSection");
+const imagesAdminSection = document.getElementById("imagesAdminSection");
+const videosAdminSection = document.getElementById("videosAdminSection");
 const articlesDashboardSection = document.querySelector("#app main.main > section.section");
 const welcomePanel = document.querySelector("#app main.main > .welcome");
 const dashboardCards = document.querySelector("#app main.main > .cards");
@@ -1222,7 +1334,9 @@ function showAdminArea(which) {
     const discussions = which === "discussions";
     const quotes = which === "quotes";
     const books = which === "books";
-    const dashboard = !discussions && !quotes && !books;
+    const images = which === "images";
+    const videos = which === "videos";
+    const dashboard = !discussions && !quotes && !books && !images && !videos;
 
     articlesDashboardSection.style.display = dashboard ? "block" : "none";
     welcomePanel.style.display = dashboard ? "block" : "none";
@@ -1230,27 +1344,38 @@ function showAdminArea(which) {
     discussionAdminSection.style.display = discussions ? "block" : "none";
     quotesAdminSection.style.display = quotes ? "block" : "none";
     booksAdminSection.style.display = books ? "block" : "none";
+    imagesAdminSection.style.display = images ? "block" : "none";
+    videosAdminSection.style.display = videos ? "block" : "none";
 
     dashboardNav.classList.toggle("active", dashboard);
     discussionNav.classList.toggle("active", discussions);
     quotesNav.classList.toggle("active", quotes);
     booksNav.classList.toggle("active", books);
+    imagesNav.classList.toggle("active", images);
+    videosNav.classList.toggle("active", videos);
 
     document.querySelector(".header h1").textContent =
         discussions ? "مدیریت بحث‌ها" : quotes ? "جملات شاهنشاه" :
-        books ? "کتاب‌های شاهنشاه" : "داشبورد";
+        books ? "کتاب‌های شاهنشاه" : images ? "آرشیو تصاویر" :
+        videos ? "فیلم و ویدئو" : "داشبورد";
 
     if (discussions) loadAdminDiscussions();
     if (quotes) loadRoyalQuotes();
     if (books) loadRoyalBooks();
+    if (images) loadArchiveImages();
+    if (videos) loadArchiveVideos();
 }
 dashboardNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("dashboard"); });
 discussionNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("discussions"); });
 quotesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("quotes"); });
 booksNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("books"); });
+imagesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("images"); });
+videosNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("videos"); });
 document.getElementById("refreshDiscussions").addEventListener("click", loadAdminDiscussions);
 document.getElementById("refreshQuotes").addEventListener("click", loadRoyalQuotes);
 document.getElementById("refreshBooks").addEventListener("click", loadRoyalBooks);
+document.getElementById("refreshImages").addEventListener("click", loadArchiveImages);
+document.getElementById("refreshVideos").addEventListener("click", loadArchiveVideos);
 
 async function loadAdminDiscussions() {
     const table = document.getElementById("discussionsAdminTable");
@@ -1702,6 +1827,235 @@ bookForm.addEventListener("submit", async function(event) {
     bookMessage.textContent = "کتاب با موفقیت ذخیره شد.";
     await loadRoyalBooks();
 });
+
+
+/* Archive images management */
+let editingImageId = null;
+const imageForm = document.getElementById("imageForm");
+const imageMessage = document.getElementById("imageMessage");
+const imageSaveButton = document.getElementById("imageSaveButton");
+const imageCancelButton = document.getElementById("imageCancelButton");
+
+function resetImageForm() {
+    editingImageId = null;
+    imageForm.reset();
+    document.getElementById("imageFormHeading").textContent = "ثبت تصویر جدید";
+    imageSaveButton.textContent = "ذخیره تصویر";
+    imageCancelButton.style.display = "none";
+    imageMessage.textContent = "";
+}
+imageCancelButton.addEventListener("click", resetImageForm);
+
+async function loadArchiveImages() {
+    const table = document.getElementById("imagesAdminTable");
+    table.innerHTML = "<tr><td colspan='5'>در حال دریافت تصاویر...</td></tr>";
+    const result = await db.from("archive_images")
+        .select("id,title,image_url,category,event_date,location,source,description,status,created_at")
+        .order("created_at", {ascending:false});
+    if (result.error) {
+        table.innerHTML = "<tr><td colspan='5'>خطا در دریافت تصاویر: " +
+            escapeAdminText(result.error.message) + "</td></tr>";
+        return;
+    }
+    const rows = result.data || [];
+    if (!rows.length) {
+        table.innerHTML = "<tr><td colspan='5'>هنوز تصویری ثبت نشده است.</td></tr>";
+        return;
+    }
+    table.replaceChildren();
+    rows.forEach(function(item) {
+        const tr = document.createElement("tr");
+        const title = document.createElement("td"); title.textContent = item.title || "-";
+        const category = document.createElement("td"); category.textContent = item.category || "-";
+        const date = document.createElement("td"); date.textContent = item.event_date || "-";
+        const status = document.createElement("td"); status.textContent = item.status === "published" ? "منتشرشده" : "پیش‌نویس";
+        const actionsCell = document.createElement("td");
+        const actions = document.createElement("div"); actions.className = "media-row-actions";
+        const edit = document.createElement("button"); edit.className = "media-edit"; edit.textContent = "ویرایش";
+        edit.addEventListener("click", function() {
+            editingImageId = item.id;
+            document.getElementById("imageTitle").value = item.title || "";
+            document.getElementById("imageUrl").value = item.image_url || "";
+            document.getElementById("imageCategory").value = item.category || "";
+            document.getElementById("imageDate").value = item.event_date || "";
+            document.getElementById("imageLocation").value = item.location || "";
+            document.getElementById("imageSource").value = item.source || "";
+            document.getElementById("imageDescription").value = item.description || "";
+            document.getElementById("imageStatus").value = item.status || "draft";
+            document.getElementById("imageFormHeading").textContent = "ویرایش تصویر";
+            imageSaveButton.textContent = "ذخیره تغییرات";
+            imageCancelButton.style.display = "inline-block";
+            imageMessage.textContent = "اطلاعات تصویر را ویرایش کن.";
+            window.scrollTo({top:0, behavior:"smooth"});
+        });
+        const del = document.createElement("button"); del.className = "media-delete"; del.textContent = "حذف";
+        del.addEventListener("click", async function() {
+            if (!confirm("این تصویر از آرشیو حذف شود؟")) return;
+            const result = await db.from("archive_images").delete().eq("id", item.id);
+            if (result.error) { alert("حذف تصویر ناموفق بود: " + result.error.message); return; }
+            if (editingImageId === item.id) resetImageForm();
+            loadArchiveImages();
+        });
+        actions.append(edit, del); actionsCell.append(actions);
+        tr.append(title, category, date, status, actionsCell); table.append(tr);
+    });
+}
+
+imageForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const title = document.getElementById("imageTitle").value.trim();
+    const imageUrl = document.getElementById("imageUrl").value.trim();
+    if (!title || !imageUrl) { imageMessage.textContent = "عنوان و لینک تصویر الزامی است."; return; }
+    try {
+        const parsed = new URL(imageUrl);
+        if (!["http:", "https:"].includes(parsed.protocol)) throw new Error("invalid");
+    } catch (_) { imageMessage.textContent = "لینک تصویر معتبر نیست. آدرس کامل با https:// وارد کن."; return; }
+
+    imageSaveButton.disabled = true;
+    imageMessage.style.color = "#555";
+    imageMessage.textContent = "در حال ذخیره تصویر...";
+    const payload = {
+        title: title,
+        image_url: imageUrl,
+        category: document.getElementById("imageCategory").value.trim() || null,
+        event_date: document.getElementById("imageDate").value.trim() || null,
+        location: document.getElementById("imageLocation").value.trim() || null,
+        source: document.getElementById("imageSource").value.trim() || null,
+        description: document.getElementById("imageDescription").value.trim() || null,
+        status: document.getElementById("imageStatus").value,
+        updated_at: new Date().toISOString()
+    };
+    const result = editingImageId
+        ? await db.from("archive_images").update(payload).eq("id", editingImageId)
+        : await db.from("archive_images").insert([payload]);
+    imageSaveButton.disabled = false;
+    if (result.error) {
+        imageMessage.style.color = "#d32f2f";
+        imageMessage.textContent = "ذخیره تصویر ناموفق بود: " + result.error.message;
+        return;
+    }
+    resetImageForm();
+    imageMessage.style.color = "#388e3c";
+    imageMessage.textContent = "تصویر با موفقیت ذخیره شد.";
+    await loadArchiveImages();
+});
+
+/* Archive videos management */
+let editingVideoId = null;
+const videoForm = document.getElementById("videoForm");
+const videoMessage = document.getElementById("videoMessage");
+const videoSaveButton = document.getElementById("videoSaveButton");
+const videoCancelButton = document.getElementById("videoCancelButton");
+
+function resetVideoForm() {
+    editingVideoId = null;
+    videoForm.reset();
+    document.getElementById("videoFormHeading").textContent = "ثبت ویدئوی جدید";
+    videoSaveButton.textContent = "ذخیره ویدئو";
+    videoCancelButton.style.display = "none";
+    videoMessage.textContent = "";
+}
+videoCancelButton.addEventListener("click", resetVideoForm);
+
+async function loadArchiveVideos() {
+    const table = document.getElementById("videosAdminTable");
+    table.innerHTML = "<tr><td colspan='5'>در حال دریافت ویدئوها...</td></tr>";
+    const result = await db.from("archive_videos")
+        .select("id,title,video_url,thumbnail_url,description,category,event_date,source,status,created_at")
+        .order("created_at", {ascending:false});
+    if (result.error) {
+        table.innerHTML = "<tr><td colspan='5'>خطا در دریافت ویدئوها: " +
+            escapeAdminText(result.error.message) + "</td></tr>";
+        return;
+    }
+    const rows = result.data || [];
+    if (!rows.length) {
+        table.innerHTML = "<tr><td colspan='5'>هنوز ویدئویی ثبت نشده است.</td></tr>";
+        return;
+    }
+    table.replaceChildren();
+    rows.forEach(function(item) {
+        const tr = document.createElement("tr");
+        const title = document.createElement("td"); title.textContent = item.title || "-";
+        const category = document.createElement("td"); category.textContent = item.category || "-";
+        const date = document.createElement("td"); date.textContent = item.event_date || "-";
+        const status = document.createElement("td"); status.textContent = item.status === "published" ? "منتشرشده" : "پیش‌نویس";
+        const actionsCell = document.createElement("td");
+        const actions = document.createElement("div"); actions.className = "media-row-actions";
+        const edit = document.createElement("button"); edit.className = "media-edit"; edit.textContent = "ویرایش";
+        edit.addEventListener("click", function() {
+            editingVideoId = item.id;
+            document.getElementById("videoTitle").value = item.title || "";
+            document.getElementById("videoUrl").value = item.video_url || "";
+            document.getElementById("videoThumbnail").value = item.thumbnail_url || "";
+            document.getElementById("videoCategory").value = item.category || "";
+            document.getElementById("videoDate").value = item.event_date || "";
+            document.getElementById("videoSource").value = item.source || "";
+            document.getElementById("videoDescription").value = item.description || "";
+            document.getElementById("videoStatus").value = item.status || "draft";
+            document.getElementById("videoFormHeading").textContent = "ویرایش ویدئو";
+            videoSaveButton.textContent = "ذخیره تغییرات";
+            videoCancelButton.style.display = "inline-block";
+            videoMessage.textContent = "اطلاعات ویدئو را ویرایش کن.";
+            window.scrollTo({top:0, behavior:"smooth"});
+        });
+        const del = document.createElement("button"); del.className = "media-delete"; del.textContent = "حذف";
+        del.addEventListener("click", async function() {
+            if (!confirm("این ویدئو از آرشیو حذف شود؟")) return;
+            const result = await db.from("archive_videos").delete().eq("id", item.id);
+            if (result.error) { alert("حذف ویدئو ناموفق بود: " + result.error.message); return; }
+            if (editingVideoId === item.id) resetVideoForm();
+            loadArchiveVideos();
+        });
+        actions.append(edit, del); actionsCell.append(actions);
+        tr.append(title, category, date, status, actionsCell); table.append(tr);
+    });
+}
+
+videoForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const title = document.getElementById("videoTitle").value.trim();
+    const videoUrl = document.getElementById("videoUrl").value.trim();
+    const thumbnailUrl = document.getElementById("videoThumbnail").value.trim();
+    if (!title || !videoUrl) { videoMessage.textContent = "عنوان و لینک ویدئو الزامی است."; return; }
+    function validHttpUrl(value) {
+        if (!value) return true;
+        try { const parsed = new URL(value); return ["http:", "https:"].includes(parsed.protocol); }
+        catch (_) { return false; }
+    }
+    if (!validHttpUrl(videoUrl) || !validHttpUrl(thumbnailUrl)) {
+        videoMessage.textContent = "لینک ویدئو یا تصویر پیش‌نمایش معتبر نیست.";
+        return;
+    }
+    videoSaveButton.disabled = true;
+    videoMessage.style.color = "#555";
+    videoMessage.textContent = "در حال ذخیره ویدئو...";
+    const payload = {
+        title: title,
+        video_url: videoUrl,
+        thumbnail_url: thumbnailUrl || null,
+        category: document.getElementById("videoCategory").value.trim() || null,
+        event_date: document.getElementById("videoDate").value.trim() || null,
+        source: document.getElementById("videoSource").value.trim() || null,
+        description: document.getElementById("videoDescription").value.trim() || null,
+        status: document.getElementById("videoStatus").value,
+        updated_at: new Date().toISOString()
+    };
+    const result = editingVideoId
+        ? await db.from("archive_videos").update(payload).eq("id", editingVideoId)
+        : await db.from("archive_videos").insert([payload]);
+    videoSaveButton.disabled = false;
+    if (result.error) {
+        videoMessage.style.color = "#d32f2f";
+        videoMessage.textContent = "ذخیره ویدئو ناموفق بود: " + result.error.message;
+        return;
+    }
+    resetVideoForm();
+    videoMessage.style.color = "#388e3c";
+    videoMessage.textContent = "ویدئو با موفقیت ذخیره شد.";
+    await loadArchiveVideos();
+});
+
 
 /* Initial Session Check */
 
