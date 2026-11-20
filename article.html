@@ -25,14 +25,21 @@
         .article-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:17px}.article-category{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid rgba(42,138,207,.28);border-radius:9px;background:rgba(42,138,207,.09);color:#78bce8;font-size:12px;font-weight:700}.article-date{color:#929292;font-size:12px}
         #title{margin:0 0 18px;color:#fff;font-size:clamp(25px,4vw,39px);font-weight:900;line-height:1.8}.article-description{margin:0;padding:17px 19px;border-right:3px solid var(--gold);border-radius:0 12px 12px 0;background:rgba(211,160,52,.065);color:#c4c4c4;font-size:15px;line-height:2.2}
         .article-divider{height:1px;margin:30px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent)}#content{color:#dedede;font-size:16px;line-height:2.65;white-space:pre-wrap;overflow-wrap:anywhere;min-height:90px}#content:empty{display:none}
+        #content .article-image{display:block;width:auto;max-width:min(100%,760px);max-height:620px;height:auto;object-fit:contain;margin:22px auto;padding:5px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.035);box-shadow:0 16px 42px rgba(0,0,0,.28)}
+        #content .article-image-link{display:block;width:fit-content;max-width:100%;margin:22px auto;text-decoration:none}
+        #content .article-image-link .article-image{margin:0}
+        #content .article-inline-image{display:inline-block;max-width:min(100%,560px);max-height:460px;vertical-align:middle;border-radius:14px;object-fit:contain}
+        #content .article-content-line{display:block;min-height:1em}
+        #content .article-text-block{display:block;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+
         .article-state{min-height:280px;display:grid;place-items:center;padding:40px;text-align:center;color:#aaa;font-size:14px;line-height:2.2}.article-state strong{display:block;color:#fff;font-size:20px;margin-bottom:8px}.article-state a{color:var(--gold);text-decoration:none}
         .article-end{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.09)}.back-home{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(42,138,207,.3);border-radius:11px;background:rgba(42,138,207,.08);color:#8ac9f1;text-decoration:none;font-size:13px;font-weight:700}.back-home:hover{background:rgba(42,138,207,.15)}.article-end-note{color:#777;font-size:11px}
         @media(max-width:950px){.navbar{gap:10px}.nav-links{gap:2px}.nav-link{padding:10px 8px;font-size:12px}.brand{font-size:19px}}
-        @media(max-width:700px){.site-header{top:7px;padding-top:7px}.container{width:calc(100% - 24px)}.navbar{min-height:62px;padding:9px 12px;border-radius:17px;flex-wrap:wrap}.nav-links{order:3;width:100%;justify-content:space-between;overflow-x:auto}.nav-link{font-size:11px;padding:8px 7px;white-space:nowrap}.nav-link i{display:none}.brand{font-size:18px}.article-main{width:calc(100% - 24px);margin:28px auto 50px}.article-shell{border-radius:18px}.article-cover{max-height:300px}.article-inner{padding:22px 18px}#content{font-size:15px;line-height:2.45}.article-end{align-items:flex-start}.article-end-note{width:100%}}
+        @media(max-width:700px){#content .article-image{max-height:420px;border-radius:14px;margin:17px auto}.site-header{top:7px;padding-top:7px}.container{width:calc(100% - 24px)}.navbar{min-height:62px;padding:9px 12px;border-radius:17px;flex-wrap:wrap}.nav-links{order:3;width:100%;justify-content:space-between;overflow-x:auto}.nav-link{font-size:11px;padding:8px 7px;white-space:nowrap}.nav-link i{display:none}.brand{font-size:18px}.article-main{width:calc(100% - 24px);margin:28px auto 50px}.article-shell{border-radius:18px}.article-cover{max-height:300px}.article-inner{padding:22px 18px}#content{font-size:15px;line-height:2.45}.article-end{align-items:flex-start}.article-end-note{width:100%}}
         /* Contact area integrated into the footer */
         .site-footer {
-            margin-top: 76px;
-            padding: 46px 0 0;
+            margin-top: 42px;
+            padding: 32px 0 0;
             border-top: 1px solid rgba(255,255,255,.09);
             background: linear-gradient(180deg, rgba(20,20,20,.96), rgba(10,10,10,.99));
         }
@@ -133,7 +140,7 @@
         <a class="nav-link" href="discussion.html"><i data-lucide="messages-square" size="17"></i>بحث و گفت‌وگو</a>
         <a class="nav-link" href="index.html#about"><i data-lucide="info" size="17"></i>درباره ما</a>
     </div>
-    <div class="nav-actions"><a class="icon-button" href="index.html#contact" aria-label="تماس با ما"><i data-lucide="mail"></i></a></div>
+    <div class="nav-actions"></div>
 </nav></div></header>
 <main class="article-main">
     <article class="article-shell" id="articleShell">
@@ -235,6 +242,64 @@
         if(Number.isNaN(date.getTime())) return "";
         try{return new Intl.DateTimeFormat("fa-IR",{year:"numeric",month:"long",day:"numeric"}).format(date);}catch(e){return date.toLocaleDateString();}
     }
+    function isImageUrl(value){
+        return /\.(?:png|jpe?g|gif|webp|avif|bmp|svg)(?:[?#].*)?$/i.test(value);
+    }
+    function makeArticleImage(url, standalone){
+        const link=document.createElement("a");
+        link.className="article-image-link";
+        link.href=url;
+        link.target="_blank";
+        link.rel="noopener noreferrer";
+        const image=document.createElement("img");
+        image.className="article-image";
+        image.src=url;
+        image.alt="تصویر داخل مقاله";
+        image.loading="lazy";
+        image.decoding="async";
+        image.onerror=function(){
+            const fallback=document.createElement("a");
+            fallback.href=url;fallback.target="_blank";fallback.rel="noopener noreferrer";
+            fallback.textContent=url;fallback.style.color="var(--blue)";fallback.style.overflowWrap="anywhere";
+            if(link.parentNode) link.parentNode.replaceChild(fallback,link);
+        };
+        link.appendChild(image);
+        return link;
+    }
+    function renderArticleContent(container, raw){
+        container.textContent="";
+        const lines=String(raw || "").replace(/\r\n?/g,"\n").split("\n");
+        const urlPattern=/https?:\/\/[^\s<>"']+/gi;
+        lines.forEach(function(line){
+            const trimmed=line.trim();
+            if(!trimmed){container.appendChild(document.createElement("br"));return;}
+            if(/^https?:\/\/\S+$/i.test(trimmed)){
+                const clean=trimmed.replace(/[),.;!?،؛؟]+$/g,"");
+                container.appendChild(makeArticleImage(clean,true));
+                return;
+            }
+            const paragraph=document.createElement("p");paragraph.className="article-text-block";
+            let last=0,match;
+            urlPattern.lastIndex=0;
+            while((match=urlPattern.exec(line))!==null){
+                if(match.index>last) paragraph.appendChild(document.createTextNode(line.slice(last,match.index)));
+                let url=match[0],suffix="";
+                while(/[),.;!?،؛؟]$/.test(url)){suffix=url.slice(-1)+suffix;url=url.slice(0,-1);}
+                if(isImageUrl(url)){
+                    const image=makeArticleImage(url,false);
+                    image.classList.add("inline-image-holder");
+                    image.querySelector("img").classList.add("article-inline-image");
+                    paragraph.appendChild(image);
+                }else{
+                    const anchor=document.createElement("a");anchor.href=url;anchor.target="_blank";anchor.rel="noopener noreferrer";anchor.textContent=url;anchor.style.color="var(--blue)";anchor.style.overflowWrap="anywhere";paragraph.appendChild(anchor);
+                }
+                if(suffix) paragraph.appendChild(document.createTextNode(suffix));
+                last=match.index+match[0].length;
+            }
+            if(last<line.length) paragraph.appendChild(document.createTextNode(line.slice(last)));
+            container.appendChild(paragraph);
+        });
+    }
     async function loadArticle(){
         const id = new URLSearchParams(window.location.search).get("id");
         if(!id){showState("شناسه مقاله مشخص نیست","برای مشاهده مقاله، از صفحه مطالب وارد یکی از مقاله‌ها شوید.");return;}
@@ -266,7 +331,7 @@
         inner.append(crumb,meta,title);
         if(data.description){const desc=document.createElement("p");desc.className="article-description";desc.textContent=data.description;inner.appendChild(desc);}
         const divider=document.createElement("div");divider.className="article-divider";
-        const content=document.createElement("div");content.id="content";content.textContent=data.content || "";
+        const content=document.createElement("div");content.id="content";renderArticleContent(content,data.content || "");
         const end=document.createElement("div");end.className="article-end";
         const back=document.createElement("a");back.className="back-home";back.href="index.html#articles-section";
         const arrow=document.createElement("i");arrow.setAttribute("data-lucide","arrow-right");arrow.setAttribute("size","16");back.append(arrow,document.createTextNode("بازگشت به مطالب"));
