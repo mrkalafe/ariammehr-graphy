@@ -731,16 +731,17 @@ th {
                 <h3 id="imageFormHeading" style="margin:0 0 18px;">ثبت تصویر جدید</h3>
                 <form id="imageForm">
                     <div class="media-form-grid">
-                        <div class="full"><input id="imageTitle" type="text" maxlength="250" placeholder="عنوان تصویر یا مجموعه" required></div>
-                        <div class="full"><input id="imageUrl" type="url" placeholder="لینک مستقیم تصویر" required></div>
-                        <div><input id="imageCategory" type="text" maxlength="120" placeholder="دسته‌بندی (مثلاً مراسم رسمی)"></div>
-                        <div><input id="imageDate" type="text" maxlength="80" placeholder="تاریخ یا سال تصویر"></div>
-                        <div><input id="imageLocation" type="text" maxlength="200" placeholder="محل ثبت تصویر"></div>
-                        <div><input id="imageSource" type="text" maxlength="300" placeholder="منبع تصویر"></div>
-                        <div class="full"><textarea id="imageDescription" maxlength="5000" placeholder="توضیحات تصویر"></textarea></div>
-                        <div><select id="imageStatus"><option value="draft">ذخیره به‌صورت پیش‌نویس</option><option value="published">انتشار در سایت</option></select></div>
+                        <div class="full">
+                            <input id="imageUrl" type="url" placeholder="لینک مستقیم تصویر" required>
+                        </div>
+                        <div>
+                            <select id="imageStatus">
+                                <option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+                                <option value="published">انتشار در سایت</option>
+                            </select>
+                        </div>
                     </div>
-                    <p class="media-note">تصویر را ابتدا روی هاست دلخواه بارگذاری کن و لینک مستقیم آن را اینجا قرار بده. خود فایل روی سایت یا Supabase آپلود نمی‌شود.</p>
+                    <p class="media-note">فرقی نمی‌کند تصویر تاریخی، ویرایش‌شده یا ساخته‌شده با هوش مصنوعی باشد. فقط لینک مستقیم تصویر را وارد کن. فایل تصویر روی سایت یا Supabase آپلود نمی‌شود.</p>
                     <div class="media-actions-row">
                         <button class="media-save" id="imageSaveButton" type="submit">ذخیره تصویر</button>
                         <button class="media-cancel" id="imageCancelButton" type="button" style="display:none;">لغو ویرایش</button>
@@ -751,8 +752,8 @@ th {
             <div class="section">
                 <div class="section-header"><h3>تصاویر ثبت‌شده</h3></div>
                 <div class="media-table-wrap">
-                    <table><thead><tr><th>عنوان</th><th>دسته‌بندی</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                    <tbody id="imagesAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody></table>
+                    <table><thead><tr><th>لینک تصویر</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                    <tbody id="imagesAdminTable"><tr><td colspan="3">در حال دریافت...</td></tr></tbody></table>
                 </div>
             </div>
         </section>
@@ -1829,7 +1830,7 @@ bookForm.addEventListener("submit", async function(event) {
 });
 
 
-/* Archive images management */
+/* Archive images management: URL-only */
 let editingImageId = null;
 const imageForm = document.getElementById("imageForm");
 const imageMessage = document.getElementById("imageMessage");
@@ -1848,92 +1849,118 @@ imageCancelButton.addEventListener("click", resetImageForm);
 
 async function loadArchiveImages() {
     const table = document.getElementById("imagesAdminTable");
-    table.innerHTML = "<tr><td colspan='5'>در حال دریافت تصاویر...</td></tr>";
+    table.innerHTML = "<tr><td colspan='3'>در حال دریافت تصاویر...</td></tr>";
     const result = await db.from("archive_images")
-        .select("id,title,image_url,category,event_date,location,source,description,status,created_at")
+        .select("id,image_url,status,created_at")
         .order("created_at", {ascending:false});
     if (result.error) {
-        table.innerHTML = "<tr><td colspan='5'>خطا در دریافت تصاویر: " +
+        table.innerHTML = "<tr><td colspan='3'>خطا در دریافت تصاویر: " +
             escapeAdminText(result.error.message) + "</td></tr>";
         return;
     }
     const rows = result.data || [];
     if (!rows.length) {
-        table.innerHTML = "<tr><td colspan='5'>هنوز تصویری ثبت نشده است.</td></tr>";
+        table.innerHTML = "<tr><td colspan='3'>هنوز تصویری ثبت نشده است.</td></tr>";
         return;
     }
     table.replaceChildren();
     rows.forEach(function(item) {
         const tr = document.createElement("tr");
-        const title = document.createElement("td"); title.textContent = item.title || "-";
-        const category = document.createElement("td"); category.textContent = item.category || "-";
-        const date = document.createElement("td"); date.textContent = item.event_date || "-";
-        const status = document.createElement("td"); status.textContent = item.status === "published" ? "منتشرشده" : "پیش‌نویس";
+        const urlCell = document.createElement("td");
+        const link = document.createElement("a");
+        link.href = item.image_url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = item.image_url;
+        link.style.cssText = "display:block;max-width:420px;overflow-wrap:anywhere;color:#158ffe;";
+        urlCell.appendChild(link);
+
+        const status = document.createElement("td");
+        status.textContent = item.status === "published" ? "منتشرشده" : "پیش‌نویس";
+
         const actionsCell = document.createElement("td");
-        const actions = document.createElement("div"); actions.className = "media-row-actions";
-        const edit = document.createElement("button"); edit.className = "media-edit"; edit.textContent = "ویرایش";
+        const actions = document.createElement("div");
+        actions.className = "media-row-actions";
+
+        const edit = document.createElement("button");
+        edit.className = "media-edit";
+        edit.textContent = "ویرایش";
         edit.addEventListener("click", function() {
             editingImageId = item.id;
-            document.getElementById("imageTitle").value = item.title || "";
             document.getElementById("imageUrl").value = item.image_url || "";
-            document.getElementById("imageCategory").value = item.category || "";
-            document.getElementById("imageDate").value = item.event_date || "";
-            document.getElementById("imageLocation").value = item.location || "";
-            document.getElementById("imageSource").value = item.source || "";
-            document.getElementById("imageDescription").value = item.description || "";
             document.getElementById("imageStatus").value = item.status || "draft";
-            document.getElementById("imageFormHeading").textContent = "ویرایش تصویر";
+            document.getElementById("imageFormHeading").textContent = "ویرایش لینک تصویر";
             imageSaveButton.textContent = "ذخیره تغییرات";
             imageCancelButton.style.display = "inline-block";
-            imageMessage.textContent = "اطلاعات تصویر را ویرایش کن.";
+            imageMessage.textContent = "لینک تصویر یا وضعیت انتشار را تغییر بده.";
             window.scrollTo({top:0, behavior:"smooth"});
         });
-        const del = document.createElement("button"); del.className = "media-delete"; del.textContent = "حذف";
+
+        const del = document.createElement("button");
+        del.className = "media-delete";
+        del.textContent = "حذف";
         del.addEventListener("click", async function() {
             if (!confirm("این تصویر از آرشیو حذف شود؟")) return;
             const result = await db.from("archive_images").delete().eq("id", item.id);
-            if (result.error) { alert("حذف تصویر ناموفق بود: " + result.error.message); return; }
+            if (result.error) {
+                alert("حذف تصویر ناموفق بود: " + result.error.message);
+                return;
+            }
             if (editingImageId === item.id) resetImageForm();
             loadArchiveImages();
         });
-        actions.append(edit, del); actionsCell.append(actions);
-        tr.append(title, category, date, status, actionsCell); table.append(tr);
+
+        actions.append(edit, del);
+        actionsCell.append(actions);
+        tr.append(urlCell, status, actionsCell);
+        table.append(tr);
     });
 }
 
 imageForm.addEventListener("submit", async function(event) {
     event.preventDefault();
-    const title = document.getElementById("imageTitle").value.trim();
     const imageUrl = document.getElementById("imageUrl").value.trim();
-    if (!title || !imageUrl) { imageMessage.textContent = "عنوان و لینک تصویر الزامی است."; return; }
+    if (!imageUrl) {
+        imageMessage.textContent = "لینک تصویر الزامی است.";
+        return;
+    }
     try {
         const parsed = new URL(imageUrl);
         if (!["http:", "https:"].includes(parsed.protocol)) throw new Error("invalid");
-    } catch (_) { imageMessage.textContent = "لینک تصویر معتبر نیست. آدرس کامل با https:// وارد کن."; return; }
+    } catch (_) {
+        imageMessage.textContent = "لینک تصویر معتبر نیست. آدرس کامل با https:// وارد کن.";
+        return;
+    }
 
     imageSaveButton.disabled = true;
     imageMessage.style.color = "#555";
     imageMessage.textContent = "در حال ذخیره تصویر...";
+
+    // The existing table requires a title, so a neutral internal value is stored.
+    // The public gallery uses only image_url and does not display metadata.
     const payload = {
-        title: title,
+        title: "تصویر",
         image_url: imageUrl,
-        category: document.getElementById("imageCategory").value.trim() || null,
-        event_date: document.getElementById("imageDate").value.trim() || null,
-        location: document.getElementById("imageLocation").value.trim() || null,
-        source: document.getElementById("imageSource").value.trim() || null,
-        description: document.getElementById("imageDescription").value.trim() || null,
+        category: null,
+        event_date: null,
+        location: null,
+        source: null,
+        description: null,
         status: document.getElementById("imageStatus").value,
         updated_at: new Date().toISOString()
     };
+
     const result = editingImageId
         ? await db.from("archive_images").update(payload).eq("id", editingImageId)
         : await db.from("archive_images").insert([payload]);
+
     imageSaveButton.disabled = false;
     if (result.error) {
         imageMessage.style.color = "#d32f2f";
         imageMessage.textContent = "ذخیره تصویر ناموفق بود: " + result.error.message;
         return;
     }
+
     resetImageForm();
     imageMessage.style.color = "#388e3c";
     imageMessage.textContent = "تصویر با موفقیت ذخیره شد.";
