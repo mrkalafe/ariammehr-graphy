@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://mrkalafe.github.io/ariammehr-graphy/sitemap.xml
