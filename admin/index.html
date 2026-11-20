@@ -330,6 +330,24 @@ th {
         min-width: 500px;
     }
 }
+
+/* Discussion moderation */
+.admin-section { display:none; }
+.admin-section .section { background:#fff; padding:22px; border-radius:12px; margin-top:20px; overflow-x:auto; }
+.admin-section table { width:100%; border-collapse:collapse; min-width:760px; }
+.admin-section th,.admin-section td { padding:12px 10px; border-bottom:1px solid #eee; text-align:right; vertical-align:top; font-size:13px; }
+.admin-section th { color:#17243a; background:#f7f7f7; }
+.admin-section .moderation-actions { display:flex; flex-wrap:wrap; gap:6px; }
+.admin-section .moderation-actions button { border:0; border-radius:6px; padding:8px 10px; cursor:pointer; font-size:12px; }
+.admin-section .pin-action { background:#fff2cc; color:#755400; }
+.admin-section .close-action { background:#e5f1fb; color:#155b89; }
+.admin-section .delete-action { background:#fde7e7; color:#a32121; }
+.admin-section .small-muted { color:#777; font-size:12px; line-height:1.8; }
+.admin-section .admin-replies { background:#f7f8fa; padding:12px; border-radius:8px; margin-top:8px; }
+.admin-section .admin-reply { border-bottom:1px solid #e5e5e5; padding:9px 0; }
+.admin-section .admin-reply:last-child { border-bottom:0; }
+.admin-section .reply-delete { border:0; background:#fde7e7; color:#a32121; padding:5px 8px; border-radius:5px; cursor:pointer; margin-right:8px; }
+
 </style>
 </head>
 
@@ -431,7 +449,8 @@ th {
         </div>
 
         <nav class="menu">
-            <a href="#" class="active">▦ داشبورد</a>
+            <a href="#" class="active" id="dashboardNav">▦ داشبورد</a>
+            <a href="#" id="discussionNav">☷ مدیریت بحث‌ها</a>
             <a href="#">▤ مدیریت مقالات</a>
             <a href="#">▧ تصاویر و اسناد</a>
             <a href="#">▷ ویدئوها</a>
@@ -537,6 +556,20 @@ th {
 
         </section>
 
+
+        <section class="admin-section" id="discussionAdminSection">
+            <div class="section-header">
+                <h3>مدیریت بحث و گفت‌وگو</h3>
+                <button class="btn" id="refreshDiscussions">به‌روزرسانی</button>
+            </div>
+            <p class="small-muted">ایمیل‌ها فقط برای مدیر مجاز نمایش داده می‌شوند.</p>
+            <div class="section">
+                <table>
+                    <thead><tr><th>بحث</th><th>نویسنده و ایمیل</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                    <tbody id="discussionsAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody>
+                </table>
+            </div>
+        </section>
     </main>
 
 </div>
@@ -1005,6 +1038,104 @@ articleForm.addEventListener("submit", async function(event) {
 
 
 
+
+
+/* Discussion moderation */
+const dashboardNav = document.getElementById("dashboardNav");
+const discussionNav = document.getElementById("discussionNav");
+const discussionAdminSection = document.getElementById("discussionAdminSection");
+const articlesDashboardSection = document.querySelector("#app main.main > section.section");
+
+function showAdminArea(which) {
+    const discussions = which === "discussions";
+    articlesDashboardSection.style.display = discussions ? "none" : "block";
+    discussionAdminSection.style.display = discussions ? "block" : "none";
+    dashboardNav.classList.toggle("active", !discussions);
+    discussionNav.classList.toggle("active", discussions);
+    document.querySelector(".header h1").textContent = discussions ? "مدیریت بحث‌ها" : "داشبورد";
+    if (discussions) loadAdminDiscussions();
+}
+dashboardNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("dashboard"); });
+discussionNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("discussions"); });
+document.getElementById("refreshDiscussions").addEventListener("click", loadAdminDiscussions);
+
+async function loadAdminDiscussions() {
+    const table = document.getElementById("discussionsAdminTable");
+    table.innerHTML = "<tr><td colspan='5'>در حال دریافت بحث‌ها...</td></tr>";
+    const result = await db.from("discussions")
+        .select("id,name,title,body,category,created_at,is_pinned,is_closed,discussion_contacts(email),discussion_replies(id,name,body,created_at,reply_contacts(email))")
+        .order("is_pinned", {ascending:false}).order("created_at", {ascending:false});
+    if (result.error) {
+        table.innerHTML = "<tr><td colspan='5'>خطا: " + escapeAdminText(result.error.message) + "</td></tr>";
+        return;
+    }
+    const data = result.data || [];
+    if (!data.length) { table.innerHTML = "<tr><td colspan='5'>هنوز بحثی ثبت نشده است.</td></tr>"; return; }
+    table.replaceChildren();
+    data.forEach(function(item) {
+        const tr = document.createElement("tr");
+        const topic = document.createElement("td");
+        const title = document.createElement("strong"); title.textContent = item.title;
+        const body = document.createElement("div"); body.className = "small-muted"; body.textContent = item.body;
+        topic.append(title, body);
+        const author = document.createElement("td");
+        author.textContent = item.name + " | " + ((item.discussion_contacts || [])[0]?.email || "ایمیل ثبت نشده");
+        const date = document.createElement("td"); date.textContent = new Date(item.created_at).toLocaleString("fa-IR");
+        const state = document.createElement("td");
+        state.textContent = (item.is_pinned ? "📌 سنجاق‌شده · " : "") + (item.is_closed ? "بسته" : "باز");
+        const actionsCell = document.createElement("td");
+        const actions = document.createElement("div"); actions.className = "moderation-actions";
+        const pin = document.createElement("button"); pin.className = "pin-action";
+        pin.textContent = item.is_pinned ? "برداشتن سنجاق" : "سنجاق‌کردن";
+        pin.onclick = () => updateDiscussion(item.id, {is_pinned:!item.is_pinned});
+        const close = document.createElement("button"); close.className = "close-action";
+        close.textContent = item.is_closed ? "بازکردن پاسخ‌ها" : "بستن پاسخ‌ها";
+        close.onclick = () => updateDiscussion(item.id, {is_closed:!item.is_closed});
+        const replies = document.createElement("button"); replies.className = "btn";
+        replies.textContent = "پاسخ‌ها (" + ((item.discussion_replies || []).length) + ")";
+        replies.onclick = () => toggleAdminReplies(item.discussion_replies || [], actionsCell);
+        const del = document.createElement("button"); del.className = "delete-action"; del.textContent = "حذف بحث";
+        del.onclick = () => deleteDiscussion(item.id);
+        actions.append(pin, close, replies, del); actionsCell.append(actions);
+        tr.append(topic, author, date, state, actionsCell); table.append(tr);
+    });
+}
+function escapeAdminText(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+async function updateDiscussion(id, changes) {
+    const result = await db.from("discussions").update(changes).eq("id", id);
+    if (result.error) { alert("ذخیره تغییرات انجام نشد: " + result.error.message); return; }
+    loadAdminDiscussions();
+}
+async function deleteDiscussion(id) {
+    if (!confirm("این بحث و تمام پاسخ‌های آن حذف شوند؟ این عملیات قابل بازگشت نیست.")) return;
+    const result = await db.from("discussions").delete().eq("id", id);
+    if (result.error) { alert("حذف بحث انجام نشد: " + result.error.message); return; }
+    loadAdminDiscussions();
+}
+function toggleAdminReplies(replies, host) {
+    const old = host.querySelector(".admin-replies");
+    if (old) { old.remove(); return; }
+    const box = document.createElement("div"); box.className = "admin-replies";
+    if (!replies.length) box.textContent = "هنوز پاسخی ثبت نشده است.";
+    replies.forEach(function(reply) {
+        const row = document.createElement("div"); row.className = "admin-reply";
+        const text = document.createElement("div");
+        text.textContent = reply.name + " · " + new Date(reply.created_at).toLocaleString("fa-IR") + " · " + reply.body;
+        const email = document.createElement("div"); email.className = "small-muted";
+        email.textContent = "ایمیل: " + (((reply.reply_contacts || [])[0] || {}).email || "ثبت نشده");
+        const del = document.createElement("button"); del.className = "reply-delete"; del.textContent = "حذف پاسخ";
+        del.onclick = async function() {
+            if (!confirm("این پاسخ حذف شود؟")) return;
+            const result = await db.from("discussion_replies").delete().eq("id", reply.id);
+            if (result.error) alert("حذف پاسخ انجام نشد: " + result.error.message);
+            else loadAdminDiscussions();
+        };
+        row.append(text, email, del); box.append(row);
+    });
+    host.append(box);
+}
 
 /* Initial Session Check */
 
