@@ -94,12 +94,36 @@ body {
 .sidebar {
     width: 250px;
     height: 100vh;
+    height: 100dvh;
+    box-sizing: border-box;
     background: #17243a;
     color: white;
     position: fixed;
     right: 0;
     top: 0;
     padding: 25px 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #c9a227 #17243a;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #17243a;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #c9a227;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #e0c15b;
 }
 
 .logo {
