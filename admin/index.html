@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+
+<html dir="rtl" lang="fa">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>پنل مدیریت | آریامهر گرافی</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 * {
     margin: 0;
@@ -458,10 +457,6 @@ th {
 
 
 /* Media archive management */
-#imagesAdminSection,#videosAdminSection { display:none; }
-#imagesAdminSection .section,#videosAdminSection .section {
-    background:#fff; padding:22px; border-radius:12px; margin-top:20px;
-}
 .media-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
 .media-form-grid .full { grid-column:1/-1; }
 .media-form-grid input,.media-form-grid textarea,.media-form-grid select {
@@ -476,12 +471,6 @@ th {
 .media-cancel { background:#eee; color:#333; }
 .media-message { font-size:12px; margin-top:10px; line-height:1.8; }
 .media-table-wrap { overflow-x:auto; }
-#imagesAdminSection table,#videosAdminSection table { width:100%; min-width:760px; border-collapse:collapse; }
-#imagesAdminSection th,#imagesAdminSection td,
-#videosAdminSection th,#videosAdminSection td {
-    padding:12px 9px; border-bottom:1px solid #eee; text-align:right;
-    vertical-align:top; font-size:12px;
-}
 .media-row-actions { display:flex; gap:6px; flex-wrap:wrap; }
 .media-row-actions button { border:0; border-radius:6px; padding:7px 10px; cursor:pointer; font:inherit; font-size:11px; }
 .media-edit { background:#e5f1fb; color:#155b89; }
@@ -507,475 +496,309 @@ th {
 
 </style>
 </head>
-
 <body>
-
 <!-- Login Screen -->
-
 <div class="login-screen" id="loginScreen">
-
-    <div class="login-box">
-
-        <h2>آریامهر گرافی</h2>
-
-        <p>ورود به پنل مدیریت اختصاصی</p>
-
-        <form id="loginForm">
-
-            <input
-                type="email"
-                id="email"
-                placeholder="ایمیل مدیر"
-                required
-                autocomplete="username"
-            >
-
-            <input
-                type="password"
-                id="password"
-                placeholder="رمز عبور"
-                required
-                autocomplete="current-password"
-            >
-
-            <button type="submit" id="loginButton">
+<div class="login-box">
+<h2>آریامهر گرافی</h2>
+<p>ورود به پنل مدیریت اختصاصی</p>
+<form id="loginForm">
+<input autocomplete="username" id="email" placeholder="ایمیل مدیر" required="" type="email"/>
+<input autocomplete="current-password" id="password" placeholder="رمز عبور" required="" type="password"/>
+<button id="loginButton" type="submit">
                 ورود به پنل
             </button>
-
-        </form>
-
-        <div class="login-error" id="loginError"></div>
-
-    </div>
-
+</form>
+<div class="login-error" id="loginError"></div>
 </div>
-
-    <!-- New Article Modal -->
-
-<div id="articleModal" class="login-screen" style="display:none; position:fixed; inset:0; z-index:1000; background:#17243acc;">
-
-    <div class="login-box" style="max-width:650px; max-height:90vh; overflow-y:auto; text-align:right;">
-
-        <h2>ایجاد مقاله جدید</h2>
-        <p>اطلاعات مقاله را وارد کنید.</p>
-
-        <form id="articleForm">
-
-            <input type="text" id="articleTitle" placeholder="عنوان مقاله" required>
-
-            <input type="text" id="articleSlug" placeholder="نشانی اختصاصی انگلیسی (مثلاً tarikh-iran)" required>
-
-            <input type="text" id="articleCategory" placeholder="دسته‌بندی">
-
-            <input type="text" id="articleCover" placeholder="لینک تصویر جلد">
-
-            <textarea id="articleDescription" placeholder="توضیحات کوتاه" style="width:100%;height:90px;padding:12px;margin-bottom:13px;border:1px solid #ddd;border-radius:7px;resize:vertical;"></textarea>
-
-            <textarea id="articleContent" placeholder="متن کامل مقاله" required style="width:100%;height:220px;padding:12px;margin-bottom:13px;border:1px solid #ddd;border-radius:7px;resize:vertical;"></textarea>
-
-            <select id="articleStatus" style="width:100%;padding:13px;margin-bottom:15px;border:1px solid #ddd;border-radius:7px;">
-                <option value="draft">ذخیره به‌صورت پیش‌نویس</option>
-                <option value="published">انتشار مقاله</option>
-            </select>
-
-            <button type="submit" class="btn" id="saveArticleButton">
+</div>
+<!-- New Article Modal -->
+<div class="login-screen" id="articleModal" style="display:none; position:fixed; inset:0; z-index:1000; background:#17243acc;">
+<div class="login-box" style="max-width:650px; max-height:90vh; overflow-y:auto; text-align:right;">
+<h2>ایجاد مقاله جدید</h2>
+<p>اطلاعات مقاله را وارد کنید.</p>
+<form id="articleForm">
+<input id="articleTitle" placeholder="عنوان مقاله" required="" type="text"/>
+<input id="articleSlug" placeholder="نشانی اختصاصی انگلیسی (مثلاً tarikh-iran)" required="" type="text"/>
+<input id="articleCategory" placeholder="دسته‌بندی" type="text"/>
+<input id="articleCover" placeholder="لینک تصویر جلد" type="text"/>
+<textarea id="articleDescription" placeholder="توضیحات کوتاه" style="width:100%;height:90px;padding:12px;margin-bottom:13px;border:1px solid #ddd;border-radius:7px;resize:vertical;"></textarea>
+<textarea id="articleContent" placeholder="متن کامل مقاله" required="" style="width:100%;height:220px;padding:12px;margin-bottom:13px;border:1px solid #ddd;border-radius:7px;resize:vertical;"></textarea>
+<select id="articleStatus" style="width:100%;padding:13px;margin-bottom:15px;border:1px solid #ddd;border-radius:7px;">
+<option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+<option value="published">انتشار مقاله</option>
+</select>
+<button class="btn" id="saveArticleButton" type="submit">
                 ذخیره مقاله
             </button>
-
-            <button type="button" class="btn" id="closeArticleModal" style="background:#eee;margin-right:8px;">
+<button class="btn" id="closeArticleModal" style="background:#eee;margin-right:8px;" type="button">
                 انصراف
             </button>
-
-            <p id="articleMessage" style="margin-top:15px;font-size:12px;"></p>
-
-        </form>
-
-    </div>
-
+<p id="articleMessage" style="margin-top:15px;font-size:12px;"></p>
+</form>
 </div>
-
+</div>
 <!-- Admin Dashboard -->
-
 <div id="app">
-
-    <aside class="sidebar">
-
-        <div class="logo">
-            <h2>آریامهر گرافی</h2>
-            <p>پنل مدیریت اختصاصی</p>
-        </div>
-
-        <nav class="menu">
-            <a href="#" class="active" id="dashboardNav">▦ داشبورد</a>
-            <a href="#" id="discussionNav">☷ مدیریت بحث‌ها</a>
-            <a href="#" id="quotesNav">❝ جملات شاهنشاه</a>
-            <a href="#" id="booksNav">▤ کتاب‌های شاهنشاه</a>
-            <a href="#" id="imagesNav">▧ آرشیو تصاویر</a>
-            <a href="#" id="videosNav">▷ فیلم و ویدئو</a>
-            <a href="#" id="contactMessagesNav">✉ صندوق پیام‌ها</a>
-            <a href="#" id="articlesNav">▤ مدیریت مقالات</a>
-            <a href="#">▧ تصاویر و اسناد</a>
-            <a href="#">▷ ویدئوها</a>
-            <a href="#">▣ دسته‌بندی‌ها</a>
-            <a href="#">♙ کاربران</a>
-            <a href="#">⚙ تنظیمات</a>
-        </nav>
-
-    </aside>
+<aside class="sidebar">
+<div class="logo">
+<h2>آریامهر گرافی</h2>
+<p>پنل مدیریت اختصاصی</p>
+</div>
+<nav class="menu">
+<a class="active" href="#" id="dashboardNav">▦ داشبورد</a>
+<a href="#" id="discussionNav">☷ مدیریت بحث‌ها</a>
+<a href="#" id="quotesNav">❝ جملات شاهنشاه</a>
+<a href="#" id="booksNav">▤ کتاب‌های شاهنشاه</a>
 
 
-    <main class="main">
+<a href="#" id="contactMessagesNav">✉ صندوق پیام‌ها</a>
+<a href="#" id="articlesNav">▤ مدیریت مقالات</a>
 
-        <header class="header">
 
-            <h1>داشبورد</h1>
 
-            <div class="profile">
+
+
+</nav>
+</aside>
+<main class="main">
+<header class="header">
+<h1>داشبورد</h1>
+<div class="profile">
                 مدیر سیستم | خوش آمدید
 
                 <button class="logout-btn" id="logoutButton">
                     خروج
                 </button>
-            </div>
-
-        </header>
-
-
-        <div class="welcome">
-
-            <h2>خوش آمدید!</h2>
-
-            <p>به پنل مدیریت آریامهر گرافی خوش آمدید.</p>
-
-        </div>
-
-
-        <div class="cards">
-
-            <div class="card">
-                <p>کل مطالب</p>
-                <h2 id="totalArticles">۰</h2>
-                <span>مجموع مطالب ثبت‌شده</span>
-            </div>
-
-            <div class="card">
-                <p>مطالب منتشرشده</p>
-                <h2 id="publishedArticles">۰</h2>
-                <span>مطالب قابل مشاهده</span>
-            </div>
-
-            <div class="card">
-                <p>پیش‌نویس‌ها</p>
-                <h2 id="draftArticles">۰</h2>
-                <span>مطالب منتشرنشده</span>
-            </div>
-
-            <div class="card">
-                <p>بازدید امروز</p>
-                <h2>---</h2>
-                <span>در انتظار راه‌اندازی آمار بازدید</span>
-            </div>
-
-        </div>
-
-
-        <section class="section">
-
-            <div class="section-header">
-
-                <h3>آخرین مطالب</h3>
-
-                <button class="btn" id="newArticleButton">
+</div>
+</header>
+<div class="welcome">
+<h2>خوش آمدید!</h2>
+<p>به پنل مدیریت آریامهر گرافی خوش آمدید.</p>
+</div>
+<div class="cards">
+<div class="card">
+<p>کل مطالب</p>
+<h2 id="totalArticles">۰</h2>
+<span>مجموع مطالب ثبت‌شده</span>
+</div>
+<div class="card">
+<p>مطالب منتشرشده</p>
+<h2 id="publishedArticles">۰</h2>
+<span>مطالب قابل مشاهده</span>
+</div>
+<div class="card">
+<p>پیش‌نویس‌ها</p>
+<h2 id="draftArticles">۰</h2>
+<span>مطالب منتشرنشده</span>
+</div>
+<div class="card">
+<p>بازدید امروز</p>
+<h2>---</h2>
+<span>در انتظار راه‌اندازی آمار بازدید</span>
+</div>
+</div>
+<section class="section">
+<div class="section-header">
+<h3>آخرین مطالب</h3>
+<button class="btn" id="newArticleButton">
                     + ایجاد مطلب جدید
                 </button>
-
-            </div>
-
-
-            <table>
-
+</div>
+<table>
 <thead>
-    <tr>
-        <th>عنوان مطلب</th>
-        <th>دسته‌بندی</th>
-        <th>وضعیت</th>
-        <th>تاریخ</th>
-        <th>عملیات</th>
-    </tr>
+<tr>
+<th>عنوان مطلب</th>
+<th>دسته‌بندی</th>
+<th>وضعیت</th>
+<th>تاریخ</th>
+<th>عملیات</th>
+</tr>
 </thead>
-
-                <tbody id="articlesTable">
-
-                    <tr>
-                        <td colspan="5" class="empty">
+<tbody id="articlesTable">
+<tr>
+<td class="empty" colspan="5">
                             در حال دریافت اطلاعات...
                         </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </section>
-
-        <section class="admin-section" id="articlesAdminSection">
-            <div class="section-header">
-                <h3>مدیریت مقالات</h3>
-                <button class="btn" id="refreshAdminArticles">به‌روزرسانی</button>
-            </div>
-            <div class="section">
-                <div class="section-header">
-                    <h3>فهرست تمام مقالات</h3>
-                    <button class="btn" id="newAdminArticleButton">+ مقاله جدید</button>
-                </div>
-                <div class="article-tools">
-                    <input type="search" id="articleSearchInput" placeholder="جست‌وجو در عنوان یا نشانی مقاله...">
-                    <select id="articleStatusFilter" aria-label="فیلتر وضعیت مقاله">
-                        <option value="all">همه وضعیت‌ها</option>
-                        <option value="published">منتشرشده‌ها</option>
-                        <option value="draft">پیش‌نویس‌ها</option>
-                    </select>
-                </div>
-                <div class="article-table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>عنوان مقاله</th>
-                                <th>نشانی اختصاصی</th>
-                                <th>دسته‌بندی</th>
-                                <th>وضعیت</th>
-                                <th>تاریخ ثبت</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminArticlesTable">
-                            <tr><td colspan="6" class="empty">برای دریافت مقالات، صفحه را به‌روزرسانی کنید.</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p class="article-count" id="adminArticlesCount"></p>
-            </div>
-        </section>
-
-
-        <section class="admin-section" id="discussionAdminSection">
-            <div class="section-header">
-                <h3>مدیریت بحث و گفت‌وگو</h3>
-                <button class="btn" id="refreshDiscussions">به‌روزرسانی</button>
-            </div>
-            <p class="small-muted">ایمیل‌ها فقط برای مدیر مجاز نمایش داده می‌شوند.</p>
-            <div class="section">
-                <table>
-                    <thead><tr><th>بحث</th><th>نویسنده و ایمیل</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                    <tbody id="discussionsAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody>
-                </table>
-            </div>
-        </section>
-
-        
-        <section class="admin-section" id="booksAdminSection">
-            <div class="section-header">
-                <h3>مدیریت کتاب‌های شاهنشاه</h3>
-                <button class="btn" id="refreshBooks">به‌روزرسانی</button>
-            </div>
-
-            <div class="section">
-                <h3 id="bookFormHeading" style="margin:0 0 18px;">ثبت کتاب جدید</h3>
-                <form id="bookForm">
-                    <div class="book-form-grid">
-                        <div class="full">
-                            <input id="bookTitle" type="text" maxlength="250" placeholder="عنوان کتاب" required>
-                        </div>
-                        <div>
-                            <input id="bookYear" type="text" maxlength="30" placeholder="سال انتشار">
-                        </div>
-                        <div>
-                            <input id="bookPublisher" type="text" maxlength="250" placeholder="ناشر">
-                        </div>
-                        <div>
-                            <input id="bookLanguage" type="text" maxlength="80" placeholder="زبان کتاب">
-                        </div>
-                        <div>
-                            <input id="bookCover" type="url" placeholder="لینک تصویر جلد (اختیاری)">
-                        </div>
-                        <div class="full">
-                            <textarea id="bookDescription" maxlength="10000" placeholder="معرفی و توضیحات کتاب"></textarea>
-                        </div>
-                        <div class="full">
-                            <input id="bookPdfUrl" type="url" placeholder="لینک مستقیم فایل PDF کتاب" required>
-                            <p class="book-note">فایل PDF باید قبلاً روی یک هاست یا سرویس ذخیره‌سازی دیگر بارگذاری شده باشد. لینک مستقیم فایل را اینجا وارد کن.</p>
-                        </div>
-                        <div>
-                            <select id="bookStatus">
-                                <option value="draft">ذخیره به‌صورت پیش‌نویس</option>
-                                <option value="published">انتشار در سایت</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="book-actions-row">
-                        <button class="book-save" id="bookSaveButton" type="submit">ذخیره کتاب</button>
-                        <button class="book-cancel" id="bookCancelButton" type="button" style="display:none;">لغو ویرایش</button>
-                    </div>
-                    <p class="book-message" id="bookMessage" role="status"></p>
-                </form>
-            </div>
-
-            <div class="section">
-                <div class="section-header"><h3>کتاب‌های ثبت‌شده</h3></div>
-                <div class="book-table-wrap">
-                    <table>
-                        <thead><tr><th>عنوان</th><th>سال</th><th>زبان</th><th>PDF</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                        <tbody id="booksAdminTable"><tr><td colspan="6">در حال دریافت...</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="admin-section" id="imagesAdminSection">
-            <div class="section-header">
-                <h3>مدیریت آرشیو تصاویر</h3>
-                <button class="btn" id="refreshImages">به‌روزرسانی</button>
-            </div>
-            <div class="section">
-                <h3 id="imageFormHeading" style="margin:0 0 18px;">ثبت تصویر جدید</h3>
-                <form id="imageForm">
-                    <div class="media-form-grid">
-                        <div class="full">
-                            <input id="imageUrl" type="url" placeholder="لینک مستقیم تصویر" required>
-                        </div>
-                        <div>
-                            <select id="imageStatus">
-                                <option value="draft">ذخیره به‌صورت پیش‌نویس</option>
-                                <option value="published">انتشار در سایت</option>
-                            </select>
-                        </div>
-                    </div>
-                    <p class="media-note">فرقی نمی‌کند تصویر تاریخی، ویرایش‌شده یا ساخته‌شده با هوش مصنوعی باشد. فقط لینک مستقیم تصویر را وارد کن. فایل تصویر روی سایت یا Supabase آپلود نمی‌شود.</p>
-                    <div class="media-actions-row">
-                        <button class="media-save" id="imageSaveButton" type="submit">ذخیره تصویر</button>
-                        <button class="media-cancel" id="imageCancelButton" type="button" style="display:none;">لغو ویرایش</button>
-                    </div>
-                    <p class="media-message" id="imageMessage" role="status"></p>
-                </form>
-            </div>
-            <div class="section">
-                <div class="section-header"><h3>تصاویر ثبت‌شده</h3></div>
-                <div class="media-table-wrap">
-                    <table><thead><tr><th>لینک تصویر</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                    <tbody id="imagesAdminTable"><tr><td colspan="3">در حال دریافت...</td></tr></tbody></table>
-                </div>
-            </div>
-        </section>
-
-        <section class="admin-section" id="videosAdminSection">
-            <div class="section-header">
-                <h3>مدیریت فیلم و ویدئو</h3>
-                <button class="btn" id="refreshVideos">به‌روزرسانی</button>
-            </div>
-            <div class="section">
-                <h3 id="videoFormHeading" style="margin:0 0 18px;">ثبت ویدئوی جدید</h3>
-                <form id="videoForm">
-                    <div class="media-form-grid">
-                        <div class="full"><input id="videoTitle" type="text" maxlength="250" placeholder="عنوان ویدئو" required></div>
-                        <div class="full"><input id="videoUrl" type="url" placeholder="لینک ویدئو یا لینک Embed" required></div>
-                        <div class="full"><input id="videoThumbnail" type="url" placeholder="لینک تصویر پیش‌نمایش (اختیاری)"></div>
-                        <div><input id="videoCategory" type="text" maxlength="120" placeholder="دسته‌بندی"></div>
-                        <div><input id="videoDate" type="text" maxlength="80" placeholder="تاریخ یا سال ویدئو"></div>
-                        <div class="full"><input id="videoSource" type="text" maxlength="300" placeholder="منبع ویدئو"></div>
-                        <div class="full"><textarea id="videoDescription" maxlength="5000" placeholder="توضیحات ویدئو"></textarea></div>
-                        <div><select id="videoStatus"><option value="draft">ذخیره به‌صورت پیش‌نویس</option><option value="published">انتشار در سایت</option></select></div>
-                    </div>
-                    <p class="media-note">لینک مستقیم فایل MP4 یا لینک Embed یوتیوب/Vimeo را وارد کن. برای پخش بهتر، لینک Embed پلتفرم میزبان پیشنهاد می‌شود. فایل ویدئو روی سایت یا Supabase آپلود نمی‌شود.</p>
-                    <div class="media-actions-row">
-                        <button class="media-save" id="videoSaveButton" type="submit">ذخیره ویدئو</button>
-                        <button class="media-cancel" id="videoCancelButton" type="button" style="display:none;">لغو ویرایش</button>
-                    </div>
-                    <p class="media-message" id="videoMessage" role="status"></p>
-                </form>
-            </div>
-            <div class="section">
-                <div class="section-header"><h3>ویدئوهای ثبت‌شده</h3></div>
-                <div class="media-table-wrap">
-                    <table><thead><tr><th>عنوان</th><th>دسته‌بندی</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                    <tbody id="videosAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody></table>
-                </div>
-            </div>
-        </section>
-
-        <section class="admin-section" id="contactMessagesAdminSection">
-            <div class="section-header">
-                <h3>صندوق پیام‌های تماس</h3>
-                <button class="btn" id="refreshContactMessages">به‌روزرسانی</button>
-            </div>
-            <p class="small-muted">پیام‌ها فقط برای مدیر نمایش داده می‌شوند. برای پاسخ‌گویی می‌توانی از لینک ایمیل استفاده کنی.</p>
-            <div class="section">
-                <div class="contact-admin-table-wrap">
-                    <table>
-                        <thead><tr><th>فرستنده</th><th>ایمیل</th><th>موضوع</th><th>متن پیام</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                        <tbody id="contactMessagesAdminTable"><tr><td colspan="7">برای دریافت پیام‌ها، صندوق را باز کن.</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section class="admin-section" id="quotesAdminSection">
-            <div class="section-header">
-                <h3>مدیریت جملات شاهنشاه</h3>
-                <button class="btn" id="refreshQuotes">به‌روزرسانی</button>
-            </div>
-
-            <div class="section">
-                <h3 id="quoteFormHeading" style="margin:0 0 18px;">ثبت جمله جدید</h3>
-                <form id="quoteForm">
-                    <div class="quote-form-grid">
-                        <div class="full">
-                            <textarea id="quoteText" maxlength="5000" placeholder="متن جمله شاهنشاه..." required></textarea>
-                        </div>
-                        <div>
-                            <input type="date" id="quoteDate" aria-label="تاریخ بیان">
-                        </div>
-                        <div>
-                            <input type="text" id="quoteOccasion" maxlength="300" placeholder="مناسبت یا محل بیان">
-                        </div>
-                        <div class="full">
-                            <input type="text" id="quoteSource" maxlength="1000" placeholder="منبع و مأخذ جمله">
-                        </div>
-                        <div class="full">
-                            <input type="url" id="quoteImage" placeholder="لینک تصویر مرتبط (اختیاری)">
-                        </div>
-                        <div>
-                            <select id="quoteStatus">
-                                <option value="draft">ذخیره به‌صورت پیش‌نویس</option>
-                                <option value="published">انتشار در سایت</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="quote-form-actions">
-                        <button class="quote-save" type="submit" id="quoteSaveButton">ذخیره جمله</button>
-                        <button class="quote-cancel" type="button" id="quoteCancelButton" style="display:none;">لغو ویرایش</button>
-                    </div>
-                    <p class="quote-status" id="quoteMessage" role="status"></p>
-                </form>
-            </div>
-
-            <div class="section" style="margin-top:18px;">
-                <div class="section-header">
-                    <h3>جملات ثبت‌شده</h3>
-                </div>
-                <div class="quote-table-wrap">
-                    <table>
-                        <thead><tr><th>متن جمله</th><th>تاریخ</th><th>منبع</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                        <tbody id="quotesAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-    </main>
-
+</tr>
+</tbody>
+</table>
+</section>
+<section class="admin-section" id="articlesAdminSection">
+<div class="section-header">
+<h3>مدیریت مقالات</h3>
+<button class="btn" id="refreshAdminArticles">به‌روزرسانی</button>
 </div>
+<div class="section">
+<div class="section-header">
+<h3>فهرست تمام مقالات</h3>
+<button class="btn" id="newAdminArticleButton">+ مقاله جدید</button>
+</div>
+<div class="article-tools">
+<input id="articleSearchInput" placeholder="جست‌وجو در عنوان یا نشانی مقاله..." type="search"/>
+<select aria-label="فیلتر وضعیت مقاله" id="articleStatusFilter">
+<option value="all">همه وضعیت‌ها</option>
+<option value="published">منتشرشده‌ها</option>
+<option value="draft">پیش‌نویس‌ها</option>
+</select>
+</div>
+<div class="article-table-wrap">
+<table>
+<thead>
+<tr>
+<th>عنوان مقاله</th>
+<th>نشانی اختصاصی</th>
+<th>دسته‌بندی</th>
+<th>وضعیت</th>
+<th>تاریخ ثبت</th>
+<th>عملیات</th>
+</tr>
+</thead>
+<tbody id="adminArticlesTable">
+<tr><td class="empty" colspan="6">برای دریافت مقالات، صفحه را به‌روزرسانی کنید.</td></tr>
+</tbody>
+</table>
+</div>
+<p class="article-count" id="adminArticlesCount"></p>
+</div>
+</section>
+<section class="admin-section" id="discussionAdminSection">
+<div class="section-header">
+<h3>مدیریت بحث و گفت‌وگو</h3>
+<button class="btn" id="refreshDiscussions">به‌روزرسانی</button>
+</div>
+<p class="small-muted">ایمیل‌ها فقط برای مدیر مجاز نمایش داده می‌شوند.</p>
+<div class="section">
+<table>
+<thead><tr><th>بحث</th><th>نویسنده و ایمیل</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+<tbody id="discussionsAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody>
+</table>
+</div>
+</section>
+<section class="admin-section" id="booksAdminSection">
+<div class="section-header">
+<h3>مدیریت کتاب‌های شاهنشاه</h3>
+<button class="btn" id="refreshBooks">به‌روزرسانی</button>
+</div>
+<div class="section">
+<h3 id="bookFormHeading" style="margin:0 0 18px;">ثبت کتاب جدید</h3>
+<form id="bookForm">
+<div class="book-form-grid">
+<div class="full">
+<input id="bookTitle" maxlength="250" placeholder="عنوان کتاب" required="" type="text"/>
+</div>
+<div>
+<input id="bookYear" maxlength="30" placeholder="سال انتشار" type="text"/>
+</div>
+<div>
+<input id="bookPublisher" maxlength="250" placeholder="ناشر" type="text"/>
+</div>
+<div>
+<input id="bookLanguage" maxlength="80" placeholder="زبان کتاب" type="text"/>
+</div>
+<div>
+<input id="bookCover" placeholder="لینک تصویر جلد (اختیاری)" type="url"/>
+</div>
+<div class="full">
+<textarea id="bookDescription" maxlength="10000" placeholder="معرفی و توضیحات کتاب"></textarea>
+</div>
+<div class="full">
+<input id="bookPdfUrl" placeholder="لینک مستقیم فایل PDF کتاب" required="" type="url"/>
+<p class="book-note">فایل PDF باید قبلاً روی یک هاست یا سرویس ذخیره‌سازی دیگر بارگذاری شده باشد. لینک مستقیم فایل را اینجا وارد کن.</p>
+</div>
+<div>
+<select id="bookStatus">
+<option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+<option value="published">انتشار در سایت</option>
+</select>
+</div>
+</div>
+<div class="book-actions-row">
+<button class="book-save" id="bookSaveButton" type="submit">ذخیره کتاب</button>
+<button class="book-cancel" id="bookCancelButton" style="display:none;" type="button">لغو ویرایش</button>
+</div>
+<p class="book-message" id="bookMessage" role="status"></p>
+</form>
+</div>
+<div class="section">
+<div class="section-header"><h3>کتاب‌های ثبت‌شده</h3></div>
+<div class="book-table-wrap">
+<table>
+<thead><tr><th>عنوان</th><th>سال</th><th>زبان</th><th>PDF</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+<tbody id="booksAdminTable"><tr><td colspan="6">در حال دریافت...</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
 
 
+<section class="admin-section" id="contactMessagesAdminSection">
+<div class="section-header">
+<h3>صندوق پیام‌های تماس</h3>
+<button class="btn" id="refreshContactMessages">به‌روزرسانی</button>
+</div>
+<p class="small-muted">پیام‌ها فقط برای مدیر نمایش داده می‌شوند. برای پاسخ‌گویی می‌توانی از لینک ایمیل استفاده کنی.</p>
+<div class="section">
+<div class="contact-admin-table-wrap">
+<table>
+<thead><tr><th>فرستنده</th><th>ایمیل</th><th>موضوع</th><th>متن پیام</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+<tbody id="contactMessagesAdminTable"><tr><td colspan="7">برای دریافت پیام‌ها، صندوق را باز کن.</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="admin-section" id="quotesAdminSection">
+<div class="section-header">
+<h3>مدیریت جملات شاهنشاه</h3>
+<button class="btn" id="refreshQuotes">به‌روزرسانی</button>
+</div>
+<div class="section">
+<h3 id="quoteFormHeading" style="margin:0 0 18px;">ثبت جمله جدید</h3>
+<form id="quoteForm">
+<div class="quote-form-grid">
+<div class="full">
+<textarea id="quoteText" maxlength="5000" placeholder="متن جمله شاهنشاه..." required=""></textarea>
+</div>
+<div>
+<input aria-label="تاریخ بیان" id="quoteDate" type="date"/>
+</div>
+<div>
+<input id="quoteOccasion" maxlength="300" placeholder="مناسبت یا محل بیان" type="text"/>
+</div>
+<div class="full">
+<input id="quoteSource" maxlength="1000" placeholder="منبع و مأخذ جمله" type="text"/>
+</div>
+<div class="full">
+<input id="quoteImage" placeholder="لینک تصویر مرتبط (اختیاری)" type="url"/>
+</div>
+<div>
+<select id="quoteStatus">
+<option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+<option value="published">انتشار در سایت</option>
+</select>
+</div>
+</div>
+<div class="quote-form-actions">
+<button class="quote-save" id="quoteSaveButton" type="submit">ذخیره جمله</button>
+<button class="quote-cancel" id="quoteCancelButton" style="display:none;" type="button">لغو ویرایش</button>
+</div>
+<p class="quote-status" id="quoteMessage" role="status"></p>
+</form>
+</div>
+<div class="section" style="margin-top:18px;">
+<div class="section-header">
+<h3>جملات ثبت‌شده</h3>
+</div>
+<div class="quote-table-wrap">
+<table>
+<thead><tr><th>متن جمله</th><th>تاریخ</th><th>منبع</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+<tbody id="quotesAdminTable"><tr><td colspan="5">در حال دریافت...</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
+</div>
 <script>
 
 /* Supabase Configuration */
@@ -1449,15 +1272,11 @@ const dashboardNav = document.getElementById("dashboardNav");
 const discussionNav = document.getElementById("discussionNav");
 const quotesNav = document.getElementById("quotesNav");
 const booksNav = document.getElementById("booksNav");
-const imagesNav = document.getElementById("imagesNav");
-const videosNav = document.getElementById("videosNav");
 const articlesNav = document.getElementById("articlesNav");
 const contactMessagesNav = document.getElementById("contactMessagesNav");
 const discussionAdminSection = document.getElementById("discussionAdminSection");
 const quotesAdminSection = document.getElementById("quotesAdminSection");
 const booksAdminSection = document.getElementById("booksAdminSection");
-const imagesAdminSection = document.getElementById("imagesAdminSection");
-const videosAdminSection = document.getElementById("videosAdminSection");
 const articlesAdminSection = document.getElementById("articlesAdminSection");
 const contactMessagesAdminSection = document.getElementById("contactMessagesAdminSection");
 const articlesDashboardSection = document.querySelector("#app main.main > section.section");
@@ -1468,11 +1287,9 @@ function showAdminArea(which) {
     const discussions = which === "discussions";
     const quotes = which === "quotes";
     const books = which === "books";
-    const images = which === "images";
-    const videos = which === "videos";
     const articles = which === "articles";
     const contactMessages = which === "contactMessages";
-    const dashboard = !discussions && !quotes && !books && !images && !videos && !articles && !contactMessages;
+    const dashboard = !discussions && !quotes && !books && !articles && !contactMessages;
 
     articlesDashboardSection.style.display = dashboard ? "block" : "none";
     welcomePanel.style.display = dashboard ? "block" : "none";
@@ -1480,8 +1297,6 @@ function showAdminArea(which) {
     discussionAdminSection.style.display = discussions ? "block" : "none";
     quotesAdminSection.style.display = quotes ? "block" : "none";
     booksAdminSection.style.display = books ? "block" : "none";
-    imagesAdminSection.style.display = images ? "block" : "none";
-    videosAdminSection.style.display = videos ? "block" : "none";
     articlesAdminSection.style.display = articles ? "block" : "none";
     contactMessagesAdminSection.style.display = contactMessages ? "block" : "none";
 
@@ -1489,21 +1304,16 @@ function showAdminArea(which) {
     discussionNav.classList.toggle("active", discussions);
     quotesNav.classList.toggle("active", quotes);
     booksNav.classList.toggle("active", books);
-    imagesNav.classList.toggle("active", images);
-    videosNav.classList.toggle("active", videos);
     articlesNav.classList.toggle("active", articles);
     contactMessagesNav.classList.toggle("active", contactMessages);
 
     document.querySelector(".header h1").textContent =
         discussions ? "مدیریت بحث‌ها" : quotes ? "جملات شاهنشاه" :
-        books ? "کتاب‌های شاهنشاه" : images ? "آرشیو تصاویر" :
-        videos ? "فیلم و ویدئو" : articles ? "مدیریت مقالات" : contactMessages ? "صندوق پیام‌ها" : "داشبورد";
+        books ? "کتاب‌های شاهنشاه" : articles ? "مدیریت مقالات" : contactMessages ? "صندوق پیام‌ها" : "داشبورد";
 
     if (discussions) loadAdminDiscussions();
     if (quotes) loadRoyalQuotes();
     if (books) loadRoyalBooks();
-    if (images) loadArchiveImages();
-    if (videos) loadArchiveVideos();
     if (articles) loadAdminArticles();
     if (contactMessages) loadContactMessages();
 }
@@ -1511,15 +1321,11 @@ dashboardNav.addEventListener("click", function(e) { e.preventDefault(); showAdm
 discussionNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("discussions"); });
 quotesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("quotes"); });
 booksNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("books"); });
-imagesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("images"); });
-videosNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("videos"); });
 articlesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("articles"); });
 contactMessagesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("contactMessages"); });
 document.getElementById("refreshDiscussions").addEventListener("click", loadAdminDiscussions);
 document.getElementById("refreshQuotes").addEventListener("click", loadRoyalQuotes);
 document.getElementById("refreshBooks").addEventListener("click", loadRoyalBooks);
-document.getElementById("refreshImages").addEventListener("click", loadArchiveImages);
-document.getElementById("refreshVideos").addEventListener("click", loadArchiveVideos);
 document.getElementById("refreshContactMessages").addEventListener("click", loadContactMessages);
 
 
@@ -2483,6 +2289,5 @@ async function initialize() {
 initialize();
 
 </script>
-
 </body>
 </html>
