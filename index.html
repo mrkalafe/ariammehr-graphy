@@ -1183,7 +1183,7 @@
             color:var(--gold); background:rgba(211,160,52,.08);
         }
         .footer-contact-mark svg { width:25px; height:25px; }
-        .footer-contact-grid { display:grid; grid-template-columns:minmax(240px,.82fr) minmax(0,1.5fr); gap:34px; }
+        .footer-contact-grid { display:grid; grid-template-columns:minmax(300px,1fr) minmax(0,1.5fr); gap:34px; }
         .footer-contact-grid h3 { margin:0 0 8px; color:#f4f4f4; font-size:16px; }
         .footer-contact-note { margin:0 0 17px; color:#929292; font-size:12px; line-height:1.9; }
         .footer-contact-info { min-width:0; }
@@ -1194,14 +1194,7 @@
             transition:border-color .2s ease, background .2s ease;
         }
         .contact-link-card:hover { border-color:rgba(211,160,52,.35); background:rgba(255,255,255,.045); }
-        .email-card {
-            width:100%;
-            max-width:440px;
-            min-height:68px;
-            box-sizing:border-box;
-            padding:15px 17px;
-        }
-
+        .email-card { width:100%; min-height:76px; box-sizing:border-box; padding:16px 18px; }
         .contact-brand-icon { width:36px; height:36px; flex:0 0 36px; display:grid; place-items:center; border-radius:11px; background:rgba(255,255,255,.07); }
         .contact-brand-icon svg { width:25px; height:25px; }
         .contact-link-copy { display:flex; flex:1; min-width:0; flex-direction:column; gap:3px; }
@@ -1592,7 +1585,7 @@
                     <div>
                         <p class="section-kicker">ارتباط با ما</p>
                         <h2>تماس با آریامهر گرافی</h2>
-                        <p>برای پیشنهاد، انتقاد یا ارسال پیام، از طریق ایمیل با ما در ارتباط باشید.</p>
+                        <p>برای پیشنهاد، انتقاد یا ارسال پیام، از طریق ایمیل یا فرم زیر با ما در ارتباط باشید.</p>
                     </div>
                     <span class="footer-contact-mark" aria-hidden="true"><i data-lucide="messages-square"></i></span>
                 </div>
@@ -1600,8 +1593,40 @@
                 <div class="footer-contact-grid">
                     <div class="footer-contact-info">
                         <h3>ارتباط از طریق ایمیل</h3>
-                        <p class="footer-contact-note">پیام‌ها و مکاتبات خود را به نشانی ایمیل زیر ارسال کنید.</p>
-</section>
+                        <p class="footer-contact-note">می‌توانید مستقیماً ایمیل بفرستید یا از فرم ارسال پیام استفاده کنید.</p>
+
+
+
+                        <a class="contact-link-card email-card" href="mailto:mrkalafe@gmail.com">
+                            <span class="contact-brand-icon gmail-icon" aria-hidden="true">
+                                <svg viewBox="0 0 32 32"><path fill="#4285F4" d="M4 8.2v15.6c0 1.2.8 2.2 2 2.2h3V13.2L4 8.2Z"/><path fill="#34A853" d="M23 26h3c1.2 0 2-.9 2-2.2V8.2l-5 5V26Z"/><path fill="#EA4335" d="M4 8.2 16 17l12-8.8c0-1.2-1-2.2-2.2-2.2h-.7L16 13.1 6.9 6H6.2C5 6 4 7 4 8.2Z"/><path fill="#C5221F" d="M9 13.2 16 18.3l7-5.1v-6L16 12.3 9 7.2v6Z"/></svg>
+                            </span>
+                            <div class="contact-link-copy">
+                                <small>ایمیل</small>
+                                <bdi dir="ltr">mrkalafe@gmail.com</bdi>
+                            </div>
+                            <span class="contact-email-action">ارسال ایمیل</span>
+                        </a>
+                    </div>
+
+                    <div class="footer-contact-form-wrap">
+                        <h3>ارسال پیام</h3>
+                        <p class="footer-contact-note">پیامت را بنویس، از طریق همین فرم به دست ما می‌رسد.</p>
+                        <form class="contact-form" id="contactForm">
+                            <div class="contact-form-row">
+                                <input type="text" id="contactName" maxlength="100" placeholder="نام و نام خانوادگی" autocomplete="name" required>
+                                <input type="email" id="contactEmail" maxlength="254" placeholder="آدرس ایمیل" autocomplete="email" required>
+                            </div>
+                            <input type="text" id="contactSubject" maxlength="150" placeholder="موضوع پیام" required>
+                            <textarea id="contactMessage" maxlength="5000" placeholder="متن پیام شما..." required></textarea>
+                            <div class="contact-form-actions">
+                                <button class="contact-submit" id="contactSubmit" type="submit"><i data-lucide="send" size="16"></i> ارسال پیام</button>
+                                <p class="contact-form-message" id="contactFormMessage" role="status" aria-live="polite"></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
 
             <div class="footer-bottom">
                 <div>
@@ -2357,6 +2382,10 @@
             messageBox.textContent = "پیام شما با موفقیت ارسال شد. سپاس از ارتباطتان!";
         }
         document.getElementById("contactForm").addEventListener("submit", submitContactMessage);
+
+
+
+
 </script>
 
 </body>
