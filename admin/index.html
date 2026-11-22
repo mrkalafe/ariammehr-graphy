@@ -515,6 +515,24 @@ th {
 .user-details-panel{display:none;margin-top:18px;padding:16px;border:1px solid #e5e5e5;border-radius:9px;background:#fafafa;line-height:2;font-size:12px;overflow-wrap:anywhere}
 .user-details-panel pre{white-space:pre-wrap;direction:ltr;text-align:left;overflow-wrap:anywhere;font:12px/1.8 Tahoma,sans-serif}
 .settings-placeholder{padding:22px;border:1px dashed #d5d5d5;border-radius:10px;color:#777;line-height:2}
+
+#settingsAdminSection .settings-card{margin-top:16px}
+.settings-card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.settings-card-heading h3{margin:0;color:#17243a;font-size:16px}
+.settings-card-heading span{font-size:12px;color:#777}
+.settings-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.settings-form-grid label,.settings-field{display:flex;flex-direction:column;gap:7px;font-size:13px;color:#344054}
+.settings-form-grid input,.settings-form-grid textarea,.settings-field textarea{width:100%;padding:11px 12px;border:1px solid #d9dee7;border-radius:8px;background:#fff;color:#17243a;font:inherit;font-size:13px;box-sizing:border-box}
+.settings-form-grid textarea,.settings-field textarea{resize:vertical;line-height:1.8}
+.settings-full{grid-column:1/-1}
+.settings-toggle-list{display:flex;flex-direction:column;gap:12px}
+.settings-toggle{display:flex;align-items:center;gap:10px;font-size:13px;color:#344054;cursor:pointer;margin:8px 0}
+.settings-toggle input{width:17px;height:17px;accent-color:#158ffe}
+.settings-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+.settings-status{font-size:12px;line-height:1.8}
+.settings-warning{padding:10px 12px;background:#fff8e6;border-radius:8px;color:#805b00;font-size:12px;line-height:1.9;margin:12px 0}
+@media(max-width:650px){.settings-form-grid{grid-template-columns:1fr}.settings-full{grid-column:auto}.settings-card-heading{align-items:flex-start;flex-direction:column}}
+
 @media(max-width:650px){.users-toolbar{flex-direction:column}.users-toolbar input,.users-toolbar select{width:100%}}
 
 </style>
@@ -859,9 +877,43 @@ th {
 </div>
 </section>
 <section class="admin-section" id="settingsAdminSection">
-<div class="section-header"><h3>تنظیمات</h3></div>
-<div class="section">
-<div class="settings-placeholder">بخش تنظیمات پنل ایجاد شده است. گزینه‌ها و قابلیت‌های این بخش در مرحله بعدی مشخص و پیاده‌سازی می‌شوند.</div>
+<div class="section-header">
+<h3>تنظیمات سایت</h3>
+<button class="btn" id="refreshAdminSettings" type="button">بارگذاری مجدد</button>
+</div>
+
+<div class="section settings-card">
+<div class="settings-card-heading"><h3>تنظیمات عمومی</h3><span>اطلاعات پایه و هویت سایت</span></div>
+<div class="settings-form-grid">
+<label>نام سایت<input id="settingSiteName" type="text" maxlength="80" placeholder="نام سایت"></label>
+<label>نشانی لوگو<input id="settingLogoUrl" type="url" maxlength="1000" placeholder="https://example.com/logo.png" dir="ltr"></label>
+<label class="settings-full">توضیحات سایت<textarea id="settingSiteDescription" rows="3" maxlength="500" placeholder="توضیح کوتاه درباره سایت"></textarea></label>
+</div>
+<div class="settings-actions"><button class="btn" id="saveGeneralSettings" type="button">ذخیره تنظیمات عمومی</button><span class="settings-status" id="generalSettingsStatus" role="status"></span></div>
+</div>
+
+<div class="section settings-card">
+<div class="settings-card-heading"><h3>مدیریت عضویت</h3><span>کنترل امکان ساخت حساب جدید</span></div>
+<label class="settings-toggle"><input id="settingRegistrationEnabled" type="checkbox"><span>ثبت‌نام کاربران فعال باشد</span></label>
+<div class="settings-actions"><button class="btn" id="saveMembershipSettings" type="button">ذخیره وضعیت عضویت</button><span class="settings-status" id="membershipSettingsStatus" role="status"></span></div>
+</div>
+
+<div class="section settings-card">
+<div class="settings-card-heading"><h3>تنظیمات محتوا</h3><span>کنترل بخش‌های انتشار محتوا</span></div>
+<div class="settings-toggle-list">
+<label class="settings-toggle"><input id="settingPostsEnabled" type="checkbox"><span>انتشار مطالب فعال باشد</span></label>
+<label class="settings-toggle"><input id="settingImagesEnabled" type="checkbox"><span>انتشار تصاویر فعال باشد</span></label>
+<label class="settings-toggle"><input id="settingVideosEnabled" type="checkbox"><span>انتشار ویدئوها فعال باشد</span></label>
+</div>
+<div class="settings-actions"><button class="btn" id="saveContentSettings" type="button">ذخیره تنظیمات محتوا</button><span class="settings-status" id="contentSettingsStatus" role="status"></span></div>
+</div>
+
+<div class="section settings-card">
+<div class="settings-card-heading"><h3>حالت تعمیر و نگهداری</h3><span>نمایش پیام تعمیر و نگهداری به کاربران</span></div>
+<label class="settings-toggle"><input id="settingMaintenanceEnabled" type="checkbox"><span>حالت تعمیر و نگهداری فعال باشد</span></label>
+<label class="settings-field">پیام نمایش‌داده‌شده به کاربران<textarea id="settingMaintenanceMessage" rows="3" maxlength="500"></textarea></label>
+<p class="settings-warning">توجه: فعال‌کردن این گزینه به‌تنهایی دسترسی کاربران عادی را مسدود نمی‌کند؛ اعمال محدودیت در سایت اصلی نیز باید پیاده‌سازی شود.</p>
+<div class="settings-actions"><button class="btn" id="saveMaintenanceSettings" type="button">ذخیره تنظیمات تعمیر و نگهداری</button><span class="settings-status" id="maintenanceSettingsStatus" role="status"></span></div>
 </div>
 </section>
 
@@ -1382,6 +1434,7 @@ function showAdminArea(which) {
     if (which === "articles") loadAdminArticles();
     if (which === "contactMessages") loadContactMessages();
     if (which === "users") loadAdminUsers();
+    if (which === "settings") loadAdminSettings();
 }
 dashboardNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("dashboard"); });
 discussionNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("discussions"); });
@@ -1391,6 +1444,118 @@ articlesNav.addEventListener("click", function(e) { e.preventDefault(); showAdmi
 contactMessagesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("contactMessages"); });
 document.getElementById("usersNav").addEventListener("click", function(e) { e.preventDefault(); showAdminArea("users"); });
 document.getElementById("settingsNav").addEventListener("click", function(e) { e.preventDefault(); showAdminArea("settings"); });
+
+document.getElementById("refreshAdminSettings").addEventListener("click", loadAdminSettings);
+
+function setSettingsStatus(id, message, isError = false) {
+    const element = document.getElementById(id);
+    element.textContent = message;
+    element.style.color = isError ? "#b42318" : "#267b32";
+}
+
+async function loadAdminSettings() {
+    const button = document.getElementById("refreshAdminSettings");
+    button.disabled = true;
+    setSettingsStatus("generalSettingsStatus", "در حال دریافت تنظیمات...");
+    try {
+        const { data, error } = await db.functions.invoke("account-manager", {
+            body: { action: "admin_settings_get" }
+        });
+        if (error) throw error;
+        if (!data || data.success !== true) {
+            throw new Error(data?.error || "دریافت تنظیمات ناموفق بود.");
+        }
+
+        const settings = data.settings || {};
+        const general = settings.general || {};
+        const membership = settings.membership || {};
+        const content = settings.content || {};
+        const maintenance = settings.maintenance || {};
+
+        document.getElementById("settingSiteName").value = general.site_name || "";
+        document.getElementById("settingSiteDescription").value = general.site_description || "";
+        document.getElementById("settingLogoUrl").value = general.logo_url || "";
+        document.getElementById("settingRegistrationEnabled").checked = membership.registration_enabled !== false;
+        document.getElementById("settingPostsEnabled").checked = content.posts_enabled !== false;
+        document.getElementById("settingImagesEnabled").checked = content.images_enabled !== false;
+        document.getElementById("settingVideosEnabled").checked = content.videos_enabled !== false;
+        document.getElementById("settingMaintenanceEnabled").checked = maintenance.enabled === true;
+        document.getElementById("settingMaintenanceMessage").value = maintenance.message || "";
+
+        setSettingsStatus("generalSettingsStatus", "تنظیمات با موفقیت دریافت شد.");
+        setSettingsStatus("membershipSettingsStatus", "");
+        setSettingsStatus("contentSettingsStatus", "");
+        setSettingsStatus("maintenanceSettingsStatus", "");
+    } catch (error) {
+        console.error("Admin settings load failed:", error);
+        setSettingsStatus("generalSettingsStatus", error.message || "دریافت تنظیمات انجام نشد.", true);
+    } finally {
+        button.disabled = false;
+    }
+}
+
+async function saveAdminSetting(action, payload, statusId, buttonId) {
+    const button = document.getElementById(buttonId);
+    button.disabled = true;
+    setSettingsStatus(statusId, "در حال ذخیره...");
+    try {
+        const { data, error } = await db.functions.invoke("account-manager", {
+            body: { action, ...payload }
+        });
+        if (error) {
+            let detail = error.message || "خطا در ارتباط با سرور";
+            if (error.context instanceof Response) {
+                try {
+                    const responseText = await error.context.clone().text();
+                    if (responseText) {
+                        const parsed = JSON.parse(responseText);
+                        detail = parsed.error || responseText;
+                    }
+                } catch (_) {}
+            }
+            throw new Error(detail);
+        }
+        if (!data || data.success !== true) {
+            throw new Error(data?.error || "ذخیره تنظیمات ناموفق بود.");
+        }
+        setSettingsStatus(statusId, data.message || "با موفقیت ذخیره شد.");
+    } catch (error) {
+        console.error("Admin setting save failed:", action, error);
+        setSettingsStatus(statusId, error.message || "ذخیره تنظیمات انجام نشد.", true);
+    } finally {
+        button.disabled = false;
+    }
+}
+
+document.getElementById("saveGeneralSettings").addEventListener("click", function() {
+    saveAdminSetting("admin_settings_update", {
+        site_name: document.getElementById("settingSiteName").value,
+        site_description: document.getElementById("settingSiteDescription").value,
+        logo_url: document.getElementById("settingLogoUrl").value
+    }, "generalSettingsStatus", "saveGeneralSettings");
+});
+
+document.getElementById("saveMembershipSettings").addEventListener("click", function() {
+    saveAdminSetting("admin_membership_update", {
+        registration_enabled: document.getElementById("settingRegistrationEnabled").checked
+    }, "membershipSettingsStatus", "saveMembershipSettings");
+});
+
+document.getElementById("saveContentSettings").addEventListener("click", function() {
+    saveAdminSetting("admin_content_update", {
+        posts_enabled: document.getElementById("settingPostsEnabled").checked,
+        images_enabled: document.getElementById("settingImagesEnabled").checked,
+        videos_enabled: document.getElementById("settingVideosEnabled").checked
+    }, "contentSettingsStatus", "saveContentSettings");
+});
+
+document.getElementById("saveMaintenanceSettings").addEventListener("click", function() {
+    saveAdminSetting("admin_maintenance_update", {
+        enabled: document.getElementById("settingMaintenanceEnabled").checked,
+        message: document.getElementById("settingMaintenanceMessage").value
+    }, "maintenanceSettingsStatus", "saveMaintenanceSettings");
+});
+
 document.getElementById("refreshDiscussions").addEventListener("click", loadAdminDiscussions);
 document.getElementById("refreshQuotes").addEventListener("click", loadRoyalQuotes);
 document.getElementById("refreshBooks").addEventListener("click", loadRoyalBooks);
@@ -2356,22 +2521,7 @@ async function callAccountManager(action, values) {
     const result = await db.functions.invoke("account-manager", {body: body});
     if (result.error) {
         let message = result.error.message || "ارتباط با سرویس مدیریت کاربران ناموفق بود.";
-        const context = result.error.context;
-        if (context && typeof context.clone === "function") {
-            try {
-                const responseText = await context.clone().text();
-                let responseBody = responseText;
-                try {
-                    const parsed = JSON.parse(responseText);
-                    responseBody = parsed.error || parsed.message || responseText;
-                } catch (_) {}
-                message = "خطای سرور (HTTP " + (context.status || "نامشخص") + "): " + responseBody;
-            } catch (_) {
-                message += " (HTTP " + (context.status || "نامشخص") + ")";
-            }
-        } else if (result.data && result.data.error) {
-            message = result.data.error;
-        }
+        if (result.data && result.data.error) message = result.data.error;
         throw new Error(message);
     }
     const payload = result.data || {};
