@@ -123,6 +123,13 @@
             color: var(--gold);
         }
 
+        .brand-mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: inherit;
+        }
+
         .nav-links {
             display: flex;
             align-items: center;
@@ -1289,7 +1296,8 @@
 
                 <a class="brand" href="#top" aria-label="آریامهر گرافی، صفحه اصلی">
                     <span class="brand-mark">
-                        <i data-lucide="landmark"></i>
+                        <i data-lucide="landmark" id="defaultBrandIcon"></i>
+                        <img id="siteLogo" alt="" hidden>
                     </span>
                     <span>آریامهر گرافی</span>
                 </a>
@@ -1687,6 +1695,61 @@
             SUPABASE_URL,
             SUPABASE_KEY
         );
+
+        // Apply public site identity settings (name, description and logo).
+        async function applyGeneralSettings() {
+            try {
+                const { data, error } = await db
+                    .from("site_settings")
+                    .select("setting_value")
+                    .eq("setting_key", "general")
+                    .maybeSingle();
+
+                if (error) throw error;
+                const setting = data && data.setting_value ? data.setting_value : {};
+                const siteName = typeof setting.site_name === "string" && setting.site_name.trim()
+                    ? setting.site_name.trim() : "آریامهر گرافی";
+                const siteDescription = typeof setting.site_description === "string"
+                    ? setting.site_description.trim() : "";
+                const logoUrl = typeof setting.logo_url === "string" ? setting.logo_url.trim() : "";
+
+                // Replace the site's displayed brand name wherever its exact default name appears.
+                const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+                let textNode;
+                while ((textNode = textWalker.nextNode())) {
+                    if (textNode.nodeValue.includes("آریامهر گرافی")) {
+                        textNode.nodeValue = textNode.nodeValue.replaceAll("آریامهر گرافی", siteName);
+                    }
+                }
+                document.querySelectorAll('[aria-label*="آریامهر گرافی"]').forEach((element) => {
+                    element.setAttribute("aria-label", element.getAttribute("aria-label").replaceAll("آریامهر گرافی", siteName));
+                });
+                const brandLink = document.querySelector(".brand");
+                if (brandLink) brandLink.setAttribute("aria-label", siteName + "، صفحه اصلی");
+                const maintenanceHeading = document.querySelector("#maintenanceScreen h1");
+                if (maintenanceHeading) maintenanceHeading.setAttribute("aria-label", siteName);
+
+                document.title = siteName + " | روایت تاریخ، اسناد و تصاویر";
+                const descriptionMeta = document.querySelector('meta[name="description"]');
+                if (descriptionMeta && siteDescription) descriptionMeta.setAttribute("content", siteDescription);
+
+                const logo = document.getElementById("siteLogo");
+                const defaultIcon = document.getElementById("defaultBrandIcon");
+                if (logo && logoUrl) {
+                    logo.src = logoUrl;
+                    logo.hidden = false;
+                    if (defaultIcon) defaultIcon.hidden = true;
+                    logo.addEventListener("error", () => {
+                        logo.hidden = true;
+                        if (defaultIcon) defaultIcon.hidden = false;
+                    }, { once: true });
+                }
+            } catch (error) {
+                console.error("General site settings could not be loaded:", error);
+            }
+        }
+
+        applyGeneralSettings();
 
         // Read the public maintenance setting. Admins with an active panel session
         // are allowed through after the server verifies their administrator access.
