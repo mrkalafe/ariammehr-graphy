@@ -898,15 +898,6 @@ th {
 <div class="settings-actions"><button class="btn" id="saveMembershipSettings" type="button">ذخیره وضعیت عضویت</button><span class="settings-status" id="membershipSettingsStatus" role="status"></span></div>
 </div>
 
-<div class="section settings-card">
-<div class="settings-card-heading"><h3>تنظیمات محتوا</h3><span>کنترل بخش‌های انتشار محتوا</span></div>
-<div class="settings-toggle-list">
-<label class="settings-toggle"><input id="settingPostsEnabled" type="checkbox"><span>انتشار مطالب فعال باشد</span></label>
-<label class="settings-toggle"><input id="settingImagesEnabled" type="checkbox"><span>انتشار تصاویر فعال باشد</span></label>
-<label class="settings-toggle"><input id="settingVideosEnabled" type="checkbox"><span>انتشار ویدئوها فعال باشد</span></label>
-</div>
-<div class="settings-actions"><button class="btn" id="saveContentSettings" type="button">ذخیره تنظیمات محتوا</button><span class="settings-status" id="contentSettingsStatus" role="status"></span></div>
-</div>
 
 <div class="section settings-card">
 <div class="settings-card-heading"><h3>حالت تعمیر و نگهداری</h3><span>نمایش پیام تعمیر و نگهداری به کاربران</span></div>
@@ -1469,22 +1460,17 @@ async function loadAdminSettings() {
         const settings = data.settings || {};
         const general = settings.general || {};
         const membership = settings.membership || {};
-        const content = settings.content || {};
         const maintenance = settings.maintenance || {};
 
         document.getElementById("settingSiteName").value = general.site_name || "";
         document.getElementById("settingSiteDescription").value = general.site_description || "";
         document.getElementById("settingLogoUrl").value = general.logo_url || "";
         document.getElementById("settingRegistrationEnabled").checked = membership.registration_enabled !== false;
-        document.getElementById("settingPostsEnabled").checked = content.posts_enabled !== false;
-        document.getElementById("settingImagesEnabled").checked = content.images_enabled !== false;
-        document.getElementById("settingVideosEnabled").checked = content.videos_enabled !== false;
         document.getElementById("settingMaintenanceEnabled").checked = maintenance.enabled === true;
         document.getElementById("settingMaintenanceMessage").value = maintenance.message || "";
 
         setSettingsStatus("generalSettingsStatus", "تنظیمات با موفقیت دریافت شد.");
         setSettingsStatus("membershipSettingsStatus", "");
-        setSettingsStatus("contentSettingsStatus", "");
         setSettingsStatus("maintenanceSettingsStatus", "");
     } catch (error) {
         console.error("Admin settings load failed:", error);
@@ -1541,13 +1527,6 @@ document.getElementById("saveMembershipSettings").addEventListener("click", func
     }, "membershipSettingsStatus", "saveMembershipSettings");
 });
 
-document.getElementById("saveContentSettings").addEventListener("click", function() {
-    saveAdminSetting("admin_content_update", {
-        posts_enabled: document.getElementById("settingPostsEnabled").checked,
-        images_enabled: document.getElementById("settingImagesEnabled").checked,
-        videos_enabled: document.getElementById("settingVideosEnabled").checked
-    }, "contentSettingsStatus", "saveContentSettings");
-});
 
 document.getElementById("saveMaintenanceSettings").addEventListener("click", function() {
     saveAdminSetting("admin_maintenance_update", {
