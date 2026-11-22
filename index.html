@@ -1330,6 +1330,9 @@
                 </div>
 
                 <div class="nav-actions">
+                    <button class="button button-primary" id="authOpenBtn" type="button">ورود / ثبت‌نام</button>
+                    <span id="authUserLabel" hidden></span>
+                    <button class="button button-ghost" id="authSignOutBtn" type="button" hidden>خروج</button>
 
                     <button class="icon-button" id="focusSearch" type="button" aria-label="جست‌وجوی مقاله">
                         <i data-lucide="search"></i>
@@ -1677,6 +1680,9 @@
             </div>
         </div>
     </footer>
+
+    <div id="authModal" class="auth-modal" hidden><div class="auth-backdrop" data-auth-close></div><section class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle"><button type="button" class="auth-close" data-auth-close aria-label="بستن">×</button><h2 id="authTitle">ورود به حساب کاربری</h2><div class="auth-tabs"><button type="button" id="authLoginTab" class="active">ورود</button><button type="button" id="authRegisterTab">ثبت‌نام</button></div><form id="authForm"><div id="authRegisterFields" hidden><input id="authDisplayName" autocomplete="name" maxlength="32" placeholder="نام نمایشی (۲ تا ۳۲ نویسه)"><input id="authUsername" autocomplete="username" maxlength="24" placeholder="نام کاربری انگلیسی (۳ تا ۲۴ نویسه)"></div><input id="authEmail" type="email" autocomplete="email" placeholder="ایمیل" required><input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="رمز عبور (حداقل ۸ نویسه)" required><button class="button button-primary" id="authSubmit" type="submit">ورود</button><p id="authMessage" role="status"></p></form></section></div>
+    <style>.auth-modal[hidden]{display:none!important}.auth-modal{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px}.auth-backdrop{position:absolute;inset:0;background:#000b;backdrop-filter:blur(5px)}.auth-dialog{position:relative;width:min(430px,100%);padding:28px;border:1px solid #ffffff25;border-radius:22px;background:#171923;color:#fff;box-shadow:0 25px 80px #0009}.auth-close{position:absolute;left:15px;top:12px;border:0;background:none;color:#fff;font-size:28px;cursor:pointer}.auth-tabs{display:flex;gap:8px;margin:18px 0}.auth-tabs button{flex:1;padding:10px;border:1px solid #ffffff25;border-radius:10px;background:#ffffff0b;color:#fff;font:inherit;cursor:pointer}.auth-tabs button.active{background:#6550cb}.auth-dialog input{display:block;width:100%;margin:10px 0;padding:13px;border:1px solid #ffffff25;border-radius:10px;background:#ffffff0b;color:#fff;font:inherit}.auth-dialog #authSubmit{width:100%;margin-top:12px}.auth-dialog #authMessage{font-size:13px;line-height:1.9;color:#c9c9d5}.auth-dialog #authMessage.error{color:#ff8797}</style>
 
     <!-- Libraries -->
 
@@ -2523,6 +2529,65 @@
 
 
 
+
+        // Account authentication
+        let authMode = "login";
+        let currentProfile = null;
+        const authModal = document.getElementById("authModal");
+        function setAuthMode(mode) {
+            authMode = mode;
+            document.getElementById("authTitle").textContent = mode === "register" ? "ساخت حساب کاربری" : "ورود به حساب کاربری";
+            document.getElementById("authRegisterFields").hidden = mode !== "register";
+            document.getElementById("authPassword").autocomplete = mode === "register" ? "new-password" : "current-password";
+            document.getElementById("authSubmit").textContent = mode === "register" ? "ثبت‌نام" : "ورود";
+            document.getElementById("authLoginTab").classList.toggle("active", mode === "login");
+            document.getElementById("authRegisterTab").classList.toggle("active", mode === "register");
+            document.getElementById("authMessage").textContent = "";
+        }
+        document.getElementById("authOpenBtn").addEventListener("click", () => { setAuthMode("login"); authModal.hidden = false; });
+        document.getElementById("authLoginTab").addEventListener("click", () => setAuthMode("login"));
+        document.getElementById("authRegisterTab").addEventListener("click", async () => {
+            const { data, error } = await db.rpc("is_registration_enabled");
+            if (error || data !== true) { const m=document.getElementById("authMessage"); m.textContent="ثبت‌نام در حال حاضر غیرفعال است."; m.className="error"; authModal.hidden=false; return; }
+            setAuthMode("register");
+        });
+        document.querySelectorAll("[data-auth-close]").forEach(el => el.addEventListener("click", () => authModal.hidden = true));
+        document.getElementById("authForm").addEventListener("submit", async e => {
+            e.preventDefault();
+            const message=document.getElementById("authMessage"), button=document.getElementById("authSubmit");
+            message.className=""; message.textContent="در حال پردازش..."; button.disabled=true;
+            const email=document.getElementById("authEmail").value.trim(), password=document.getElementById("authPassword").value;
+            let result;
+            if(authMode === "register") {
+                const gate=await db.rpc("is_registration_enabled");
+                const username=document.getElementById("authUsername").value.trim().toLowerCase();
+                const display_name=document.getElementById("authDisplayName").value.trim();
+                if(gate.error || gate.data !== true) { result={error:new Error("ثبت‌نام در حال حاضر غیرفعال است.")}; }
+                else if(!/^[a-z0-9_]{3,24}$/.test(username) || display_name.length<2 || display_name.length>32) { result={error:new Error("نام کاربری یا نام نمایشی معتبر نیست.")}; }
+                else result=await db.auth.signUp({email,password,options:{data:{username,display_name}}});
+                if(result.error) { message.textContent=result.error.message; message.className="error"; }
+                else { message.textContent=result.data.session ? "حساب ساخته شد و وارد شدی." : "حساب ساخته شد. ایمیلت را برای تأیید حساب بررسی کن."; if(result.data.session) { await refreshAuthUI(); setTimeout(()=>authModal.hidden=true,900); } }
+            } else {
+                result=await db.auth.signInWithPassword({email,password});
+                if(result.error) { message.textContent="ورود انجام نشد. ایمیل و رمز عبور را بررسی کن."; message.className="error"; }
+                else { await refreshAuthUI(); message.textContent="با موفقیت وارد شدی."; setTimeout(()=>authModal.hidden=true,700); }
+            }
+            button.disabled=false;
+        });
+        async function refreshAuthUI() {
+            const {data}=await db.auth.getSession(); const user=data.session?.user;
+            const open=document.getElementById("authOpenBtn"), label=document.getElementById("authUserLabel"), out=document.getElementById("authSignOutBtn");
+            currentProfile=null;
+            if(!user){open.hidden=false;label.hidden=true;out.hidden=true;return;}
+            const profile=await db.from("user_profiles").select("display_name,username,is_suspended").eq("user_id",user.id).maybeSingle();
+            currentProfile=profile.data;
+            open.hidden=true; label.hidden=false; out.hidden=false;
+            label.textContent=currentProfile?.display_name || user.email || "حساب کاربری";
+        }
+        document.getElementById("authSignOutBtn").addEventListener("click", async()=>{await db.auth.signOut();await refreshAuthUI();});
+        db.auth.onAuthStateChange(()=>{setTimeout(refreshAuthUI,0);});
+        refreshAuthUI();
+        if (location.hash === "#account") { authModal.hidden = false; setAuthMode("login"); }
 </script>
 
 </body>
