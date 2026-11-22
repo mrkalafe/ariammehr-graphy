@@ -1247,10 +1247,41 @@
             .footer-bottom > small { order:3; width:100%; }
         }
 
+
+        /* Maintenance mode */
+        body.maintenance-checking { visibility: hidden; }
+        body.maintenance-active { background:#0b0b0d !important; overflow:hidden; }
+        body.maintenance-active > :not(#maintenanceScreen) { display:none !important; }
+        #maintenanceScreen {
+            display:none; position:fixed; inset:0; z-index:2147483647;
+            align-items:center; justify-content:center; padding:24px;
+            background:radial-gradient(circle at 50% 25%, rgba(184,145,66,.13), transparent 42%), #0b0b0d;
+            color:#f3eee3; direction:rtl; text-align:center;
+            font-family:inherit;
+        }
+        body.maintenance-active #maintenanceScreen { display:flex; }
+        .maintenance-card {
+            width:min(100%,520px); padding:38px 28px; border:1px solid rgba(194,157,86,.28);
+            border-radius:22px; background:rgba(24,23,21,.94); box-shadow:0 24px 80px rgba(0,0,0,.38);
+        }
+        .maintenance-symbol { width:62px;height:62px;margin:0 auto 20px;display:grid;place-items:center;border-radius:19px;background:rgba(194,157,86,.12);color:#c9a45e;font-size:29px; }
+        .maintenance-card h1 { margin:0 0 12px;font-size:clamp(22px,5vw,30px);color:#d7b875; }
+        .maintenance-card p { margin:0;color:#c4c0b7;line-height:2.1;font-size:14px;white-space:pre-wrap; }
+        .maintenance-card small { display:block;margin-top:24px;color:#77736c;font-size:11px; }
+
 </style>
 </head>
 
-<body id="top">
+<body id="top" class="maintenance-checking">
+
+    <section id="maintenanceScreen" role="status" aria-live="polite">
+        <div class="maintenance-card">
+            <div class="maintenance-symbol" aria-hidden="true">⚙</div>
+            <h1>در حال به‌روزرسانی سایت</h1>
+            <p id="maintenanceMessage">آریامهر گرافی برای مدتی کوتاه در دسترس نیست. به‌زودی بازمی‌گردیم.</p>
+            <small>آریامهر گرافی</small>
+        </div>
+    </section>
 
     <header class="site-header">
         <div class="container">
@@ -1656,6 +1687,49 @@
             SUPABASE_URL,
             SUPABASE_KEY
         );
+
+        // Read the public maintenance setting. Admins with an active panel session
+        // are allowed through after the server verifies their administrator access.
+        async function applyMaintenanceMode() {
+            const screen = document.getElementById("maintenanceScreen");
+            const message = document.getElementById("maintenanceMessage");
+            try {
+                const { data, error } = await db
+                    .from("site_settings")
+                    .select("setting_value")
+                    .eq("setting_key", "maintenance")
+                    .maybeSingle();
+
+                if (error) throw error;
+                const setting = data && data.setting_value ? data.setting_value : {};
+
+                if (setting.enabled === true) {
+                    let isAdmin = false;
+                    const { data: sessionData } = await db.auth.getSession();
+                    if (sessionData && sessionData.session && sessionData.session.access_token) {
+                        const adminCheck = await db.functions.invoke("account-manager", {
+                            body: { action: "admin_settings_get" }
+                        });
+                        isAdmin = !adminCheck.error && adminCheck.data && adminCheck.data.success === true;
+                    }
+
+                    if (!isAdmin) {
+                        message.textContent = typeof setting.message === "string" && setting.message.trim()
+                            ? setting.message.trim()
+                            : "آریامهر گرافی برای مدتی کوتاه در دسترس نیست. به‌زودی بازمی‌گردیم.";
+                        document.body.classList.add("maintenance-active");
+                    }
+                }
+            } catch (error) {
+                // Fail open if settings cannot be reached, so a temporary API issue
+                // does not accidentally take the public website offline.
+                console.error("Maintenance settings could not be loaded:", error);
+            } finally {
+                document.body.classList.remove("maintenance-checking");
+            }
+        }
+
+        applyMaintenanceMode();
 
         const articlesContainer = document.getElementById("articles");
 
