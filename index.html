@@ -77,6 +77,12 @@
             margin-inline: auto;
         }
 
+        .profile-link{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;color:var(--text);text-decoration:none;font-size:13px;font-weight:700}
+        .notification-wrap{position:relative;display:inline-flex}
+        .notification-button{position:relative;width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.04);color:var(--text);cursor:pointer}
+        .notification-badge{position:absolute;top:-6px;left:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:20px;background:var(--red);color:#fff;font-size:10px;display:grid;place-items:center}
+        .notification-popover{position:absolute;top:calc(100% + 12px);left:0;width:min(360px,calc(100vw - 36px));max-height:420px;overflow:auto;padding:12px;border:1px solid var(--line);border-radius:16px;background:#202020;box-shadow:0 18px 50px rgba(0,0,0,.4);z-index:50}
+        .notification-popover[hidden]{display:none!important}.notification-item{padding:12px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.8;cursor:pointer}.notification-item:last-child{border:0}.notification-item.unread{background:rgba(237,42,73,.08);border-radius:10px}.notification-empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
         /* Navbar */
 
         .site-header {
@@ -1333,6 +1339,11 @@
                     <button class="button button-primary" id="authOpenBtn" type="button">ورود / ثبت‌نام</button>
                     <span id="authUserLabel" hidden></span>
                     <button class="button button-ghost" id="authSignOutBtn" type="button" hidden>خروج</button>
+                    <a class="profile-link" id="profilePageLink" href="profile.html" hidden><i data-lucide="user-round" size="16"></i> پروفایل</a>
+                    <div class="notification-wrap" id="notificationWrap" hidden>
+                        <button class="notification-button" id="notificationButton" type="button" aria-label="اعلان‌ها" aria-expanded="false"><i data-lucide="bell"></i><span class="notification-badge" id="notificationBadge" hidden>0</span></button>
+                        <div class="notification-popover" id="notificationPopover" hidden><div class="notification-empty">در حال دریافت اعلان‌ها...</div></div>
+                    </div>
 
                     <button class="icon-button" id="focusSearch" type="button" aria-label="جست‌وجوی مقاله">
                         <i data-lucide="search"></i>
@@ -2591,6 +2602,9 @@
             const open=document.getElementById("authOpenBtn"), label=document.getElementById("authUserLabel"), out=document.getElementById("authSignOutBtn");
             if (!user) {
                 currentProfile=null;
+                setAuthElementVisible(document.getElementById("profilePageLink"), false);
+                setAuthElementVisible(document.getElementById("notificationWrap"), false);
+                if (window.notificationChannel) { db.removeChannel(window.notificationChannel); window.notificationChannel=null; }
                 setAuthElementVisible(open, true);
                 setAuthElementVisible(label, false);
                 setAuthElementVisible(out, false);
@@ -2599,11 +2613,29 @@
             const profile=await db.from("user_profiles").select("display_name,username,is_suspended").eq("user_id",user.id).maybeSingle();
             if (requestId !== authUiRequest) return;
             currentProfile=profile.data || null;
+            startNotificationRealtime(user.id);
+            setAuthElementVisible(document.getElementById("profilePageLink"), true);
+            setAuthElementVisible(document.getElementById("notificationWrap"), true);
             setAuthElementVisible(open, false);
             setAuthElementVisible(label, true);
             setAuthElementVisible(out, true);
             label.textContent=currentProfile?.display_name || user.email || "حساب کاربری";
         }
+        let notificationChannel=null;
+        const notificationButton=document.getElementById("notificationButton");
+        const notificationPopover=document.getElementById("notificationPopover");
+        const notificationBadge=document.getElementById("notificationBadge");
+        function escNotification(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "'":"&#39;"}[c]));}
+        async function loadNotifications(){
+            const {data,error}=await db.from("notifications").select("id,actor_display_name,body_preview,discussion_id,created_at,read_at").order("created_at",{ascending:false}).limit(30);
+            if(error){console.error("Notifications load failed:",error);notificationPopover.innerHTML='<div class="notification-empty">دریافت اعلان‌ها ناموفق بود.</div>';return;}
+            const rows=data||[];const unread=rows.filter(x=>!x.read_at).length;notificationBadge.textContent=unread>99?"99+":String(unread);notificationBadge.hidden=unread===0;
+            notificationPopover.innerHTML=rows.length?rows.map(n=>`<div class="notification-item ${n.read_at?'':'unread'}" data-id="${n.id}" data-discussion="${n.discussion_id||''}"><strong>${escNotification(n.actor_display_name)}</strong> به بحث شما پاسخ داد.<br><span>${escNotification(n.body_preview)}</span></div>`).join(""):'<div class="notification-empty">هنوز اعلانی نداری.</div>';
+            notificationPopover.querySelectorAll(".notification-item").forEach(el=>el.addEventListener("click",async()=>{const id=Number(el.dataset.id);await db.from("notifications").update({read_at:new Date().toISOString()}).eq("id",id);const discussionId=el.dataset.discussion;notificationPopover.hidden=true;if(discussionId)location.href=`discussion.html?discussion=${encodeURIComponent(discussionId)}`;else loadNotifications();}));
+        }
+        function startNotificationRealtime(userId){if(notificationChannel)db.removeChannel(notificationChannel);notificationChannel=db.channel("ariamehr-notifications-"+userId).on("postgres_changes",{event:"INSERT",schema:"public",table:"notifications",filter:"recipient_user_id=eq."+userId},()=>loadNotifications()).subscribe();window.notificationChannel=notificationChannel;loadNotifications();}
+        notificationButton.addEventListener("click",()=>{notificationPopover.hidden=!notificationPopover.hidden;notificationButton.setAttribute("aria-expanded",String(!notificationPopover.hidden));if(!notificationPopover.hidden)loadNotifications();});
+        document.addEventListener("click",e=>{if(!e.target.closest("#notificationWrap")){notificationPopover.hidden=true;notificationButton.setAttribute("aria-expanded","false");}});
         document.getElementById("authSignOutBtn").addEventListener("click", async()=>{
             const { error } = await db.auth.signOut();
             if (error) { console.error("Sign out failed:", error); return; }
