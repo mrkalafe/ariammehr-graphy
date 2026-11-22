@@ -899,6 +899,7 @@ th {
 </div>
 
 
+
 <div class="section settings-card">
 <div class="settings-card-heading"><h3>حالت تعمیر و نگهداری</h3><span>نمایش پیام تعمیر و نگهداری به کاربران</span></div>
 <label class="settings-toggle"><input id="settingMaintenanceEnabled" type="checkbox"><span>حالت تعمیر و نگهداری فعال باشد</span></label>
@@ -1526,7 +1527,6 @@ document.getElementById("saveMembershipSettings").addEventListener("click", func
         registration_enabled: document.getElementById("settingRegistrationEnabled").checked
     }, "membershipSettingsStatus", "saveMembershipSettings");
 });
-
 
 document.getElementById("saveMaintenanceSettings").addEventListener("click", function() {
     saveAdminSetting("admin_maintenance_update", {
