@@ -2356,7 +2356,22 @@ async function callAccountManager(action, values) {
     const result = await db.functions.invoke("account-manager", {body: body});
     if (result.error) {
         let message = result.error.message || "ارتباط با سرویس مدیریت کاربران ناموفق بود.";
-        if (result.data && result.data.error) message = result.data.error;
+        const context = result.error.context;
+        if (context && typeof context.clone === "function") {
+            try {
+                const responseText = await context.clone().text();
+                let responseBody = responseText;
+                try {
+                    const parsed = JSON.parse(responseText);
+                    responseBody = parsed.error || parsed.message || responseText;
+                } catch (_) {}
+                message = "خطای سرور (HTTP " + (context.status || "نامشخص") + "): " + responseBody;
+            } catch (_) {
+                message += " (HTTP " + (context.status || "نامشخص") + ")";
+            }
+        } else if (result.data && result.data.error) {
+            message = result.data.error;
+        }
         throw new Error(message);
     }
     const payload = result.data || {};
