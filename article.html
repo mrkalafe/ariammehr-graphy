@@ -27,7 +27,7 @@
         body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.18;background-image:radial-gradient(rgba(255,255,255,.18) .6px,transparent .6px);background-size:6px 6px;mask-image:linear-gradient(to bottom,black,transparent 75%)}
         a{color:inherit}button{font-family:inherit}.container{width:min(1180px,calc(100% - 40px));margin-inline:auto}
         .site-header{position:sticky;top:14px;z-index:20;padding-top:14px}.navbar{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:12px 20px;border:1px solid var(--line);border-radius:23px;background:rgba(17,17,17,.78);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 12px 45px rgba(0,0,0,.2)}
-        .brand{display:inline-flex;align-items:center;gap:11px;color:var(--red);text-decoration:none;white-space:nowrap;font-size:23px;font-weight:900}.brand-mark{width:39px;height:39px;display:grid;place-items:center;border:1px solid rgba(211,160,52,.35);border-radius:13px;background:rgba(211,160,52,.08);color:var(--gold)}
+        .brand{display:inline-flex;align-items:center;gap:11px;color:var(--red);text-decoration:none;white-space:nowrap;font-size:23px;font-weight:900}.brand-mark{width:39px;height:39px;display:grid;place-items:center;border:1px solid rgba(211,160,52,.35);border-radius:13px;background:rgba(211,160,52,.08);color:var(--gold);overflow:hidden}.brand-mark img{width:100%;height:100%;object-fit:contain;border-radius:inherit}.brand-mark [hidden]{display:none!important}
         .nav-links{display:flex;align-items:center;justify-content:center;gap:7px}.nav-link{display:inline-flex;align-items:center;gap:8px;padding:11px 13px;color:#c0c0c0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid transparent;border-radius:14px;transition:.2s ease}.nav-link:hover,.nav-link.active{color:var(--blue);border-color:rgba(42,138,207,.3);background:rgba(42,138,207,.08)}
         .nav-actions{display:flex;align-items:center;gap:8px}.icon-button{width:40px;height:40px;display:inline-grid;place-items:center;border:1px solid transparent;border-radius:13px;background:transparent;color:#b8bdc5;text-decoration:none;cursor:pointer}.icon-button:hover{color:var(--gold);border-color:rgba(211,160,52,.3);background:rgba(211,160,52,.08)}
         .article-main{width:min(940px,calc(100% - 40px));margin:48px auto 80px}.article-shell{overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:var(--shadow)}
@@ -143,7 +143,7 @@
 </head>
 <body id="top">
 <header class="site-header"><div class="container"><nav class="navbar" aria-label="منوی اصلی">
-    <a class="brand" href="index.html#top" aria-label="آریامهر گرافی، صفحه اصلی"><span class="brand-mark"><i data-lucide="landmark"></i></span><span>آریامهر گرافی</span></a>
+    <a class="brand" href="index.html#top" aria-label="آریامهر گرافی، صفحه اصلی"><span class="brand-mark"><i data-lucide="landmark" id="defaultBrandIcon"></i><img id="siteLogo" alt="" hidden></span><span id="siteBrandName">آریامهر گرافی</span></a>
     <div class="nav-links">
         <a class="nav-link" href="index.html#top"><i data-lucide="house" size="17"></i>خانه</a>
         <a class="nav-link active" href="index.html#articles-section"><i data-lucide="book-open" size="17"></i>مجله</a>
@@ -236,6 +236,33 @@
     const SUPABASE_URL = "https://dtndnnogjrtufjezwety.supabase.co";
     const SUPABASE_KEY = "sb_publishable_Z3VyIdDrg5Rdrg9REKRqZw_oUSVG04a";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    async function applyGeneralSettings(){
+        try{
+            const {data,error}=await db.from("site_settings").select("setting_value").eq("setting_key","general").maybeSingle();
+            if(error) throw error;
+            const settings=data&&data.setting_value?data.setting_value:{};
+            const siteName=typeof settings.site_name==="string"&&settings.site_name.trim()?settings.site_name.trim():"آریامهر گرافی";
+            const description=typeof settings.site_description==="string"?settings.site_description.trim():"";
+            const logoUrl=typeof settings.logo_url==="string"?settings.logo_url.trim():"";
+            const brandName=document.getElementById("siteBrandName");
+            const brand=document.querySelector(".brand");
+            if(brandName) brandName.textContent=siteName;
+            if(brand) brand.setAttribute("aria-label",siteName+"، صفحه اصلی");
+            document.title="مقاله | "+siteName;
+            const ogSite=document.querySelector('meta[property="og:site_name"]');
+            if(ogSite) ogSite.setAttribute("content",siteName);
+            const descMeta=document.querySelector('meta[name="description"]');
+            if(descMeta&&description) descMeta.setAttribute("content",description);
+            const logo=document.getElementById("siteLogo");
+            const fallback=document.getElementById("defaultBrandIcon");
+            if(logo&&logoUrl){
+                logo.onload=()=>{logo.hidden=false;if(fallback)fallback.hidden=true;};
+                logo.onerror=()=>{logo.hidden=true;if(fallback)fallback.hidden=false;};
+                logo.src=logoUrl;
+            }
+        }catch(error){console.error("General site settings could not be loaded:",error);}
+    }
+    applyGeneralSettings();
     const shell = document.getElementById("articleShell");
     const state = document.getElementById("articleState");
     function refreshIcons(){ if(window.lucide) lucide.createIcons(); }
