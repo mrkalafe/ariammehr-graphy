@@ -1682,7 +1682,7 @@
     </footer>
 
     <div id="authModal" class="auth-modal" hidden><div class="auth-backdrop" data-auth-close></div><section class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle"><button type="button" class="auth-close" data-auth-close aria-label="بستن">×</button><h2 id="authTitle">ورود به حساب کاربری</h2><div class="auth-tabs"><button type="button" id="authLoginTab" class="active">ورود</button><button type="button" id="authRegisterTab">ثبت‌نام</button></div><form id="authForm"><div id="authRegisterFields" hidden><input id="authDisplayName" autocomplete="name" maxlength="32" placeholder="نام نمایشی (۲ تا ۳۲ نویسه)"><input id="authUsername" autocomplete="username" maxlength="24" placeholder="نام کاربری انگلیسی (۳ تا ۲۴ نویسه)"></div><input id="authEmail" type="email" autocomplete="email" placeholder="ایمیل" required><input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="رمز عبور (حداقل ۸ نویسه)" required><button class="button button-primary" id="authSubmit" type="submit">ورود</button><p id="authMessage" role="status"></p></form></section></div>
-    <style>.auth-modal[hidden]{display:none!important}.auth-modal{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px}.auth-backdrop{position:absolute;inset:0;background:#000b;backdrop-filter:blur(5px)}.auth-dialog{position:relative;width:min(430px,100%);padding:28px;border:1px solid #ffffff25;border-radius:22px;background:#171923;color:#fff;box-shadow:0 25px 80px #0009}.auth-close{position:absolute;left:15px;top:12px;border:0;background:none;color:#fff;font-size:28px;cursor:pointer}.auth-tabs{display:flex;gap:8px;margin:18px 0}.auth-tabs button{flex:1;padding:10px;border:1px solid #ffffff25;border-radius:10px;background:#ffffff0b;color:#fff;font:inherit;cursor:pointer}.auth-tabs button.active{background:#6550cb}.auth-dialog input{display:block;width:100%;margin:10px 0;padding:13px;border:1px solid #ffffff25;border-radius:10px;background:#ffffff0b;color:#fff;font:inherit}.auth-dialog #authSubmit{width:100%;margin-top:12px}.auth-dialog #authMessage{font-size:13px;line-height:1.9;color:#c9c9d5}.auth-dialog #authMessage.error{color:#ff8797}</style>
+    <style>#authOpenBtn[hidden],#authUserLabel[hidden],#authSignOutBtn[hidden]{display:none!important}.auth-modal[hidden]{display:none!important}.auth-modal{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px}.auth-backdrop{position:absolute;inset:0;background:#000b;backdrop-filter:blur(5px)}.auth-dialog{position:relative;width:min(430px,100%);padding:28px;border:1px solid #ffffff25;border-radius:22px;background:#171923;color:#fff;box-shadow:0 25px 80px #0009}.auth-close{position:absolute;left:15px;top:12px;border:0;background:none;color:#fff;font-size:28px;cursor:pointer}.auth-tabs{display:flex;gap:8px;margin:18px 0}.auth-tabs button{flex:1;padding:10px;border:1px solid #ffffff25;border-radius:10px;background:#ffffff0b;color:#fff;font:inherit;cursor:pointer}.auth-tabs button.active{background:#6550cb}.auth-dialog input{display:block;width:100%;margin:10px 0;padding:13px;border:1px solid #ffffff25;border-radius:10px;background:#ffffff0b;color:#fff;font:inherit}.auth-dialog #authSubmit{width:100%;margin-top:12px}.auth-dialog #authMessage{font-size:13px;line-height:1.9;color:#c9c9d5}.auth-dialog #authMessage.error{color:#ff8797}</style>
 
     <!-- Libraries -->
 
@@ -2574,18 +2574,42 @@
             }
             button.disabled=false;
         });
-        async function refreshAuthUI() {
-            const {data}=await db.auth.getSession(); const user=data.session?.user;
+        function setAuthElementVisible(element, visible) {
+            element.hidden = !visible;
+            element.style.setProperty("display", visible ? "" : "none", "important");
+        }
+        let authUiRequest = 0;
+        async function refreshAuthUI(session = undefined) {
+            const requestId = ++authUiRequest;
+            let user = session === undefined ? null : session?.user || null;
+            if (session === undefined) {
+                const { data, error } = await db.auth.getSession();
+                if (error) console.error("Session read failed:", error);
+                user = data?.session?.user || null;
+            }
+            if (requestId !== authUiRequest) return;
             const open=document.getElementById("authOpenBtn"), label=document.getElementById("authUserLabel"), out=document.getElementById("authSignOutBtn");
-            currentProfile=null;
-            if(!user){open.hidden=false;label.hidden=true;out.hidden=true;return;}
+            if (!user) {
+                currentProfile=null;
+                setAuthElementVisible(open, true);
+                setAuthElementVisible(label, false);
+                setAuthElementVisible(out, false);
+                return;
+            }
             const profile=await db.from("user_profiles").select("display_name,username,is_suspended").eq("user_id",user.id).maybeSingle();
-            currentProfile=profile.data;
-            open.hidden=true; label.hidden=false; out.hidden=false;
+            if (requestId !== authUiRequest) return;
+            currentProfile=profile.data || null;
+            setAuthElementVisible(open, false);
+            setAuthElementVisible(label, true);
+            setAuthElementVisible(out, true);
             label.textContent=currentProfile?.display_name || user.email || "حساب کاربری";
         }
-        document.getElementById("authSignOutBtn").addEventListener("click", async()=>{await db.auth.signOut();await refreshAuthUI();});
-        db.auth.onAuthStateChange(()=>{setTimeout(refreshAuthUI,0);});
+        document.getElementById("authSignOutBtn").addEventListener("click", async()=>{
+            const { error } = await db.auth.signOut();
+            if (error) { console.error("Sign out failed:", error); return; }
+            await refreshAuthUI(null);
+        });
+        db.auth.onAuthStateChange((event, session)=>{ refreshAuthUI(session); });
         refreshAuthUI();
         if (location.hash === "#account") { authModal.hidden = false; setAuthMode("login"); }
 </script>
