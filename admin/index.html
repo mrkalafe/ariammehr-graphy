@@ -591,6 +591,7 @@ th {
 <a href="#" id="discussionNav">☷ مدیریت بحث‌ها</a>
 <a href="#" id="quotesNav">❝ جملات شاهنشاه</a>
 <a href="#" id="booksNav">▤ کتاب‌های شاهنشاه</a>
+<a href="#" id="mediaNav">▣ آرشیو رسانه</a>
 
 
 <a href="#" id="contactMessagesNav">✉ صندوق پیام‌ها</a>
@@ -774,6 +775,99 @@ th {
 </div>
 </section>
 
+
+<section class="admin-section" id="mediaAdminSection">
+<div class="section-header">
+<h3>مدیریت آرشیو رسانه</h3>
+<button class="btn" id="refreshMedia" type="button">به‌روزرسانی</button>
+</div>
+
+<div class="section">
+<h3 id="imageFormHeading" style="margin:0 0 18px;">ثبت تصویر جدید</h3>
+<form id="imageForm">
+<div class="media-form-grid">
+<div class="full">
+<input id="imageUrl" type="url" placeholder="لینک تصویر" required maxlength="2000"/>
+</div>
+<div>
+<select id="imageStatus">
+<option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+<option value="published">انتشار در سایت</option>
+</select>
+</div>
+</div>
+<div class="media-actions-row">
+<button class="media-save" id="imageSaveButton" type="submit">ذخیره تصویر</button>
+<button class="media-cancel" id="imageCancelButton" type="button" style="display:none;">لغو ویرایش</button>
+</div>
+<p class="media-message" id="imageMessage" role="status"></p>
+</form>
+</div>
+
+<div class="section">
+<h3>تصاویر ثبت‌شده</h3>
+<div class="media-table-wrap">
+<table>
+<thead><tr><th>لینک تصویر</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+<tbody id="imagesAdminTable"><tr><td colspan="3">برای دریافت تصاویر، به‌روزرسانی را بزن.</td></tr></tbody>
+</table>
+</div>
+</div>
+
+<div class="section">
+<h3 id="videoFormHeading" style="margin:0 0 18px;">ثبت ویدئوی جدید</h3>
+<form id="videoForm">
+<div class="media-form-grid">
+<div class="full">
+<input id="videoTitle" type="text" maxlength="250" placeholder="عنوان ویدئو" required/>
+</div>
+<div class="full">
+<input id="videoUrl" type="url" maxlength="2000" placeholder="لینک مستقیم فایل یا صفحه ویدئو (اختیاری در صورت واردکردن Embed)"/>
+</div>
+<div class="full">
+<textarea id="videoEmbedCode" maxlength="30000" placeholder="کد Embed ویدئو (اختیاری)"></textarea>
+<p class="media-note">کد Embed در این مرحله فقط به‌صورت متن ذخیره می‌شود و در پنل مدیریت اجرا نمی‌شود. اجرای امن آن در صفحه عمومی جداگانه پیاده‌سازی خواهد شد.</p>
+</div>
+<div class="full">
+<input id="videoThumbnail" type="url" maxlength="2000" placeholder="لینک تصویر پیش‌نمایش (اختیاری)"/>
+</div>
+<div>
+<input id="videoCategory" type="text" maxlength="250" placeholder="دسته‌بندی"/>
+</div>
+<div>
+<input id="videoDate" type="text" maxlength="100" placeholder="تاریخ رویداد"/>
+</div>
+<div class="full">
+<input id="videoSource" type="text" maxlength="500" placeholder="منبع ویدئو (اختیاری)"/>
+</div>
+<div class="full">
+<textarea id="videoDescription" maxlength="10000" placeholder="توضیحات ویدئو"></textarea>
+</div>
+<div>
+<select id="videoStatus">
+<option value="draft">ذخیره به‌صورت پیش‌نویس</option>
+<option value="published">انتشار در سایت</option>
+</select>
+</div>
+</div>
+<div class="media-actions-row">
+<button class="media-save" id="videoSaveButton" type="submit">ذخیره ویدئو</button>
+<button class="media-cancel" id="videoCancelButton" type="button" style="display:none;">لغو ویرایش</button>
+</div>
+<p class="media-message" id="videoMessage" role="status"></p>
+</form>
+</div>
+
+<div class="section">
+<h3>ویدئوهای ثبت‌شده</h3>
+<div class="media-table-wrap">
+<table>
+<thead><tr><th>عنوان</th><th>دسته‌بندی</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+<tbody id="videosAdminTable"><tr><td colspan="5">برای دریافت ویدئوها، به‌روزرسانی را بزن.</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
 
 <section class="admin-section" id="contactMessagesAdminSection">
 <div class="section-header">
@@ -1363,6 +1457,7 @@ const dashboardNav = document.getElementById("dashboardNav");
 const discussionNav = document.getElementById("discussionNav");
 const quotesNav = document.getElementById("quotesNav");
 const booksNav = document.getElementById("booksNav");
+const mediaNav = document.getElementById("mediaNav");
 const articlesNav = document.getElementById("articlesNav");
 const contactMessagesNav = document.getElementById("contactMessagesNav");
 const discussionAdminSection = document.getElementById("discussionAdminSection");
@@ -1379,6 +1474,7 @@ function showAdminArea(which) {
         discussions: discussionAdminSection,
         quotes: quotesAdminSection,
         books: booksAdminSection,
+        media: document.getElementById("mediaAdminSection"),
         articles: articlesAdminSection,
         contactMessages: contactMessagesAdminSection,
         users: document.getElementById("usersAdminSection"),
@@ -1389,6 +1485,7 @@ function showAdminArea(which) {
         discussions: discussionNav,
         quotes: quotesNav,
         books: booksNav,
+        media: mediaNav,
         articles: articlesNav,
         contactMessages: contactMessagesNav,
         users: document.getElementById("usersNav"),
@@ -1399,6 +1496,7 @@ function showAdminArea(which) {
         discussions: "مدیریت بحث‌ها",
         quotes: "جملات شاهنشاه",
         books: "کتاب‌های شاهنشاه",
+        media: "آرشیو رسانه",
         articles: "مدیریت مقالات",
         contactMessages: "صندوق پیام‌ها",
         users: "مدیریت کاربران",
@@ -1423,6 +1521,10 @@ function showAdminArea(which) {
     if (which === "discussions") loadAdminDiscussions();
     if (which === "quotes") loadRoyalQuotes();
     if (which === "books") loadRoyalBooks();
+    if (which === "media") {
+        if (typeof window.loadArchiveImages === "function") window.loadArchiveImages();
+        if (typeof window.loadArchiveVideos === "function") window.loadArchiveVideos();
+    }
     if (which === "articles") loadAdminArticles();
     if (which === "contactMessages") loadContactMessages();
     if (which === "users") loadAdminUsers();
@@ -1432,6 +1534,7 @@ dashboardNav.addEventListener("click", function(e) { e.preventDefault(); showAdm
 discussionNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("discussions"); });
 quotesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("quotes"); });
 booksNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("books"); });
+mediaNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("media"); });
 articlesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("articles"); });
 contactMessagesNav.addEventListener("click", function(e) { e.preventDefault(); showAdminArea("contactMessages"); });
 document.getElementById("usersNav").addEventListener("click", function(e) { e.preventDefault(); showAdminArea("users"); });
@@ -2303,6 +2406,7 @@ async function loadArchiveImages() {
         table.append(tr);
     });
 }
+window.loadArchiveImages = loadArchiveImages;
 
 imageForm.addEventListener("submit", async function(event) {
     event.preventDefault();
@@ -2367,12 +2471,16 @@ function resetVideoForm() {
     videoMessage.textContent = "";
 }
 videoCancelButton.addEventListener("click", resetVideoForm);
+document.getElementById("refreshMedia").addEventListener("click", function() {
+    loadArchiveImages();
+    loadArchiveVideos();
+});
 
 async function loadArchiveVideos() {
     const table = document.getElementById("videosAdminTable");
     table.innerHTML = "<tr><td colspan='5'>در حال دریافت ویدئوها...</td></tr>";
     const result = await db.from("archive_videos")
-        .select("id,title,video_url,thumbnail_url,description,category,event_date,source,status,created_at")
+        .select("id,title,video_url,embed_code,thumbnail_url,description,category,event_date,source,status,created_at")
         .order("created_at", {ascending:false});
     if (result.error) {
         table.innerHTML = "<tr><td colspan='5'>خطا در دریافت ویدئوها: " +
@@ -2398,6 +2506,7 @@ async function loadArchiveVideos() {
             editingVideoId = item.id;
             document.getElementById("videoTitle").value = item.title || "";
             document.getElementById("videoUrl").value = item.video_url || "";
+            document.getElementById("videoEmbedCode").value = item.embed_code || "";
             document.getElementById("videoThumbnail").value = item.thumbnail_url || "";
             document.getElementById("videoCategory").value = item.category || "";
             document.getElementById("videoDate").value = item.event_date || "";
@@ -2427,8 +2536,12 @@ videoForm.addEventListener("submit", async function(event) {
     event.preventDefault();
     const title = document.getElementById("videoTitle").value.trim();
     const videoUrl = document.getElementById("videoUrl").value.trim();
+    const embedCode = document.getElementById("videoEmbedCode").value.trim();
     const thumbnailUrl = document.getElementById("videoThumbnail").value.trim();
-    if (!title || !videoUrl) { videoMessage.textContent = "عنوان و لینک ویدئو الزامی است."; return; }
+    if (!title || (!videoUrl && !embedCode)) {
+        videoMessage.textContent = "عنوان و حداقل یکی از لینک ویدئو یا کد Embed الزامی است.";
+        return;
+    }
     function validHttpUrl(value) {
         if (!value) return true;
         try { const parsed = new URL(value); return ["http:", "https:"].includes(parsed.protocol); }
@@ -2443,7 +2556,8 @@ videoForm.addEventListener("submit", async function(event) {
     videoMessage.textContent = "در حال ذخیره ویدئو...";
     const payload = {
         title: title,
-        video_url: videoUrl,
+        video_url: videoUrl || null,
+        embed_code: embedCode || null,
         thumbnail_url: thumbnailUrl || null,
         category: document.getElementById("videoCategory").value.trim() || null,
         event_date: document.getElementById("videoDate").value.trim() || null,
@@ -2466,6 +2580,7 @@ videoForm.addEventListener("submit", async function(event) {
     videoMessage.textContent = "ویدئو با موفقیت ذخیره شد.";
     await loadArchiveVideos();
 });
+window.loadArchiveVideos = loadArchiveVideos;
 
 
 
