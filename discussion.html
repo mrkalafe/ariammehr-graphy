@@ -94,29 +94,20 @@ const date=s=>new Date(s).toLocaleDateString('fa-IR',{year:'numeric',month:'long
 async function fetchAuthorProfiles(userIds){
  const ids=[...new Set((userIds||[]).filter(Boolean))];
  if(!ids.length)return {};
- const {data:visibility,error:visibilityError}=await db.rpc('get_discussion_author_profiles',{p_user_ids:ids});
- if(visibilityError){console.error('Author visibility load failed:',visibilityError);return {};}
- const rows=visibility||[];
- const publicIds=rows.filter(x=>x.is_public).map(x=>x.user_id);
- let profiles=[];
- if(publicIds.length){
-  const {data,error}=await db.from('user_profiles').select('user_id,username,display_name,avatar_id').in('user_id',publicIds);
-  if(error)console.error('Public author profiles load failed:',error);
-  profiles=data||[];
- }
- // The RPC exposes only avatar_id for private accounts, not their private profile fields.
- const avatarIds=[...new Set(rows.map(x=>x.avatar_id).filter(Boolean))];
- let avatars={};
- if(avatarIds.length){
-  const {data,error}=await db.from('profile_avatars').select('id,image_url').eq('is_active',true).in('id',avatarIds);
-  if(error)console.error('Author avatars load failed:',error);
-  (data||[]).forEach(a=>avatars[a.id]=a.image_url);
+ const {data:rows,error}=await db.rpc('get_discussion_author_profiles',{p_user_ids:ids});
+ if(error){
+  console.error('Author avatar/profile RPC failed:',error);
+  return {};
  }
  const result={};
- rows.forEach(v=>{
-  const p=profiles.find(x=>x.user_id===v.user_id);
-  result[v.user_id]={user_id:v.user_id,username:v.username,is_public:!!v.is_public,
-   display_name:v.is_public?(p?.display_name||null):null,avatar_url:avatars[v.avatar_id]||''};
+ (rows||[]).forEach(v=>{
+  result[v.user_id]={
+   user_id:v.user_id,
+   username:v.username,
+   is_public:!!v.is_public,
+   display_name:v.is_public?(v.display_name||null):null,
+   avatar_url:v.avatar_url||''
+  };
  });
  return result;
 }
@@ -127,7 +118,7 @@ function authorMarkup(userId,name,profiles,reply=false){
  const label=esc(visibleName);
  const initial=String(visibleName||'؟').trim().slice(0,1)||'؟';
  const avatar=p?.avatar_url
-  ? `<img class="author-avatar" src="${esc(p.avatar_url)}" alt="آواتار ${label}">`
+  ? `<img class="author-avatar" src="${esc(p.avatar_url)}" alt="آواتار ${label}" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="author-avatar" aria-hidden="true" hidden>${esc(initial)}</span>`
   : `<span class="author-avatar" aria-hidden="true">${esc(initial)}</span>`;
  const inner=`${avatar}<span class="author-name">${label}</span>`;
  return p?.username
