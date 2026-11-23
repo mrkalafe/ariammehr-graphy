@@ -2388,15 +2388,18 @@
         function getVideoEmbedInfo(rawUrl) {
             try {
                 const url = new URL(rawUrl);
+                if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+
                 const host = url.hostname.toLowerCase().replace(/^www\./, "");
                 if (host === "youtu.be") {
                     const id = url.pathname.split("/").filter(Boolean)[0];
                     if (id) return {type:"embed", url:"https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id)};
                 }
-                if (host.endsWith("youtube.com")) {
+                if (host === "youtube.com" || host.endsWith(".youtube.com")) {
                     let id = url.searchParams.get("v");
-                    if (!id && url.pathname.startsWith("/embed/")) id = url.pathname.split("/")[2];
-                    if (!id && url.pathname.startsWith("/shorts/")) id = url.pathname.split("/")[2];
+                    if (!id && (url.pathname.startsWith("/embed/") || url.pathname.startsWith("/shorts/"))) {
+                        id = url.pathname.split("/")[2];
+                    }
                     if (id) return {type:"embed", url:"https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id)};
                 }
                 if (host === "vimeo.com" || host === "player.vimeo.com") {
@@ -2411,10 +2414,59 @@
             }
         }
 
+        // All third-party players run inside a sandboxed iframe, never in the main page.
+        function createIsolatedEmbedFrame(embedHtml, title) {
+            const iframe = document.createElement("iframe");
+            iframe.title = title || "ویدئوی آرشیوی";
+            iframe.loading = "lazy";
+            iframe.referrerPolicy = "no-referrer";
+            iframe.setAttribute("sandbox", "allow-scripts allow-presentation");
+            iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
+            iframe.allowFullscreen = true;
+
+            const csp = [
+                "default-src https: data: blob:",
+                "script-src https: 'unsafe-inline' 'unsafe-eval'",
+                "style-src https: 'unsafe-inline'",
+                "img-src https: data: blob:",
+                "media-src https: blob:",
+                "frame-src https:",
+                "connect-src https: wss:",
+                "font-src https: data:",
+                "object-src 'none'",
+                "base-uri 'none'",
+                "form-action 'none'"
+            ].join("; ");
+
+            iframe.srcdoc =
+                '<!doctype html><html><head><meta charset="utf-8">' +
+                '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+                '<meta http-equiv="Content-Security-Policy" content="' + csp + '">' +
+                '<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080808}' +
+                'body{display:flex;align-items:center;justify-content:center}' +
+                'iframe,video,embed,object{max-width:100%;max-height:100%}' +
+                'iframe{width:100%;height:100%;border:0}video{width:100%;height:100%;object-fit:contain}' +
+                '</style></head><body>' + String(embedHtml || "") + '</body></html>';
+
+            return iframe;
+        }
+
+        function createIsolatedUrlFrame(url, title) {
+            const iframe = document.createElement("iframe");
+            iframe.src = url;
+            iframe.title = title || "ویدئوی آرشیوی";
+            iframe.loading = "lazy";
+            iframe.referrerPolicy = "no-referrer";
+            iframe.setAttribute("sandbox", "allow-scripts allow-presentation");
+            iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
+            iframe.allowFullscreen = true;
+            return iframe;
+        }
+
         async function loadArchiveVideos() {
             const container = document.getElementById("archiveVideos");
             const { data, error } = await db.from("archive_videos")
-                .select("id,title,video_url,thumbnail_url,description,category,event_date,source")
+                .select("id,title,video_url,embed_code,thumbnail_url,description,category,event_date,source")
                 .eq("status", "published")
                 .order("created_at", {ascending:false})
                 .limit(18);
@@ -2436,31 +2488,48 @@
 
                 const playerWrap = document.createElement("div");
                 playerWrap.className = "video-frame-wrap";
-                const info = getVideoEmbedInfo(item.video_url);
 
-                if (info && info.type === "file") {
-                    const video = document.createElement("video");
-                    video.controls = true;
-                    video.preload = "metadata";
-                    video.playsInline = true;
-                    video.src = info.url;
-                    if (item.thumbnail_url) video.poster = item.thumbnail_url;
-                    playerWrap.appendChild(video);
-                } else if (info) {
-                    const iframe = document.createElement("iframe");
-                    iframe.src = info.url;
-                    iframe.title = item.title || "ویدئوی آرشیوی";
-                    iframe.loading = "lazy";
-                    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-                    iframe.allowFullscreen = true;
-                    iframe.referrerPolicy = "strict-origin-when-cross-origin";
-                    playerWrap.appendChild(iframe);
+                const embedCode = String(item.embed_code || "").trim();
+                const videoUrl = String(item.video_url || "").trim();
+
+                if (embedCode) {
+                    const parsedEmbedUrl = /^https?:\/\/\S+$/i.test(embedCode)
+                        ? getVideoEmbedInfo(embedCode)
+                        : null;
+
+                    if (parsedEmbedUrl && parsedEmbedUrl.type === "file") {
+                        const video = document.createElement("video");
+                        video.controls = true;
+                        video.preload = "metadata";
+                        video.playsInline = true;
+                        video.src = parsedEmbedUrl.url;
+                        if (item.thumbnail_url) video.poster = item.thumbnail_url;
+                        playerWrap.appendChild(video);
+                    } else if (parsedEmbedUrl && parsedEmbedUrl.type === "embed") {
+                        playerWrap.appendChild(createIsolatedUrlFrame(parsedEmbedUrl.url, item.title));
+                    } else {
+                        playerWrap.appendChild(createIsolatedEmbedFrame(embedCode, item.title));
+                    }
                 } else {
-                    const unavailable = document.createElement("div");
-                    unavailable.className = "archive-state";
-                    unavailable.textContent = "لینک ویدئو معتبر نیست.";
-                    playerWrap.appendChild(unavailable);
+                    const info = getVideoEmbedInfo(videoUrl);
+                    if (info && info.type === "file") {
+                        const video = document.createElement("video");
+                        video.controls = true;
+                        video.preload = "metadata";
+                        video.playsInline = true;
+                        video.src = info.url;
+                        if (item.thumbnail_url) video.poster = item.thumbnail_url;
+                        playerWrap.appendChild(video);
+                    } else if (info) {
+                        playerWrap.appendChild(createIsolatedUrlFrame(info.url, item.title));
+                    } else {
+                        const unavailable = document.createElement("div");
+                        unavailable.className = "archive-state";
+                        unavailable.textContent = "لینک یا کد ویدئو معتبر نیست.";
+                        playerWrap.appendChild(unavailable);
+                    }
                 }
+
                 card.appendChild(playerWrap);
 
                 const title = document.createElement("h3");
