@@ -1092,11 +1092,26 @@
             color:inherit; text-decoration:none; font-size:12px; margin-top:auto;
         }
         .video-frame-wrap {
-            position:relative; width:100%; aspect-ratio:16/9; overflow:hidden;
-            border-radius:12px; background:#080808;
+            position:relative; width:100%; overflow:hidden;
+            border-radius:14px; background:#080808; border:1px solid rgba(255,255,255,.12);
         }
-        .video-frame-wrap iframe,.video-frame-wrap video {
-            width:100%; height:100%; border:0; display:block;
+        .ag-player-video { width:100%; aspect-ratio:16/9; height:auto; display:block; object-fit:contain; background:#050505; }
+        .ag-player-controls { display:flex; align-items:center; gap:9px; padding:10px 12px; background:linear-gradient(135deg,#17243a,#101827); color:#fff; }
+        .ag-control { flex:0 0 auto; border:0; border-radius:8px; min-width:34px; height:32px; color:#f3d477; background:rgba(255,255,255,.1); cursor:pointer; font-size:16px; }
+        .ag-time { flex:0 0 auto; color:#e6e8ed; font-size:11px; direction:ltr; font-variant-numeric:tabular-nums; }
+        .ag-progress { min-width:35px; flex:1; accent-color:#c9a227; cursor:pointer; }
+        .ag-volume { width:66px; accent-color:#c9a227; cursor:pointer; }
+        .ag-speed { flex:0 0 auto; max-width:68px; padding:6px 4px; border:1px solid #ffffff30; border-radius:7px; background:#202e43; color:#fff; font-size:11px; }
+        .ag-player-status { display:none; position:absolute; inset:0 0 52px; align-items:center; justify-content:center; padding:24px; text-align:center; color:#fff; background:rgba(0,0,0,.72); font-size:13px; line-height:2; pointer-events:none; }
+        .ag-player-status.visible { display:flex; }
+        .ag-player:fullscreen { width:100vw; height:100vh; display:flex; flex-direction:column; justify-content:center; border:0; border-radius:0; background:#000; }
+        .ag-player:fullscreen .ag-player-video { width:100%; height:calc(100% - 54px); aspect-ratio:auto; object-fit:contain; }
+        .ag-player:fullscreen .ag-player-controls { flex:0 0 54px; }
+        @media(max-width:520px) {
+            .ag-player-controls { gap:5px; padding:8px 6px; }
+            .ag-volume { width:42px; }
+            .ag-time { font-size:10px; }
+            .ag-control { min-width:30px; }
         }
         .image-lightbox {
             position:fixed; inset:0; z-index:10000; display:none; align-items:center;
@@ -2385,89 +2400,160 @@
             if (event.target === this) closeImageLightbox();
         });
 
-        function getVideoEmbedInfo(rawUrl) {
-            try {
-                const url = new URL(rawUrl);
-                if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+        function createArchiveVideoPlayer(item) {
+            const wrap = document.createElement("div");
+            wrap.className = "video-frame-wrap ag-player";
+            const video = document.createElement("video");
+            video.className = "ag-player-video";
+            video.preload = "metadata";
+            video.playsInline = true;
+            video.controls = false;
+            video.setAttribute("playsinline", "");
+            video.setAttribute("webkit-playsinline", "");
+            video.src = item.video_url;
+            if (item.thumbnail_url) video.poster = item.thumbnail_url;
 
-                const host = url.hostname.toLowerCase().replace(/^www\./, "");
-                if (host === "youtu.be") {
-                    const id = url.pathname.split("/").filter(Boolean)[0];
-                    if (id) return {type:"embed", url:"https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id)};
-                }
-                if (host === "youtube.com" || host.endsWith(".youtube.com")) {
-                    let id = url.searchParams.get("v");
-                    if (!id && (url.pathname.startsWith("/embed/") || url.pathname.startsWith("/shorts/"))) {
-                        id = url.pathname.split("/")[2];
-                    }
-                    if (id) return {type:"embed", url:"https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id)};
-                }
-                if (host === "vimeo.com" || host === "player.vimeo.com") {
-                    const parts = url.pathname.split("/").filter(Boolean);
-                    const id = host === "player.vimeo.com" ? parts[1] : parts[0];
-                    if (id && /^\d+$/.test(id)) return {type:"embed", url:"https://player.vimeo.com/video/" + id};
-                }
-                if (/\.(mp4|webm|ogg)(?:$|[?#])/i.test(url.href)) return {type:"file", url:url.href};
-                return {type:"embed", url:url.href};
-            } catch (_) {
-                return null;
+            const status = document.createElement("div");
+            status.className = "ag-player-status";
+            status.textContent = "در حال آماده‌سازی ویدئو…";
+
+            const controls = document.createElement("div");
+            controls.className = "ag-player-controls";
+
+            const play = document.createElement("button");
+            play.type = "button";
+            play.className = "ag-control ag-play";
+            play.textContent = "▶";
+            play.setAttribute("aria-label", "پخش");
+
+            const current = document.createElement("span");
+            current.className = "ag-time";
+            current.textContent = "۰:۰۰";
+
+            const progress = document.createElement("input");
+            progress.type = "range";
+            progress.className = "ag-progress";
+            progress.min = "0";
+            progress.max = "1000";
+            progress.value = "0";
+            progress.setAttribute("aria-label", "موقعیت پخش");
+
+            const duration = document.createElement("span");
+            duration.className = "ag-time";
+            duration.textContent = "۰:۰۰";
+
+            const mute = document.createElement("button");
+            mute.type = "button";
+            mute.className = "ag-control";
+            mute.textContent = "🔊";
+            mute.setAttribute("aria-label", "قطع صدا");
+
+            const volume = document.createElement("input");
+            volume.type = "range";
+            volume.className = "ag-volume";
+            volume.min = "0";
+            volume.max = "1";
+            volume.step = "0.05";
+            volume.value = "1";
+            volume.setAttribute("aria-label", "میزان صدا");
+
+            const speed = document.createElement("select");
+            speed.className = "ag-speed";
+            speed.setAttribute("aria-label", "سرعت پخش");
+            [["0.5","۰٫۵×"],["0.75","۰٫۷۵×"],["1","۱×"],["1.25","۱٫۲۵×"],["1.5","۱٫۵×"],["2","۲×"]].forEach(function(pair) {
+                const option = document.createElement("option");
+                option.value = pair[0];
+                option.textContent = pair[1];
+                if (pair[0] === "1") option.selected = true;
+                speed.appendChild(option);
+            });
+
+            const fullscreen = document.createElement("button");
+            fullscreen.type = "button";
+            fullscreen.className = "ag-control";
+            fullscreen.textContent = "⛶";
+            fullscreen.setAttribute("aria-label", "تمام صفحه");
+
+            controls.append(play, current, progress, duration, mute, volume, speed, fullscreen);
+            wrap.append(video, status, controls);
+
+            function formatTime(seconds) {
+                if (!Number.isFinite(seconds) || seconds < 0) return "۰:۰۰";
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
+                return mins.toLocaleString("fa-IR") + ":" + secs.toLocaleString("fa-IR");
             }
-        }
-
-        // All third-party players run inside a sandboxed iframe, never in the main page.
-        function createIsolatedEmbedFrame(embedHtml, title) {
-            const iframe = document.createElement("iframe");
-            iframe.title = title || "ویدئوی آرشیوی";
-            iframe.loading = "lazy";
-            iframe.referrerPolicy = "no-referrer";
-            iframe.setAttribute("sandbox", "allow-scripts allow-presentation");
-            iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
-            iframe.allowFullscreen = true;
-
-            const csp = [
-                "default-src https: data: blob:",
-                "script-src https: 'unsafe-inline' 'unsafe-eval'",
-                "style-src https: 'unsafe-inline'",
-                "img-src https: data: blob:",
-                "media-src https: blob:",
-                "frame-src https:",
-                "connect-src https: wss:",
-                "font-src https: data:",
-                "object-src 'none'",
-                "base-uri 'none'",
-                "form-action 'none'"
-            ].join("; ");
-
-            iframe.srcdoc =
-                '<!doctype html><html><head><meta charset="utf-8">' +
-                '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-                '<meta http-equiv="Content-Security-Policy" content="' + csp + '">' +
-                '<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080808}' +
-                'body{display:flex;align-items:center;justify-content:center}' +
-                'iframe,video,embed,object{max-width:100%;max-height:100%}' +
-                'iframe{width:100%;height:100%;border:0}video{width:100%;height:100%;object-fit:contain}' +
-                '</style></head><body>' + String(embedHtml || "") + '</body></html>';
-
-            return iframe;
-        }
-
-        function createIsolatedUrlFrame(url, title) {
-            const iframe = document.createElement("iframe");
-            iframe.src = url;
-            iframe.title = title || "ویدئوی آرشیوی";
-            iframe.loading = "lazy";
-            iframe.referrerPolicy = "no-referrer";
-            iframe.setAttribute("sandbox", "allow-scripts allow-presentation");
-            iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
-            iframe.allowFullscreen = true;
-            return iframe;
+            function updatePlayButton() {
+                play.textContent = video.paused ? "▶" : "Ⅱ";
+                play.setAttribute("aria-label", video.paused ? "پخش" : "توقف");
+            }
+            play.addEventListener("click", function() {
+                if (video.paused) {
+                    const promise = video.play();
+                    if (promise && promise.catch) promise.catch(function() {
+                        status.textContent = "پخش خودکار مسدود شد؛ دوباره دکمه پخش را بزن.";
+                        status.classList.add("visible");
+                    });
+                } else video.pause();
+            });
+            video.addEventListener("play", function() { status.classList.remove("visible"); updatePlayButton(); });
+            video.addEventListener("pause", updatePlayButton);
+            video.addEventListener("loadedmetadata", function() {
+                duration.textContent = formatTime(video.duration);
+                status.classList.remove("visible");
+            });
+            video.addEventListener("timeupdate", function() {
+                current.textContent = formatTime(video.currentTime);
+                if (Number.isFinite(video.duration) && video.duration > 0 && !progress.matches(":active")) {
+                    progress.value = String(Math.round(video.currentTime / video.duration * 1000));
+                }
+            });
+            video.addEventListener("waiting", function() {
+                status.textContent = "در حال بارگذاری…";
+                status.classList.add("visible");
+            });
+            video.addEventListener("canplay", function() { status.classList.remove("visible"); });
+            video.addEventListener("error", function() {
+                status.textContent = "پخش این لینک ممکن نیست. لینک باید مستقیم باشد و میزبان از پخش ویدئو در سایت‌های دیگر پشتیبانی کند.";
+                status.classList.add("visible");
+            });
+            progress.addEventListener("input", function() {
+                if (Number.isFinite(video.duration) && video.duration > 0) {
+                    video.currentTime = (Number(progress.value) / 1000) * video.duration;
+                }
+            });
+            mute.addEventListener("click", function() {
+                video.muted = !video.muted;
+                mute.textContent = video.muted ? "🔇" : "🔊";
+            });
+            volume.addEventListener("input", function() {
+                video.volume = Number(volume.value);
+                video.muted = video.volume === 0;
+                mute.textContent = video.muted ? "🔇" : "🔊";
+            });
+            speed.addEventListener("change", function() { video.playbackRate = Number(speed.value); });
+            fullscreen.addEventListener("click", function() {
+                const target = wrap;
+                if (document.fullscreenElement) {
+                    document.exitFullscreen().catch(function(){});
+                } else if (target.requestFullscreen) {
+                    target.requestFullscreen().catch(function() {
+                        status.textContent = "تمام‌صفحه در این مرورگر پشتیبانی نمی‌شود.";
+                        status.classList.add("visible");
+                    });
+                } else if (video.webkitEnterFullscreen) {
+                    video.webkitEnterFullscreen();
+                }
+            });
+            return wrap;
         }
 
         async function loadArchiveVideos() {
             const container = document.getElementById("archiveVideos");
             const { data, error } = await db.from("archive_videos")
-                .select("id,title,video_url,embed_code,thumbnail_url,description,category,event_date,source")
+                .select("id,title,video_url,thumbnail_url,description,category,event_date,source")
                 .eq("status", "published")
+                .not("video_url", "is", null)
                 .order("created_at", {ascending:false})
                 .limit(18);
 
@@ -2485,51 +2571,7 @@
             data.forEach(function(item) {
                 const card = document.createElement("article");
                 card.className = "archive-card media-card";
-
-                const playerWrap = document.createElement("div");
-                playerWrap.className = "video-frame-wrap";
-
-                const embedCode = String(item.embed_code || "").trim();
-                const videoUrl = String(item.video_url || "").trim();
-
-                if (embedCode) {
-                    const parsedEmbedUrl = /^https?:\/\/\S+$/i.test(embedCode)
-                        ? getVideoEmbedInfo(embedCode)
-                        : null;
-
-                    if (parsedEmbedUrl && parsedEmbedUrl.type === "file") {
-                        const video = document.createElement("video");
-                        video.controls = true;
-                        video.preload = "metadata";
-                        video.playsInline = true;
-                        video.src = parsedEmbedUrl.url;
-                        if (item.thumbnail_url) video.poster = item.thumbnail_url;
-                        playerWrap.appendChild(video);
-                    } else if (parsedEmbedUrl && parsedEmbedUrl.type === "embed") {
-                        playerWrap.appendChild(createIsolatedUrlFrame(parsedEmbedUrl.url, item.title));
-                    } else {
-                        playerWrap.appendChild(createIsolatedEmbedFrame(embedCode, item.title));
-                    }
-                } else {
-                    const info = getVideoEmbedInfo(videoUrl);
-                    if (info && info.type === "file") {
-                        const video = document.createElement("video");
-                        video.controls = true;
-                        video.preload = "metadata";
-                        video.playsInline = true;
-                        video.src = info.url;
-                        if (item.thumbnail_url) video.poster = item.thumbnail_url;
-                        playerWrap.appendChild(video);
-                    } else if (info) {
-                        playerWrap.appendChild(createIsolatedUrlFrame(info.url, item.title));
-                    } else {
-                        const unavailable = document.createElement("div");
-                        unavailable.className = "archive-state";
-                        unavailable.textContent = "لینک یا کد ویدئو معتبر نیست.";
-                        playerWrap.appendChild(unavailable);
-                    }
-                }
-
+                const playerWrap = createArchiveVideoPlayer(item);
                 card.appendChild(playerWrap);
 
                 const title = document.createElement("h3");
