@@ -11,11 +11,38 @@
    const v=visibility[0];
    const owner=sessionUser?.id===v.user_id;
    if(!v.is_public&&!owner){
-    card.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:42px">🔒</div><h1>این صفحه خصوصی است</h1><p class="muted">صاحب این حساب، نمایش اطلاعات پروفایل و فعالیت‌های خود را محدود کرده است.</p></div>';
-    document.getElementById('userDiscussions').textContent='این اطلاعات خصوصی است.';
-    document.getElementById('userReplies').textContent='این اطلاعات خصوصی است.';
-    document.getElementById('settingsCard').hidden=true;
-    return;
+
+  let avatarMarkup = `<div class="avatar">${esc(v.avatar_initial || '؟')}</div>`;
+
+  if(v.avatar_id){
+    const av = await db
+      .from('profile_avatars')
+      .select('image_url')
+      .eq('id',v.avatar_id)
+      .eq('is_active',true)
+      .maybeSingle();
+
+    if(av.data?.image_url){
+      avatarMarkup = `<img class="avatar" src="${esc(av.data.image_url)}" alt="آواتار کاربر">`;
+    }
+  }
+
+  card.innerHTML = `
+    <div class="profile-head">
+      ${avatarMarkup}
+      <div>
+        <h1>این صفحه خصوصی است 🔒</h1>
+        <p class="muted">صاحب این حساب، نمایش اطلاعات پروفایل و فعالیت‌های خود را محدود کرده است.</p>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('userDiscussions').textContent='این اطلاعات خصوصی است.';
+  document.getElementById('userReplies').textContent='این اطلاعات خصوصی است.';
+  document.getElementById('settingsCard').hidden=true;
+
+  return;
+}
    }
    const result=await db.from('user_profiles').select('user_id,username,display_name,avatar_id,is_public,created_at').eq('user_id',v.user_id).maybeSingle();
    data=result.data;error=result.error;
