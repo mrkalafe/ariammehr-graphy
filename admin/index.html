@@ -822,11 +822,7 @@ th {
 <input id="videoTitle" type="text" maxlength="250" placeholder="عنوان ویدئو" required/>
 </div>
 <div class="full">
-<input id="videoUrl" type="url" maxlength="2000" placeholder="لینک مستقیم فایل یا صفحه ویدئو (اختیاری در صورت واردکردن Embed)"/>
-</div>
-<div class="full">
-<textarea id="videoEmbedCode" maxlength="30000" placeholder="کد Embed ویدئو (اختیاری)"></textarea>
-<p class="media-note">کد Embed در این مرحله فقط به‌صورت متن ذخیره می‌شود و در پنل مدیریت اجرا نمی‌شود. اجرای امن آن در صفحه عمومی جداگانه پیاده‌سازی خواهد شد.</p>
+<input id="videoUrl" type="url" maxlength="2000" placeholder="لینک مستقیم فایل ویدئو (MP4، WebM یا OGG)" required/>
 </div>
 <div class="full">
 <input id="videoThumbnail" type="url" maxlength="2000" placeholder="لینک تصویر پیش‌نمایش (اختیاری)"/>
@@ -2480,7 +2476,7 @@ async function loadArchiveVideos() {
     const table = document.getElementById("videosAdminTable");
     table.innerHTML = "<tr><td colspan='5'>در حال دریافت ویدئوها...</td></tr>";
     const result = await db.from("archive_videos")
-        .select("id,title,video_url,embed_code,thumbnail_url,description,category,event_date,source,status,created_at")
+        .select("id,title,video_url,thumbnail_url,description,category,event_date,source,status,created_at")
         .order("created_at", {ascending:false});
     if (result.error) {
         table.innerHTML = "<tr><td colspan='5'>خطا در دریافت ویدئوها: " +
@@ -2506,7 +2502,6 @@ async function loadArchiveVideos() {
             editingVideoId = item.id;
             document.getElementById("videoTitle").value = item.title || "";
             document.getElementById("videoUrl").value = item.video_url || "";
-            document.getElementById("videoEmbedCode").value = item.embed_code || "";
             document.getElementById("videoThumbnail").value = item.thumbnail_url || "";
             document.getElementById("videoCategory").value = item.category || "";
             document.getElementById("videoDate").value = item.event_date || "";
@@ -2536,10 +2531,9 @@ videoForm.addEventListener("submit", async function(event) {
     event.preventDefault();
     const title = document.getElementById("videoTitle").value.trim();
     const videoUrl = document.getElementById("videoUrl").value.trim();
-    const embedCode = document.getElementById("videoEmbedCode").value.trim();
     const thumbnailUrl = document.getElementById("videoThumbnail").value.trim();
-    if (!title || (!videoUrl && !embedCode)) {
-        videoMessage.textContent = "عنوان و حداقل یکی از لینک ویدئو یا کد Embed الزامی است.";
+    if (!title || !videoUrl) {
+        videoMessage.textContent = "عنوان و لینک مستقیم ویدئو الزامی است.";
         return;
     }
     function validHttpUrl(value) {
@@ -2548,7 +2542,7 @@ videoForm.addEventListener("submit", async function(event) {
         catch (_) { return false; }
     }
     if (!validHttpUrl(videoUrl) || !validHttpUrl(thumbnailUrl)) {
-        videoMessage.textContent = "لینک ویدئو یا تصویر پیش‌نمایش معتبر نیست.";
+        videoMessage.textContent = "لینک مستقیم ویدئو یا تصویر پیش‌نمایش معتبر نیست.";
         return;
     }
     videoSaveButton.disabled = true;
@@ -2556,8 +2550,7 @@ videoForm.addEventListener("submit", async function(event) {
     videoMessage.textContent = "در حال ذخیره ویدئو...";
     const payload = {
         title: title,
-        video_url: videoUrl || null,
-        embed_code: embedCode || null,
+        video_url: videoUrl,
         thumbnail_url: thumbnailUrl || null,
         category: document.getElementById("videoCategory").value.trim() || null,
         event_date: document.getElementById("videoDate").value.trim() || null,
