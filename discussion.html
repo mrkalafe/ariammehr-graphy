@@ -65,24 +65,35 @@ const date=s=>new Date(s).toLocaleDateString('fa-IR',{year:'numeric',month:'long
 async function fetchAuthorProfiles(userIds){
  const ids=[...new Set((userIds||[]).filter(Boolean))];
  if(!ids.length)return {};
- const {data:profiles,error}=await db.from('user_profiles').select('user_id,username,display_name,avatar_id').in('user_id',ids);
- if(error){console.error('Author profiles load failed:',error);return {};}
- const avatarIds=[...new Set((profiles||[]).map(x=>x.avatar_id).filter(Boolean))];
+ const {data:visibility,error:visibilityError}=await db.rpc('get_discussion_author_profiles',{p_user_ids:ids});
+ if(visibilityError){console.error('Author visibility load failed:',visibilityError);return {};}
+ const publicIds=(visibility||[]).filter(x=>x.is_public).map(x=>x.user_id);
+ let profiles=[];
+ if(publicIds.length){
+  const {data,error}=await db.from('user_profiles').select('user_id,username,display_name,avatar_id').in('user_id',publicIds);
+  if(error)console.error('Public author profiles load failed:',error);
+  profiles=data||[];
+ }
+ const avatarIds=[...new Set(profiles.map(x=>x.avatar_id).filter(Boolean))];
  let avatars={};
  if(avatarIds.length){
   const {data}=await db.from('profile_avatars').select('id,image_url').eq('is_active',true).in('id',avatarIds);
   (data||[]).forEach(a=>avatars[a.id]=a.image_url);
  }
  const result={};
- (profiles||[]).forEach(p=>result[p.user_id]={...p,avatar_url:avatars[p.avatar_id]||''});
+ (visibility||[]).forEach(v=>{
+  const p=profiles.find(x=>x.user_id===v.user_id);
+  result[v.user_id]=p?{...p,is_public:true,avatar_url:avatars[p.avatar_id]||''}:{user_id:v.user_id,username:v.username,is_public:!!v.is_public,display_name:null,avatar_url:''};
+ });
  return result;
 }
 function authorMarkup(userId,name,profiles,reply=false){
  const p=profiles?.[userId];
- const label=esc(p?.display_name||name||'کاربر');
- const avatar=p?.avatar_url
+ const visibleProfile=!!p?.is_public;
+ const label=esc((visibleProfile&&p?.display_name)||name||'کاربر');
+ const avatar=visibleProfile&&p?.avatar_url
   ? `<img class="author-avatar" src="${esc(p.avatar_url)}" alt="">`
-  : `<span class="author-avatar">${esc((p?.display_name||name||'؟').trim().slice(0,1))}</span>`;
+  : `<span class="author-avatar">${esc((visibleProfile&&p?.display_name||name||'؟').trim().slice(0,1))}</span>`;
  const inner=`${avatar}<span class="author-name">${label}</span>`;
  return p?.username
   ? `<a class="${reply?'reply-author':'author-link'}" href="profile.html?u=${encodeURIComponent(p.username)}">${inner}</a>`
