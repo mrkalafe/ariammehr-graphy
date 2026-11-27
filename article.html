@@ -42,6 +42,8 @@
         #content .article-inline-image{display:inline-block;max-width:min(100%,560px);max-height:460px;vertical-align:middle;border-radius:14px;object-fit:contain}
         #content .article-content-line{display:block;min-height:1em}
         #content .article-text-block{display:block;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+        #content .article-text-block.article-bold-line{font-weight:800;color:#fff}
+        #content .article-text-block.article-conclusion{font-weight:800;color:#fff;padding:16px 19px;margin:18px 0;border:1px solid rgba(211,160,52,.42);border-right:4px solid var(--gold);border-radius:12px;background:linear-gradient(135deg,rgba(211,160,52,.12),rgba(211,160,52,.045));box-shadow:0 8px 24px rgba(0,0,0,.16)}
 
         .article-state{min-height:280px;display:grid;place-items:center;padding:40px;text-align:center;color:#aaa;font-size:14px;line-height:2.2}.article-state strong{display:block;color:#fff;font-size:20px;margin-bottom:8px}.article-state a{color:var(--gold);text-decoration:none}
         .article-end{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.09)}.back-home{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(42,138,207,.3);border-radius:11px;background:rgba(42,138,207,.08);color:#8ac9f1;text-decoration:none;font-size:13px;font-weight:700}.back-home:hover{background:rgba(42,138,207,.15)}.article-end-note{color:#777;font-size:11px}
@@ -316,6 +318,16 @@
                 return;
             }
             const paragraph=document.createElement("p");paragraph.className="article-text-block";
+            // Lines beginning with # are emphasized; the marker itself is not shown.
+            const hashHeading=/^\s*#+\s*/.exec(line);
+            if(hashHeading){
+                paragraph.classList.add("article-bold-line");
+                line=line.slice(hashHeading[0].length);
+            }
+            // A paragraph explicitly labeled as a conclusion gets a highlighted box.
+            if(/(?:نتیجه[\u200c\s]*گیری|جمع[\u200c\s]*بندی)/i.test(line)){
+                paragraph.classList.add("article-conclusion");
+            }
             let last=0,match;
             urlPattern.lastIndex=0;
             while((match=urlPattern.exec(line))!==null){
