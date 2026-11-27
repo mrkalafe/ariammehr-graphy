@@ -44,6 +44,12 @@
         #content .article-text-block{display:block;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
         #content .article-text-block.article-bold-line{font-weight:800;color:#fff}
         #content .article-text-block.article-conclusion{font-weight:800;color:#fff;padding:16px 19px;margin:18px 0;border:1px solid rgba(211,160,52,.42);border-right:4px solid var(--gold);border-radius:12px;background:linear-gradient(135deg,rgba(211,160,52,.12),rgba(211,160,52,.045));box-shadow:0 8px 24px rgba(0,0,0,.16)}
+        .article-sources{margin-top:30px;padding:24px 26px;border:1px solid rgba(211,160,52,.38);border-right:4px solid var(--gold);border-radius:17px;background:linear-gradient(145deg,rgba(211,160,52,.105),rgba(211,160,52,.035));box-shadow:0 12px 32px rgba(0,0,0,.18)}
+        .article-sources-title{margin:0 0 18px;text-align:center;color:var(--gold);font-size:clamp(20px,3vw,25px);font-weight:900;line-height:1.7}
+        .article-sources-list{display:grid;gap:11px;margin:0;padding:0;list-style:none}
+        .article-sources-list li{position:relative;padding:0 25px 0 0;color:#dedede;font-size:14px;line-height:2.1;overflow-wrap:anywhere}
+        .article-sources-list li::before{content:"✦";position:absolute;right:2px;top:1px;color:var(--gold);font-size:14px}
+        .article-sources-list a{color:#8ac9f1;text-decoration:none;border-bottom:1px dashed rgba(138,201,241,.4)}.article-sources-list a:hover{color:var(--gold);border-color:var(--gold)}
 
         .article-state{min-height:280px;display:grid;place-items:center;padding:40px;text-align:center;color:#aaa;font-size:14px;line-height:2.2}.article-state strong{display:block;color:#fff;font-size:20px;margin-bottom:8px}.article-state a{color:var(--gold);text-decoration:none}
         .article-end{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.09)}.back-home{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(42,138,207,.3);border-radius:11px;background:rgba(42,138,207,.08);color:#8ac9f1;text-decoration:none;font-size:13px;font-weight:700}.back-home:hover{background:rgba(42,138,207,.15)}.article-end-note{color:#777;font-size:11px}
@@ -296,8 +302,12 @@
     function renderArticleContent(container, raw){
         container.textContent="";
         const lines=String(raw || "").replace(/\r\n?/g,"\n").split("\n");
+        const sourceHeadingPattern=/^\s*#*\s*منابع(?:\s*و\s*مآخذ|\s*و\s*ماخذ)?\s*[:：]?\s*$/i;
+        const sourceHeadingIndex=lines.findIndex(function(line){return sourceHeadingPattern.test(line.trim());});
+        const articleLines=sourceHeadingIndex>=0?lines.slice(0,sourceHeadingIndex):lines;
+        const sourceLines=sourceHeadingIndex>=0?lines.slice(sourceHeadingIndex+1).map(function(line){return line.trim();}).filter(Boolean):[];
         const urlPattern=/https?:\/\/[^\s<>"']+/gi;
-        lines.forEach(function(line){
+        articleLines.forEach(function(line){
             const trimmed=line.trim();
             if(!trimmed){container.appendChild(document.createElement("br"));return;}
             if(/^https?:\/\/\S+$/i.test(trimmed)){
@@ -336,6 +346,27 @@
             if(last<line.length) paragraph.appendChild(document.createTextNode(line.slice(last)));
             container.appendChild(paragraph);
         });
+
+        if(!sourceLines.length) return null;
+        const section=document.createElement("section");section.className="article-sources";section.setAttribute("aria-label","منابع و مآخذ مقاله");
+        const heading=document.createElement("h2");heading.className="article-sources-title";heading.textContent="منابع و مآخذ";section.appendChild(heading);
+        const list=document.createElement("ul");list.className="article-sources-list";
+        sourceLines.forEach(function(source){
+            const item=document.createElement("li");
+            let last=0,match;urlPattern.lastIndex=0;
+            while((match=urlPattern.exec(source))!==null){
+                if(match.index>last)item.appendChild(document.createTextNode(source.slice(last,match.index)));
+                let url=match[0],suffix="";
+                while(/[),.;!?،؛؟]$/.test(url)){suffix=url.slice(-1)+suffix;url=url.slice(0,-1);}
+                const anchor=document.createElement("a");anchor.href=url;anchor.target="_blank";anchor.rel="noopener noreferrer";anchor.textContent=url;item.appendChild(anchor);
+                if(suffix)item.appendChild(document.createTextNode(suffix));
+                last=match.index+match[0].length;
+            }
+            if(last<source.length)item.appendChild(document.createTextNode(source.slice(last)));
+            list.appendChild(item);
+        });
+        section.appendChild(list);
+        return section;
     }
     async function loadArticle(){
         const id = new URLSearchParams(window.location.search).get("id");
@@ -390,12 +421,12 @@
         inner.append(crumb,meta,title);
         if(data.description){const desc=document.createElement("p");desc.className="article-description";desc.textContent=data.description;inner.appendChild(desc);}
         const divider=document.createElement("div");divider.className="article-divider";
-        const content=document.createElement("div");content.id="content";renderArticleContent(content,data.content || "");
+        const content=document.createElement("div");content.id="content";const sources=renderArticleContent(content,data.content || "");
         const end=document.createElement("div");end.className="article-end";
         const back=document.createElement("a");back.className="back-home";back.href="index.html#articles-section";
         const arrow=document.createElement("i");arrow.setAttribute("data-lucide","arrow-right");arrow.setAttribute("size","16");back.append(arrow,document.createTextNode("بازگشت به مطالب"));
         const note=document.createElement("span");note.className="article-end-note";note.textContent="آریامهر گرافی | آرشیو تاریخ و روایت‌های ایران";
-        end.append(back,note);inner.append(divider,content,end);shell.appendChild(inner);refreshIcons();
+        end.append(back,note);inner.append(divider,content);if(sources)inner.appendChild(sources);inner.appendChild(end);shell.appendChild(inner);refreshIcons();
     }
     loadArticle().catch(function(error){console.error("Unexpected article error:",error);showState("خطا در دریافت مقاله","لطفاً صفحه را دوباره بارگذاری کنید.");});
     async function submitContactMessage(event){
