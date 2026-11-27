@@ -17,486 +17,2376 @@
     <meta name="twitter:title" content="مقاله | آریامهر گرافی">
     <meta name="twitter:description" content="مطالعه مقاله در آریامهر گرافی؛ آرشیوی برای تاریخ، اسناد و روایت‌های ایران.">
     <title>مقاله | آریامهر گرافی</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root{color-scheme:dark;--bg:#1a1a1a;--surface:rgba(255,255,255,.055);--line:rgba(255,255,255,.10);--text:#fff;--muted:#b8bdc5;--red:#ed2a49;--gold:#d3a034;--blue:#2a8acf;--shadow:0 24px 80px rgba(0,0,0,.38)}
-        *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:110px}
-        body{margin:0;min-height:100vh;color:var(--text);font-family:'Vazirmatn',sans-serif;background:radial-gradient(ellipse at 90% 5%,rgba(42,138,207,.16),transparent 35rem),radial-gradient(ellipse at 5% 40%,rgba(237,42,73,.13),transparent 35rem),radial-gradient(ellipse at 55% 100%,rgba(211,160,52,.09),transparent 30rem),#1a1a1a}
-        body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.18;background-image:radial-gradient(rgba(255,255,255,.18) .6px,transparent .6px);background-size:6px 6px;mask-image:linear-gradient(to bottom,black,transparent 75%)}
-        a{color:inherit}button{font-family:inherit}.container{width:min(1180px,calc(100% - 40px));margin-inline:auto}
-        .site-header{position:sticky;top:14px;z-index:20;padding-top:14px}.navbar{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:12px 20px;border:1px solid var(--line);border-radius:23px;background:rgba(17,17,17,.78);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 12px 45px rgba(0,0,0,.2)}
-        .brand{display:inline-flex;align-items:center;gap:11px;color:var(--red);text-decoration:none;white-space:nowrap;font-size:23px;font-weight:900}.brand-mark{width:39px;height:39px;display:grid;place-items:center;border:1px solid rgba(211,160,52,.35);border-radius:13px;background:rgba(211,160,52,.08);color:var(--gold);overflow:hidden}.brand-mark:has(#siteLogo[hidden]){display:none!important}.brand-mark img{width:100%;height:100%;object-fit:contain;border-radius:inherit}.brand-mark [hidden]{display:none!important}
-        .nav-links{display:flex;align-items:center;justify-content:center;gap:7px}.nav-link{display:inline-flex;align-items:center;gap:8px;padding:11px 13px;color:#c0c0c0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid transparent;border-radius:14px;transition:.2s ease}.nav-link:hover,.nav-link.active{color:var(--blue);border-color:rgba(42,138,207,.3);background:rgba(42,138,207,.08)}
-        .nav-actions{display:flex;align-items:center;gap:8px}.icon-button{width:40px;height:40px;display:inline-grid;place-items:center;border:1px solid transparent;border-radius:13px;background:transparent;color:#b8bdc5;text-decoration:none;cursor:pointer}.icon-button:hover{color:var(--gold);border-color:rgba(211,160,52,.3);background:rgba(211,160,52,.08)}
-        .article-main{width:min(940px,calc(100% - 40px));margin:48px auto 80px}.article-shell{overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:var(--shadow)}
-        .article-cover-wrap{position:relative;background:rgba(0,0,0,.25);min-height:12px}.article-cover{display:block;width:100%;max-height:510px;object-fit:cover}.article-inner{padding:clamp(22px,5vw,52px)}
-        .article-breadcrumb{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:#999;font-size:12px;margin-bottom:22px}.article-breadcrumb a{color:var(--blue);text-decoration:none}.article-breadcrumb a:hover{color:var(--gold)}
-        .article-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:17px}.article-category{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid rgba(42,138,207,.28);border-radius:9px;background:rgba(42,138,207,.09);color:#78bce8;font-size:12px;font-weight:700}.article-date{color:#929292;font-size:12px}
-        #title{margin:0 0 18px;color:#fff;font-size:clamp(25px,4vw,39px);font-weight:900;line-height:1.8}.article-description{margin:0;padding:17px 19px;border-right:3px solid var(--gold);border-radius:0 12px 12px 0;background:rgba(211,160,52,.065);color:#c4c4c4;font-size:15px;line-height:2.2}
-        .article-divider{height:1px;margin:30px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent)}#content{color:#dedede;font-size:16px;line-height:2.65;white-space:pre-wrap;overflow-wrap:anywhere;min-height:90px}#content:empty{display:none}
-        #content .article-image{display:block;width:auto;max-width:min(100%,760px);max-height:620px;height:auto;object-fit:contain;margin:22px auto;padding:5px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.035);box-shadow:0 16px 42px rgba(0,0,0,.28)}
-        #content .article-image-link{display:block;width:fit-content;max-width:100%;margin:22px auto;text-decoration:none}
-        #content .article-image-link .article-image{margin:0}
-        #content .article-inline-image{display:inline-block;max-width:min(100%,560px);max-height:460px;vertical-align:middle;border-radius:14px;object-fit:contain}
-        #content .article-content-line{display:block;min-height:1em}
-        #content .article-text-block{display:block;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
-        #content .article-text-block.article-bold-line{font-weight:800;color:#fff}
-        #content .article-text-block.article-conclusion{font-weight:800;color:#fff;padding:16px 19px;margin:18px 0;border:1px solid rgba(211,160,52,.42);border-right:4px solid var(--gold);border-radius:12px;background:linear-gradient(135deg,rgba(211,160,52,.12),rgba(211,160,52,.045));box-shadow:0 8px 24px rgba(0,0,0,.16)}
-        .article-sources{margin-top:30px;padding:24px 26px;border:1px solid rgba(211,160,52,.38);border-right:4px solid var(--gold);border-radius:17px;background:linear-gradient(145deg,rgba(211,160,52,.105),rgba(211,160,52,.035));box-shadow:0 12px 32px rgba(0,0,0,.18)}
-        .article-sources-title{margin:0 0 18px;text-align:center;color:var(--gold);font-size:clamp(20px,3vw,25px);font-weight:900;line-height:1.7}
-        .article-sources-list{display:grid;gap:11px;margin:0;padding:0;list-style:none}
-        .article-sources-list li{position:relative;padding:0 25px 0 0;color:#dedede;font-size:14px;line-height:2.1;overflow-wrap:anywhere}
-        .article-sources-list li::before{content:"✦";position:absolute;right:2px;top:1px;color:var(--gold);font-size:14px}
-        .article-sources-list a{color:#8ac9f1;text-decoration:none;border-bottom:1px dashed rgba(138,201,241,.4)}.article-sources-list a:hover{color:var(--gold);border-color:var(--gold)}
 
-        .article-state{min-height:280px;display:grid;place-items:center;padding:40px;text-align:center;color:#aaa;font-size:14px;line-height:2.2}.article-state strong{display:block;color:#fff;font-size:20px;margin-bottom:8px}.article-state a{color:var(--gold);text-decoration:none}
-        .article-end{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.09)}.back-home{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(42,138,207,.3);border-radius:11px;background:rgba(42,138,207,.08);color:#8ac9f1;text-decoration:none;font-size:13px;font-weight:700}.back-home:hover{background:rgba(42,138,207,.15)}.article-end-note{color:#777;font-size:11px}
-        @media(max-width:950px){.navbar{gap:10px}.nav-links{gap:2px}.nav-link{padding:10px 8px;font-size:12px}.brand{font-size:19px}}
-        @media(max-width:700px){#content .article-image{max-height:420px;border-radius:14px;margin:17px auto}.site-header{top:7px;padding-top:7px}.container{width:calc(100% - 24px)}.navbar{min-height:62px;padding:9px 12px;border-radius:17px;flex-wrap:wrap}.nav-links{order:3;width:100%;justify-content:space-between;overflow-x:auto}.nav-link{font-size:11px;padding:8px 7px;white-space:nowrap}.nav-link i{display:none}.brand{font-size:18px}.article-main{width:calc(100% - 24px);margin:28px auto 50px}.article-shell{border-radius:18px}.article-cover{max-height:300px}.article-inner{padding:22px 18px}#content{font-size:15px;line-height:2.45}.article-end{align-items:flex-start}.article-end-note{width:100%}}
+    <style>
+        :root{
+            color-scheme:dark;
+            --bg:#1a1a1a;
+            --surface:rgba(255,255,255,.055);
+            --line:rgba(255,255,255,.10);
+            --text:#fff;
+            --muted:#b8bdc5;
+            --red:#ed2a49;
+            --gold:#d3a034;
+            --blue:#2a8acf;
+            --shadow:0 24px 80px rgba(0,0,0,.38)
+        }
+
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth;scroll-padding-top:110px}
+
+        body{
+            margin:0;
+            min-height:100vh;
+            color:var(--text);
+            font-family:'Vazirmatn',sans-serif;
+            background:
+                radial-gradient(ellipse at 90% 5%,rgba(42,138,207,.16),transparent 35rem),
+                radial-gradient(ellipse at 5% 40%,rgba(237,42,73,.13),transparent 35rem),
+                radial-gradient(ellipse at 55% 100%,rgba(211,160,52,.09),transparent 30rem),
+                #1a1a1a
+        }
+
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0;
+            z-index:-1;
+            pointer-events:none;
+            opacity:.18;
+            background-image:radial-gradient(rgba(255,255,255,.18) .6px,transparent .6px);
+            background-size:6px 6px;
+            mask-image:linear-gradient(to bottom,black,transparent 75%)
+        }
+
+        a{color:inherit}
+        button{font-family:inherit}
+        .container{width:min(1180px,calc(100% - 40px));margin-inline:auto}
+
+        .site-header{
+            position:sticky;
+            top:14px;
+            z-index:20;
+            padding-top:14px
+        }
+
+        .navbar{
+            min-height:76px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:22px;
+            padding:12px 20px;
+            border:1px solid var(--line);
+            border-radius:23px;
+            background:rgba(17,17,17,.78);
+            backdrop-filter:blur(22px);
+            -webkit-backdrop-filter:blur(22px);
+            box-shadow:0 12px 45px rgba(0,0,0,.2)
+        }
+
+        .brand{
+            display:inline-flex;
+            align-items:center;
+            gap:11px;
+            color:var(--red);
+            text-decoration:none;
+            white-space:nowrap;
+            font-size:23px;
+            font-weight:900
+        }
+
+        .brand-mark{
+            width:39px;
+            height:39px;
+            display:grid;
+            place-items:center;
+            border:1px solid rgba(211,160,52,.35);
+            border-radius:13px;
+            background:rgba(211,160,52,.08);
+            color:var(--gold);
+            overflow:hidden
+        }
+
+        .brand-mark:has(#siteLogo[hidden]){display:none!important}
+        .brand-mark img{width:100%;height:100%;object-fit:contain;border-radius:inherit}
+        .brand-mark [hidden]{display:none!important}
+
+        .nav-links{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:7px
+        }
+
+        .nav-link{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:11px 13px;
+            color:#c0c0c0;
+            text-decoration:none;
+            font-size:14px;
+            font-weight:600;
+            border:1px solid transparent;
+            border-radius:14px;
+            transition:.2s ease
+        }
+
+        .nav-link:hover,.nav-link.active{
+            color:var(--blue);
+            border-color:rgba(42,138,207,.3);
+            background:rgba(42,138,207,.08)
+        }
+
+        .nav-actions{display:flex;align-items:center;gap:8px}
+
+        .icon-button{
+            width:40px;
+            height:40px;
+            display:inline-grid;
+            place-items:center;
+            border:1px solid transparent;
+            border-radius:13px;
+            background:transparent;
+            color:#b8bdc5;
+            text-decoration:none;
+            cursor:pointer
+        }
+
+        .icon-button:hover{
+            color:var(--gold);
+            border-color:rgba(211,160,52,.3);
+            background:rgba(211,160,52,.08)
+        }
+
+        .article-main{
+            width:min(940px,calc(100% - 40px));
+            margin:48px auto 80px
+        }
+
+        .article-shell{
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,.10);
+            border-radius:25px;
+            background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));
+            box-shadow:var(--shadow)
+        }
+
+        .article-cover-wrap{
+            position:relative;
+            background:rgba(0,0,0,.25);
+            min-height:12px
+        }
+
+        .article-cover{
+            display:block;
+            width:100%;
+            max-height:510px;
+            object-fit:cover
+        }
+
+        .article-inner{padding:clamp(22px,5vw,52px)}
+
+        .article-breadcrumb{
+            display:flex;
+            align-items:center;
+            gap:9px;
+            flex-wrap:wrap;
+            color:#999;
+            font-size:12px;
+            margin-bottom:22px
+        }
+
+        .article-breadcrumb a{color:var(--blue);text-decoration:none}
+        .article-breadcrumb a:hover{color:var(--gold)}
+
+        .article-meta{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            flex-wrap:wrap;
+            margin-bottom:17px
+        }
+
+        .article-category{
+            display:inline-flex;
+            align-items:center;
+            gap:7px;
+            padding:6px 11px;
+            border:1px solid rgba(42,138,207,.28);
+            border-radius:9px;
+            background:rgba(42,138,207,.09);
+            color:#78bce8;
+            font-size:12px;
+            font-weight:700
+        }
+
+        .article-date{color:#929292;font-size:12px}
+
+        #title{
+            margin:0 0 18px;
+            color:#fff;
+            font-size:clamp(25px,4vw,39px);
+            font-weight:900;
+            line-height:1.8
+        }
+
+        .article-description{
+            margin:0;
+            padding:17px 19px;
+            border-right:3px solid var(--gold);
+            border-radius:0 12px 12px 0;
+            background:rgba(211,160,52,.065);
+            color:#c4c4c4;
+            font-size:15px;
+            line-height:2.2
+        }
+
+        .article-divider{
+            height:1px;
+            margin:30px 0;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent)
+        }
+
+        #content{
+            color:#dedede;
+            font-size:16px;
+            line-height:2.65;
+            white-space:pre-wrap;
+            overflow-wrap:anywhere;
+            min-height:90px
+        }
+
+        #content:empty{display:none}
+
+        #content .article-image{
+            display:block;
+            width:auto;
+            max-width:min(100%,760px);
+            max-height:620px;
+            height:auto;
+            object-fit:contain;
+            margin:22px auto;
+            padding:5px;
+            border:1px solid rgba(255,255,255,.12);
+            border-radius:18px;
+            background:rgba(255,255,255,.035);
+            box-shadow:0 16px 42px rgba(0,0,0,.28)
+        }
+
+        #content .article-image-link{
+            display:block;
+            width:fit-content;
+            max-width:100%;
+            margin:22px auto;
+            text-decoration:none
+        }
+
+        #content .article-image-link .article-image{margin:0}
+
+        #content .article-inline-image{
+            display:inline-block;
+            max-width:min(100%,560px);
+            max-height:460px;
+            vertical-align:middle;
+            border-radius:14px;
+            object-fit:contain
+        }
+
+        #content .article-content-line{display:block;min-height:1em}
+
+        #content .article-text-block{
+            display:block;
+            margin:0 0 12px;
+            white-space:pre-wrap;
+            overflow-wrap:anywhere
+        }
+
+        #content .article-text-block.article-bold-line{
+            font-weight:800;
+            color:#fff
+        }
+
+        #content .article-text-block.article-conclusion{
+            font-weight:800;
+            color:#fff;
+            padding:16px 19px;
+            margin:18px 0;
+            border:1px solid rgba(211,160,52,.42);
+            border-right:4px solid var(--gold);
+            border-radius:12px;
+            background:linear-gradient(135deg,rgba(211,160,52,.12),rgba(211,160,52,.045));
+            box-shadow:0 8px 24px rgba(0,0,0,.16)
+        }
+
+        /* Graphic article lists */
+        #content .article-list{
+            display:grid;
+            gap:10px;
+            margin:14px 0 22px;
+            padding:0;
+            list-style:none
+        }
+
+        #content .article-list li{
+            position:relative;
+            padding:12px 42px 12px 15px;
+            border:1px solid rgba(255,255,255,.09);
+            border-right:3px solid var(--blue);
+            border-radius:12px;
+            background:rgba(42,138,207,.065);
+            color:#dedede;
+            font-size:14px;
+            line-height:2.1
+        }
+
+        #content .article-list li::before{
+            content:"✦";
+            position:absolute;
+            right:15px;
+            top:50%;
+            transform:translateY(-50%);
+            color:var(--gold);
+            font-size:13px
+        }
+
+        .article-sources{
+            margin-top:30px;
+            padding:24px 26px;
+            border:1px solid rgba(211,160,52,.38);
+            border-right:4px solid var(--gold);
+            border-radius:17px;
+            background:linear-gradient(145deg,rgba(211,160,52,.105),rgba(211,160,52,.035));
+            box-shadow:0 12px 32px rgba(0,0,0,.18)
+        }
+
+        .article-sources-title{
+            margin:0 0 18px;
+            text-align:center;
+            color:var(--gold);
+            font-size:clamp(20px,3vw,25px);
+            font-weight:900;
+            line-height:1.7
+        }
+
+        .article-sources-list{
+            display:grid;
+            gap:11px;
+            margin:0;
+            padding:0;
+            list-style:none
+        }
+
+        .article-sources-list li{
+            position:relative;
+            padding:0 25px 0 0;
+            color:#dedede;
+            font-size:14px;
+            line-height:2.1;
+            overflow-wrap:anywhere
+        }
+
+        .article-sources-list li::before{
+            content:"✦";
+            position:absolute;
+            right:2px;
+            top:1px;
+            color:var(--gold);
+            font-size:14px
+        }
+
+        .article-sources-list a{
+            color:#8ac9f1;
+            text-decoration:none;
+            border-bottom:1px dashed rgba(138,201,241,.4)
+        }
+
+        .article-sources-list a:hover{color:var(--gold);border-color:var(--gold)}
+
+        .article-state{
+            min-height:280px;
+            display:grid;
+            place-items:center;
+            padding:40px;
+            text-align:center;
+            color:#aaa;
+            font-size:14px;
+            line-height:2.2
+        }
+
+        .article-state strong{
+            display:block;
+            color:#fff;
+            font-size:20px;
+            margin-bottom:8px
+        }
+
+        .article-state a{color:var(--gold);text-decoration:none}
+
+        .article-end{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:15px;
+            flex-wrap:wrap;
+            margin-top:34px;
+            padding-top:22px;
+            border-top:1px solid rgba(255,255,255,.09)
+        }
+
+        .back-home{
+            display:inline-flex;
+            align-items:center;
+            gap:9px;
+            padding:10px 16px;
+            border:1px solid rgba(42,138,207,.3);
+            border-radius:11px;
+            background:rgba(42,138,207,.08);
+            color:#8ac9f1;
+            text-decoration:none;
+            font-size:13px;
+            font-weight:700
+        }
+
+        .back-home:hover{background:rgba(42,138,207,.15)}
+        .article-end-note{color:#777;font-size:11px}
+
+        @media(max-width:950px){
+            .navbar{gap:10px}
+            .nav-links{gap:2px}
+            .nav-link{padding:10px 8px;font-size:12px}
+            .brand{font-size:19px}
+        }
+
+        @media(max-width:700px){
+            #content .article-image{max-height:420px;border-radius:14px;margin:17px auto}
+            .site-header{top:7px;padding-top:7px}
+            .container{width:calc(100% - 24px)}
+            .navbar{min-height:62px;padding:9px 12px;border-radius:17px;flex-wrap:wrap}
+            .nav-links{order:3;width:100%;justify-content:space-between;overflow-x:auto}
+            .nav-link{font-size:11px;padding:8px 7px;white-space:nowrap}
+            .nav-link i{display:none}
+            .brand{font-size:18px}
+            .article-main{width:calc(100% - 24px);margin:28px auto 50px}
+            .article-shell{border-radius:18px}
+            .article-cover{max-height:300px}
+            .article-inner{padding:22px 18px}
+            #content{font-size:15px;line-height:2.45}
+            .article-end{align-items:flex-start}
+            .article-end-note{width:100%}
+        }
 
         /* Rich article blocks */
-        #content .rich-block{display:block;margin:28px 0;padding:22px;border:1px solid rgba(255,255,255,.11);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));box-shadow:0 12px 32px rgba(0,0,0,.15);line-height:2.15;white-space:normal}
-        #content .rich-title{margin:0 0 16px;color:#fff;font-size:19px;font-weight:900;line-height:1.8}
+        #content .rich-block{
+            display:block;
+            margin:28px 0;
+            padding:22px;
+            border:1px solid rgba(255,255,255,.11);
+            border-radius:18px;
+            background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+            box-shadow:0 12px 32px rgba(0,0,0,.15);
+            line-height:2.15;
+            white-space:normal
+        }
+
+        #content .rich-title{
+            margin:0 0 16px;
+            color:#fff;
+            font-size:19px;
+            font-weight:900;
+            line-height:1.8
+        }
+
         #content .rich-image{margin:26px auto;text-align:center}
-        #content .rich-image img{display:block;width:auto;max-width:100%;max-height:680px;margin:auto;padding:5px;border:1px solid rgba(255,255,255,.13);border-radius:16px;background:rgba(255,255,255,.035);object-fit:contain}
-        #content .rich-caption{display:block;margin:10px auto 0;color:#aaa;font-size:12px;line-height:1.9;text-align:center}
-        #content .rich-year{display:inline-block;padding:0 7px;margin:0 2px;border:1px solid rgba(211,160,52,.28);border-radius:7px;background:rgba(211,160,52,.12);color:#f0c66e;font-weight:800;white-space:nowrap;line-height:1.8}
+
+        #content .rich-image img{
+            display:block;
+            width:auto;
+            max-width:100%;
+            max-height:680px;
+            margin:auto;
+            padding:5px;
+            border:1px solid rgba(255,255,255,.13);
+            border-radius:16px;
+            background:rgba(255,255,255,.035);
+            object-fit:contain
+        }
+
+        #content .rich-caption{
+            display:block;
+            margin:10px auto 0;
+            color:#aaa;
+            font-size:12px;
+            line-height:1.9;
+            text-align:center
+        }
+
+        #content .rich-year{
+            display:inline-block;
+            padding:0 7px;
+            margin:0 2px;
+            border:1px solid rgba(211,160,52,.28);
+            border-radius:7px;
+            background:rgba(211,160,52,.12);
+            color:#f0c66e;
+            font-weight:800;
+            white-space:nowrap;
+            line-height:1.8
+        }
+
         #content .rich-callout{border-right:4px solid var(--blue);background:rgba(42,138,207,.075)}
         #content .rich-callout.warning,#content .rich-callout.danger{border-right-color:var(--red);background:rgba(237,42,73,.07)}
         #content .rich-callout.success{border-right-color:#65c995;background:rgba(101,201,149,.07)}
         #content .rich-callout.note{border-right-color:var(--gold);background:rgba(211,160,52,.07)}
-        #content .rich-quote{border-right:4px solid var(--gold);background:linear-gradient(135deg,rgba(211,160,52,.12),rgba(211,160,52,.035))}
-        #content .rich-quote-text{margin:0;color:#f3e5c4;font-size:17px;font-weight:700;line-height:2.2}
+
+        #content .rich-quote{
+            border-right:4px solid var(--gold);
+            background:linear-gradient(135deg,rgba(211,160,52,.12),rgba(211,160,52,.035))
+        }
+
+        #content .rich-quote-text{
+            margin:0;
+            color:#f3e5c4;
+            font-size:17px;
+            font-weight:700;
+            line-height:2.2
+        }
+
         #content .rich-byline{display:block;margin-top:12px;color:#aaa;font-size:12px}
-        #content .rich-viewpoint{border:1px solid rgba(42,138,207,.3);border-right:4px solid var(--blue);background:linear-gradient(145deg,rgba(42,138,207,.12),rgba(42,138,207,.025))}
+
+        #content .rich-viewpoint{
+            border:1px solid rgba(42,138,207,.3);
+            border-right:4px solid var(--blue);
+            background:linear-gradient(145deg,rgba(42,138,207,.12),rgba(42,138,207,.025))
+        }
+
         #content .rich-person{display:flex;gap:18px;align-items:flex-start}
-        #content .rich-person img{width:112px;height:130px;object-fit:cover;border-radius:13px;border:1px solid var(--line)}
+
+        #content .rich-person img{
+            width:112px;
+            height:130px;
+            object-fit:cover;
+            border-radius:13px;
+            border:1px solid var(--line)
+        }
+
         #content .rich-table-wrap{overflow-x:auto}
-        #content .rich-table{width:100%;border-collapse:collapse;min-width:360px;font-size:13px}
-        #content .rich-table th,#content .rich-table td{padding:11px 13px;border:1px solid rgba(255,255,255,.12);text-align:right}
+
+        #content .rich-table{
+            width:100%;
+            border-collapse:collapse;
+            min-width:360px;
+            font-size:13px
+        }
+
+        #content .rich-table th,#content .rich-table td{
+            padding:11px 13px;
+            border:1px solid rgba(255,255,255,.12);
+            text-align:right
+        }
+
         #content .rich-table th{background:rgba(42,138,207,.13);color:#9bd3f5}
+
         #content .rich-timeline{display:grid;gap:14px}
-        #content .rich-event{position:relative;padding:0 22px 12px 0;border-right:2px solid rgba(211,160,52,.45)}
-        #content .rich-event:before{content:"";position:absolute;right:-6px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(211,160,52,.12)}
-        #content .rich-event-date{display:block;color:var(--gold);font-weight:900;margin-bottom:3px}
-        #content .rich-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px}
-        #content .rich-gallery figure{margin:0;padding:8px;border:1px solid var(--line);border-radius:13px;background:rgba(0,0,0,.16)}
-        #content .rich-gallery img{display:block;width:100%;height:190px;object-fit:cover;border-radius:9px}
-        #content .rich-gallery figcaption{padding:7px 3px 2px;color:#aaa;font-size:11px;line-height:1.8}
-        #content .rich-video video{display:block;width:100%;max-height:520px;border-radius:13px;background:#000}
+
+        #content .rich-event{
+            position:relative;
+            padding:0 22px 12px 0;
+            border-right:2px solid rgba(211,160,52,.45)
+        }
+
+        #content .rich-event:before{
+            content:"";
+            position:absolute;
+            right:-6px;
+            top:9px;
+            width:10px;
+            height:10px;
+            border-radius:50%;
+            background:var(--gold);
+            box-shadow:0 0 0 4px rgba(211,160,52,.12)
+        }
+
+        #content .rich-event-date{
+            display:block;
+            color:var(--gold);
+            font-weight:900;
+            margin-bottom:3px
+        }
+
+        #content .rich-gallery{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+            gap:13px
+        }
+
+        #content .rich-gallery figure{
+            margin:0;
+            padding:8px;
+            border:1px solid var(--line);
+            border-radius:13px;
+            background:rgba(0,0,0,.16)
+        }
+
+        #content .rich-gallery img{
+            display:block;
+            width:100%;
+            height:190px;
+            object-fit:cover;
+            border-radius:9px
+        }
+
+        #content .rich-gallery figcaption{
+            padding:7px 3px 2px;
+            color:#aaa;
+            font-size:11px;
+            line-height:1.8
+        }
+
+        #content .rich-video video{
+            display:block;
+            width:100%;
+            max-height:520px;
+            border-radius:13px;
+            background:#000
+        }
+
         #content .rich-video a,#content .rich-document a{color:#8ac9f1;overflow-wrap:anywhere}
         #content .rich-factcheck{border-right:4px solid var(--gold)}
-        #content .fact-status{display:inline-block;padding:3px 10px;margin-bottom:10px;border-radius:8px;background:rgba(211,160,52,.14);color:#f0c66e;font-size:12px;font-weight:800}
+
+        #content .fact-status{
+            display:inline-block;
+            padding:3px 10px;
+            margin-bottom:10px;
+            border-radius:8px;
+            background:rgba(211,160,52,.14);
+            color:#f0c66e;
+            font-size:12px;
+            font-weight:800
+        }
+
         #content .fact-status.confirmed{color:#8fe0b2;background:rgba(101,201,149,.13)}
         #content .fact-status.false{color:#ff9aa9;background:rgba(237,42,73,.13)}
+
         #content .rich-chart{display:grid;gap:12px}
-        #content .chart-row{display:grid;grid-template-columns:minmax(75px,1fr) 3fr auto;gap:10px;align-items:center;font-size:12px}
-        #content .chart-track{height:13px;border-radius:20px;background:rgba(255,255,255,.08);overflow:hidden}
-        #content .chart-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--blue),var(--gold))}
+
+        #content .chart-row{
+            display:grid;
+            grid-template-columns:minmax(75px,1fr) 3fr auto;
+            gap:10px;
+            align-items:center;
+            font-size:12px
+        }
+
+        #content .chart-track{
+            height:13px;
+            border-radius:20px;
+            background:rgba(255,255,255,.08);
+            overflow:hidden
+        }
+
+        #content .chart-fill{
+            height:100%;
+            border-radius:20px;
+            background:linear-gradient(90deg,var(--blue),var(--gold))
+        }
+
         #content .chart-value{color:#ddd;font-weight:800}
         #content .rich-map-points{display:grid;gap:10px}
-        #content .map-point{padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.14)}
+
+        #content .map-point{
+            padding:12px 14px;
+            border:1px solid var(--line);
+            border-radius:11px;
+            background:rgba(0,0,0,.14)
+        }
+
         #content .map-point a{color:#8ac9f1;font-size:11px}
-        @media(max-width:600px){#content .rich-block{padding:16px;margin:21px 0}#content .rich-person{display:block}#content .rich-person img{margin-bottom:12px}#content .chart-row{grid-template-columns:75px 1fr auto}}
+
+        @media(max-width:600px){
+            #content .rich-block{padding:16px;margin:21px 0}
+            #content .rich-person{display:block}
+            #content .rich-person img{margin-bottom:12px}
+            #content .chart-row{grid-template-columns:75px 1fr auto}
+        }
 
         /* Contact area integrated into the footer */
-        .site-footer {
-            margin-top: 42px;
-            padding: 32px 0 0;
-            border-top: 1px solid rgba(255,255,255,.09);
-            background: linear-gradient(180deg, rgba(20,20,20,.96), rgba(10,10,10,.99));
-        }
-        .footer-contact {
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,.11);
-            border-radius: 22px;
-            background: linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
-            box-shadow: 0 18px 55px rgba(0,0,0,.22);
-        }
-        .footer-contact-heading {
-            display:flex; align-items:center; justify-content:space-between; gap:20px;
-            padding-bottom:22px; margin-bottom:24px;
-            border-bottom:1px solid rgba(255,255,255,.09);
-        }
-        .footer-contact-heading .section-kicker { margin:0 0 8px; color:var(--red); font-size:12px; font-weight:800; }
-        .footer-contact-heading h2 { margin:0 0 8px; font-size:clamp(22px,3vw,30px); color:#fff; }
-        .footer-contact-heading p:last-child { margin:0; color:#a6a6a6; font-size:13px; }
-        .footer-contact-mark {
-            width:54px; height:54px; flex:0 0 54px; display:grid; place-items:center;
-            border:1px solid rgba(211,160,52,.28); border-radius:16px;
-            color:var(--gold); background:rgba(211,160,52,.08);
-        }
-        .footer-contact-mark svg { width:25px; height:25px; }
-        .footer-contact-grid { display:grid; grid-template-columns:minmax(240px,.82fr) minmax(0,1.5fr); gap:34px; }
-        .footer-contact-grid h3 { margin:0 0 8px; color:#f4f4f4; font-size:16px; }
-        .footer-contact-note { margin:0 0 17px; color:#929292; font-size:12px; line-height:1.9; }
-        .footer-contact-info { min-width:0; }
-        .contact-link-card {
-            min-width:0; display:flex; align-items:center; gap:12px; padding:13px 14px; margin-top:10px;
-            border:1px solid rgba(255,255,255,.09); border-radius:13px;
-            background:rgba(0,0,0,.2); color:#eee; text-decoration:none;
-            transition:border-color .2s ease, background .2s ease;
-        }
-        .contact-link-card:hover { border-color:rgba(211,160,52,.35); background:rgba(255,255,255,.045); }
-        .contact-brand-icon { width:36px; height:36px; flex:0 0 36px; display:grid; place-items:center; border-radius:11px; background:rgba(255,255,255,.07); }
-        .contact-brand-icon svg { width:25px; height:25px; }
-        .contact-link-copy { display:flex; flex:1; min-width:0; flex-direction:column; gap:3px; }
-        .contact-link-copy small { color:#929292; font-size:10px; }
-        .contact-link-copy bdi { overflow-wrap:anywhere; font-size:13px; font-weight:700; }
-        .contact-copy-button,.contact-email-action {
-            flex:0 0 auto; padding:7px 10px; border:1px solid rgba(255,255,255,.12);
-            border-radius:8px; background:rgba(255,255,255,.07); color:#ddd;
-            font:inherit; font-size:11px; text-decoration:none; cursor:pointer;
-        }
-        .contact-email-action { color:var(--gold); }
-        .footer-contact-form-wrap { min-width:0; }
-        .contact-form { display:flex; flex-direction:column; gap:11px; }
-        .contact-form-row { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
-        .contact-form input,.contact-form textarea {
-            width:100%; min-width:0; padding:12px 14px; border:1px solid rgba(255,255,255,.13);
-            border-radius:10px; outline:none; background:rgba(0,0,0,.28); color:#f3f3f3;
-            font:inherit; font-size:13px; transition:border-color .2s ease, background .2s ease;
-        }
-        .contact-form input { min-height:44px; }
-        .contact-form textarea { min-height:112px; resize:vertical; }
-        .contact-form input:focus,.contact-form textarea:focus { border-color:var(--gold); background:rgba(0,0,0,.4); }
-        .contact-form input::placeholder,.contact-form textarea::placeholder { color:#777; }
-        .contact-form-actions { display:flex; align-items:center; flex-wrap:wrap; gap:14px; }
-        .contact-submit {
-            display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px;
-            padding:10px 19px; border:0; border-radius:10px; background:var(--gold);
-            color:#17130a; font:inherit; font-size:13px; font-weight:800; cursor:pointer;
-            transition:filter .2s ease, transform .2s ease;
-        }
-        .contact-submit:hover { filter:brightness(1.08); transform:translateY(-1px); }
-        .contact-submit:disabled { opacity:.6; cursor:wait; transform:none; }
-        .contact-form-message { margin:0; color:#9ac9a9; font-size:12px; }
-        .footer-bottom {
-            display:flex; align-items:center; justify-content:space-between; gap:18px;
-            padding:25px 0; color:#858585; font-size:11px;
-        }
-        .footer-brand { margin-bottom:4px; color:var(--red); font-size:15px; font-weight:900; }
-        .footer-bottom small { font-size:11px; }
-        .back-top {
-            width:38px; height:38px; flex:0 0 38px; display:grid; place-items:center;
-            border:1px solid var(--line); border-radius:12px; color:var(--gold); text-decoration:none;
-        }
-        @media(max-width:700px) {
-            .site-footer { margin-top:50px; padding-top:25px; }
-            .footer-contact { padding:20px 16px; border-radius:17px; }
-            .footer-contact-grid { grid-template-columns:1fr; gap:26px; }
-            .contact-form-row { grid-template-columns:1fr; }
-            .footer-bottom { align-items:flex-start; flex-wrap:wrap; }
-            .footer-bottom > small { order:3; width:100%; }
+        .site-footer{
+            margin-top:42px;
+            padding:32px 0 0;
+            border-top:1px solid rgba(255,255,255,.09);
+            background:linear-gradient(180deg,rgba(20,20,20,.96),rgba(10,10,10,.99))
         }
 
+        .footer-contact{
+            padding:30px;
+            border:1px solid rgba(255,255,255,.11);
+            border-radius:22px;
+            background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+            box-shadow:0 18px 55px rgba(0,0,0,.22)
+        }
+
+        .footer-contact-heading{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
+            padding-bottom:22px;
+            margin-bottom:24px;
+            border-bottom:1px solid rgba(255,255,255,.09)
+        }
+
+        .footer-contact-heading .section-kicker{
+            margin:0 0 8px;
+            color:var(--red);
+            font-size:12px;
+            font-weight:800
+        }
+
+        .footer-contact-heading h2{margin:0 0 8px;font-size:clamp(22px,3vw,30px);color:#fff}
+        .footer-contact-heading p:last-child{margin:0;color:#a6a6a6;font-size:13px}
+
+        .footer-contact-mark{
+            width:54px;
+            height:54px;
+            flex:0 0 54px;
+            display:grid;
+            place-items:center;
+            border:1px solid rgba(211,160,52,.28);
+            border-radius:16px;
+            color:var(--gold);
+            background:rgba(211,160,52,.08)
+        }
+
+        .footer-contact-mark svg{width:25px;height:25px}
+
+        .footer-contact-grid{
+            display:grid;
+            grid-template-columns:minmax(240px,.82fr) minmax(0,1.5fr);
+            gap:34px
+        }
+
+        .footer-contact-grid h3{margin:0 0 8px;color:#f4f4f4;font-size:16px}
+        .footer-contact-note{margin:0 0 17px;color:#929292;font-size:12px;line-height:1.9}
+        .footer-contact-info{min-width:0}
+
+        .contact-link-card{
+            min-width:0;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:13px 14px;
+            margin-top:10px;
+            border:1px solid rgba(255,255,255,.09);
+            border-radius:13px;
+            background:rgba(0,0,0,.2);
+            color:#eee;
+            text-decoration:none;
+            transition:border-color .2s ease,background .2s ease
+        }
+
+        .contact-link-card:hover{border-color:rgba(211,160,52,.35);background:rgba(255,255,255,.045)}
+
+        .contact-brand-icon{
+            width:36px;
+            height:36px;
+            flex:0 0 36px;
+            display:grid;
+            place-items:center;
+            border-radius:11px;
+            background:rgba(255,255,255,.07)
+        }
+
+        .contact-brand-icon svg{width:25px;height:25px}
+
+        .contact-link-copy{
+            display:flex;
+            flex:1;
+            min-width:0;
+            flex-direction:column;
+            gap:3px
+        }
+
+        .contact-link-copy small{color:#929292;font-size:10px}
+        .contact-link-copy bdi{overflow-wrap:anywhere;font-size:13px;font-weight:700}
+
+        .contact-copy-button,.contact-email-action{
+            flex:0 0 auto;
+            padding:7px 10px;
+            border:1px solid rgba(255,255,255,.12);
+            border-radius:8px;
+            background:rgba(255,255,255,.07);
+            color:#ddd;
+            font:inherit;
+            font-size:11px;
+            text-decoration:none;
+            cursor:pointer
+        }
+
+        .contact-email-action{color:var(--gold)}
+        .footer-contact-form-wrap{min-width:0}
+
+        .contact-form{display:flex;flex-direction:column;gap:11px}
+        .contact-form-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+
+        .contact-form input,.contact-form textarea{
+            width:100%;
+            min-width:0;
+            padding:12px 14px;
+            border:1px solid rgba(255,255,255,.13);
+            border-radius:10px;
+            outline:none;
+            background:rgba(0,0,0,.28);
+            color:#f3f3f3;
+            font:inherit;
+            font-size:13px;
+            transition:border-color .2s ease,background .2s ease
+        }
+
+        .contact-form input{min-height:44px}
+        .contact-form textarea{min-height:112px;resize:vertical}
+
+        .contact-form input:focus,.contact-form textarea:focus{
+            border-color:var(--gold);
+            background:rgba(0,0,0,.4)
+        }
+
+        .contact-form input::placeholder,.contact-form textarea::placeholder{color:#777}
+
+        .contact-form-actions{
+            display:flex;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:14px
+        }
+
+        .contact-submit{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+            min-height:42px;
+            padding:10px 19px;
+            border:0;
+            border-radius:10px;
+            background:var(--gold);
+            color:#17130a;
+            font:inherit;
+            font-size:13px;
+            font-weight:800;
+            cursor:pointer;
+            transition:filter .2s ease,transform .2s ease
+        }
+
+        .contact-submit:hover{filter:brightness(1.08);transform:translateY(-1px)}
+        .contact-submit:disabled{opacity:.6;cursor:wait;transform:none}
+        .contact-form-message{margin:0;color:#9ac9a9;font-size:12px}
+
+        .footer-bottom{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:18px;
+            padding:25px 0;
+            color:#858585;
+            font-size:11px
+        }
+
+        .footer-brand{margin-bottom:4px;color:var(--red);font-size:15px;font-weight:900}
+        .footer-bottom small{font-size:11px}
+
+        .back-top{
+            width:38px;
+            height:38px;
+            flex:0 0 38px;
+            display:grid;
+            place-items:center;
+            border:1px solid var(--line);
+            border-radius:12px;
+            color:var(--gold);
+            text-decoration:none
+        }
+
+        @media(max-width:700px){
+            .site-footer{margin-top:50px;padding-top:25px}
+            .footer-contact{padding:20px 16px;border-radius:17px}
+            .footer-contact-grid{grid-template-columns:1fr;gap:26px}
+            .contact-form-row{grid-template-columns:1fr}
+            .footer-bottom{align-items:flex-start;flex-wrap:wrap}
+            .footer-bottom>small{order:3;width:100%}
+        }
     </style>
 </head>
+
 <body id="top">
-<header class="site-header"><div class="container"><nav class="navbar" aria-label="منوی اصلی">
-    <a class="brand" href="index.html#top" aria-label="آریامهر گرافی، صفحه اصلی"><span class="brand-mark"><img id="siteLogo" alt="" hidden></span><span id="siteBrandName">آریامهر گرافی</span></a>
-    <div class="nav-links">
-        <a class="nav-link" href="index.html#top"><i data-lucide="house" size="17"></i>خانه</a>
-        <a class="nav-link active" href="index.html#articles-section"><i data-lucide="book-open" size="17"></i>مجله</a>
-        <a class="nav-link" href="index.html#categories"><i data-lucide="layers" size="17"></i>آرشیو</a>
-        <a class="nav-link" href="discussion.html"><i data-lucide="messages-square" size="17"></i>بحث و گفت‌وگو</a>
-        <a class="nav-link" href="index.html#about"><i data-lucide="info" size="17"></i>درباره ما</a>
+
+<header class="site-header">
+    <div class="container">
+        <nav class="navbar" aria-label="منوی اصلی">
+            <a class="brand" href="index.html#top" aria-label="آریامهر گرافی، صفحه اصلی">
+                <span class="brand-mark">
+                    <img id="siteLogo" alt="" hidden>
+                </span>
+                <span id="siteBrandName">آریامهر گرافی</span>
+            </a>
+
+            <div class="nav-links">
+                <a class="nav-link" href="index.html#top"><i data-lucide="house" size="17"></i>خانه</a>
+                <a class="nav-link active" href="index.html#articles-section"><i data-lucide="book-open" size="17"></i>مجله</a>
+                <a class="nav-link" href="index.html#categories"><i data-lucide="layers" size="17"></i>آرشیو</a>
+                <a class="nav-link" href="discussion.html"><i data-lucide="messages-square" size="17"></i>بحث و گفت‌وگو</a>
+                <a class="nav-link" href="index.html#about"><i data-lucide="info" size="17"></i>درباره ما</a>
+            </div>
+
+            <div class="nav-actions"></div>
+        </nav>
     </div>
-    <div class="nav-actions"></div>
-</nav></div></header>
+</header>
+
 <main class="article-main">
     <article class="article-shell" id="articleShell">
-        <div class="article-state" id="articleState"><div>در حال دریافت مقاله...</div></div>
+        <div class="article-state" id="articleState">
+            <div>در حال دریافت مقاله...</div>
+        </div>
     </article>
 </main>
-    <!-- Contact footer -->
-    <footer class="site-footer" id="contact">
-        <div class="container">
-            <section class="footer-contact">
-                <div class="footer-contact-heading">
-                    <div>
-                        <p class="section-kicker">ارتباط با ما</p>
-                        <h2>تماس با آریامهر گرافی</h2>
-                        <p>پیشنهاد، انتقاد یا پیام خود را از راه‌های زیر با ما در میان بگذارید.</p>
-                    </div>
-                    <span class="footer-contact-mark" aria-hidden="true"><i data-lucide="messages-square"></i></span>
-                </div>
 
-                <div class="footer-contact-grid">
-                    <div class="footer-contact-info">
-                        <h3>راه‌های ارتباطی</h3>
-                        <p class="footer-contact-note">برای حفظ حریم خصوصی، هیچ شماره تلفنی در وب‌سایت نمایش داده نمی‌شود.</p>
-
-                        <a class="contact-link-card email-card" href="mailto:mrkalafe@gmail.com">
-                            <span class="contact-brand-icon gmail-icon" aria-hidden="true">
-                                <svg viewBox="0 0 32 32"><path fill="#4285F4" d="M4 8.2v15.6c0 1.2.8 2.2 2 2.2h3V13.2L4 8.2Z"/><path fill="#34A853" d="M23 26h3c1.2 0 2-.9 2-2.2V8.2l-5 5V26Z"/><path fill="#EA4335" d="M4 8.2 16 17l12-8.8c0-1.2-1-2.2-2.2-2.2h-.7L16 13.1 6.9 6H6.2C5 6 4 7 4 8.2Z"/><path fill="#C5221F" d="M9 13.2 16 18.3l7-5.1v-6L16 12.3 9 7.2v6Z"/></svg>
-                            </span>
-                            <div class="contact-link-copy">
-                                <small>ایمیل</small>
-                                <bdi dir="ltr">mrkalafe@gmail.com</bdi>
-                            </div>
-                            <span class="contact-email-action">ارسال ایمیل</span>
-                        </a>
-                    </div>
-
-                    <div class="footer-contact-form-wrap">
-                        <h3>ارسال پیام</h3>
-                        <p class="footer-contact-note">پیامت را بنویس، از طریق همین فرم به دست ما می‌رسد.</p>
-                        <form class="contact-form" id="contactForm">
-                            <div class="contact-form-row">
-                                <input type="text" id="contactName" maxlength="100" placeholder="نام و نام خانوادگی" autocomplete="name" required>
-                                <input type="email" id="contactEmail" maxlength="254" placeholder="آدرس ایمیل" autocomplete="email" required>
-                            </div>
-                            <input type="text" id="contactSubject" maxlength="150" placeholder="موضوع پیام" required>
-                            <textarea id="contactMessage" maxlength="5000" placeholder="متن پیام شما..." required></textarea>
-                            <div class="contact-form-actions">
-                                <button class="contact-submit" id="contactSubmit" type="submit"><i data-lucide="send" size="16"></i> ارسال پیام</button>
-                                <p class="contact-form-message" id="contactFormMessage" role="status" aria-live="polite"></p>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </section>
-
-            <div class="footer-bottom">
+<!-- Contact footer -->
+<footer class="site-footer" id="contact">
+    <div class="container">
+        <section class="footer-contact">
+            <div class="footer-contact-heading">
                 <div>
-                    <div class="footer-brand">آریامهر گرافی</div>
-                    <small>آرشیوی برای جملات، کتاب‌ها و رسانه‌های تاریخی ایران</small>
+                    <p class="section-kicker">ارتباط با ما</p>
+                    <h2>تماس با آریامهر گرافی</h2>
+                    <p>پیشنهاد، انتقاد یا پیام خود را از راه‌های زیر با ما در میان بگذارید.</p>
                 </div>
-                <small>تمامی حقوق این وب‌سایت محفوظ است.</small>
-                <a class="back-top" href="#top" aria-label="بازگشت به بالا"><i data-lucide="arrow-up"></i></a>
+
+                <span class="footer-contact-mark" aria-hidden="true">
+                    <i data-lucide="messages-square"></i>
+                </span>
             </div>
+
+            <div class="footer-contact-grid">
+                <div class="footer-contact-info">
+                    <h3>راه‌های ارتباطی</h3>
+                    <p class="footer-contact-note">برای حفظ حریم خصوصی، هیچ شماره تلفنی در وب‌سایت نمایش داده نمی‌شود.</p>
+
+                    <a class="contact-link-card email-card" href="mailto:mrkalafe@gmail.com">
+                        <span class="contact-brand-icon gmail-icon" aria-hidden="true">
+                            <svg viewBox="0 0 32 32">
+                                <path fill="#4285F4" d="M4 8.2v15.6c0 1.2.8 2.2 2 2.2h3V13.2L4 8.2Z"/>
+                                <path fill="#34A853" d="M23 26h3c1.2 0 2-.9 2-2.2V8.2l-5 5V26Z"/>
+                                <path fill="#EA4335" d="M4 8.2 16 17l12-8.8c0-1.2-1-2.2-2.2-2.2h-.7L16 13.1 6.9 6H6.2C5 6 4 7 4 8.2Z"/>
+                                <path fill="#C5221F" d="M9 13.2 16 18.3l7-5.1v-6L16 12.3 9 7.2v6Z"/>
+                            </svg>
+                        </span>
+
+                        <div class="contact-link-copy">
+                            <small>ایمیل</small>
+                            <bdi dir="ltr">mrkalafe@gmail.com</bdi>
+                        </div>
+
+                        <span class="contact-email-action">ارسال ایمیل</span>
+                    </a>
+                </div>
+
+                <div class="footer-contact-form-wrap">
+                    <h3>ارسال پیام</h3>
+                    <p class="footer-contact-note">پیامت را بنویس، از طریق همین فرم به دست ما می‌رسد.</p>
+
+                    <form class="contact-form" id="contactForm">
+                        <div class="contact-form-row">
+                            <input type="text" id="contactName" maxlength="100" placeholder="نام و نام خانوادگی" autocomplete="name" required>
+                            <input type="email" id="contactEmail" maxlength="254" placeholder="آدرس ایمیل" autocomplete="email" required>
+                        </div>
+
+                        <input type="text" id="contactSubject" maxlength="150" placeholder="موضوع پیام" required>
+                        <textarea id="contactMessage" maxlength="5000" placeholder="متن پیام شما..." required></textarea>
+
+                        <div class="contact-form-actions">
+                            <button class="contact-submit" id="contactSubmit" type="submit">
+                                <i data-lucide="send" size="16"></i>
+                                ارسال پیام
+                            </button>
+
+                            <p class="contact-form-message" id="contactFormMessage" role="status" aria-live="polite"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer-bottom">
+            <div>
+                <div class="footer-brand">آریامهر گرافی</div>
+                <small>آرشیوی برای جملات، کتاب‌ها و رسانه‌های تاریخی ایران</small>
+            </div>
+
+            <small>تمامی حقوق این وب‌سایت محفوظ است.</small>
+
+            <a class="back-top" href="#top" aria-label="بازگشت به بالا">
+                <i data-lucide="arrow-up"></i>
+            </a>
         </div>
-    </footer>
+    </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
+
 <script>
 (function(){
+
     const SUPABASE_URL = "https://dtndnnogjrtufjezwety.supabase.co";
     const SUPABASE_KEY = "sb_publishable_Z3VyIdDrg5Rdrg9REKRqZw_oUSVG04a";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     async function applyGeneralSettings(){
         try{
-            const {data,error}=await db.from("site_settings").select("setting_value").eq("setting_key","general").maybeSingle();
+            const {data,error}=await db
+                .from("site_settings")
+                .select("setting_value")
+                .eq("setting_key","general")
+                .maybeSingle();
+
             if(error) throw error;
+
             const settings=data&&data.setting_value?data.setting_value:{};
-            const siteName=typeof settings.site_name==="string"&&settings.site_name.trim()?settings.site_name.trim():"آریامهر گرافی";
-            const description=typeof settings.site_description==="string"?settings.site_description.trim():"";
-            const logoUrl=typeof settings.logo_url==="string"?settings.logo_url.trim():"";
+
+            const siteName=
+                typeof settings.site_name==="string"&&settings.site_name.trim()
+                ?settings.site_name.trim()
+                :"آریامهر گرافی";
+
+            const description=
+                typeof settings.site_description==="string"
+                ?settings.site_description.trim()
+                :"";
+
+            const logoUrl=
+                typeof settings.logo_url==="string"
+                ?settings.logo_url.trim()
+                :"";
+
             const brandName=document.getElementById("siteBrandName");
             const brand=document.querySelector(".brand");
+
             if(brandName) brandName.textContent=siteName;
             if(brand) brand.setAttribute("aria-label",siteName+"، صفحه اصلی");
+
             document.title="مقاله | "+siteName;
+
             const ogSite=document.querySelector('meta[property="og:site_name"]');
             if(ogSite) ogSite.setAttribute("content",siteName);
+
             const descMeta=document.querySelector('meta[name="description"]');
             if(descMeta&&description) descMeta.setAttribute("content",description);
+
             const logo=document.getElementById("siteLogo");
+
             if(logo&&logoUrl){
                 logo.onload=()=>{logo.hidden=false;};
                 logo.onerror=()=>{logo.hidden=true;};
                 logo.src=logoUrl;
             }
-        }catch(error){console.error("General site settings could not be loaded:",error);}
+
+        }catch(error){
+            console.error("General site settings could not be loaded:",error);
+        }
     }
+
     applyGeneralSettings();
-    const shell = document.getElementById("articleShell");
-    const state = document.getElementById("articleState");
-    function refreshIcons(){ if(window.lucide) lucide.createIcons(); }
-    function showState(title, detail){
-        state.textContent = "";
-        const box = document.createElement("div");
-        const strong = document.createElement("strong"); strong.textContent = title;
-        const p = document.createElement("p"); p.textContent = detail;
-        const link = document.createElement("a"); link.href = "index.html#articles-section"; link.textContent = "بازگشت به مطالب";
-        box.appendChild(strong); box.appendChild(p); box.appendChild(link); state.appendChild(box);
+
+    const shell=document.getElementById("articleShell");
+    const state=document.getElementById("articleState");
+
+    function refreshIcons(){
+        if(window.lucide) lucide.createIcons();
     }
+
+    function showState(title,detail){
+        state.textContent="";
+
+        const box=document.createElement("div");
+        const strong=document.createElement("strong");
+        strong.textContent=title;
+
+        const p=document.createElement("p");
+        p.textContent=detail;
+
+        const link=document.createElement("a");
+        link.href="index.html#articles-section";
+        link.textContent="بازگشت به مطالب";
+
+        box.appendChild(strong);
+        box.appendChild(p);
+        box.appendChild(link);
+
+        state.appendChild(box);
+    }
+
     function formatDate(value){
         if(!value) return "";
-        const date = new Date(value);
+
+        const date=new Date(value);
         if(Number.isNaN(date.getTime())) return "";
-        try{return new Intl.DateTimeFormat("fa-IR",{year:"numeric",month:"long",day:"numeric"}).format(date);}catch(e){return date.toLocaleDateString();}
+
+        try{
+            return new Intl.DateTimeFormat("fa-IR",{
+                year:"numeric",
+                month:"long",
+                day:"numeric"
+            }).format(date);
+        }catch(e){
+            return date.toLocaleDateString();
+        }
     }
+
     function isImageUrl(value){
         return /\.(?:png|jpe?g|gif|webp|avif|bmp|svg)(?:[?#].*)?$/i.test(value);
     }
+
     function safeUrl(value){
-        try{const u=new URL(String(value||'').trim(),window.location.href);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch(e){return '';}
+        try{
+            const u=new URL(String(value||'').trim(),window.location.href);
+            return ['http:','https:'].includes(u.protocol)?u.href:'';
+        }catch(e){
+            return '';
+        }
     }
-    function makeArticleImage(url, standalone, caption){
-        const clean=safeUrl(url);if(!clean)return document.createTextNode(String(url||''));
-        const figure=document.createElement('figure');figure.className='rich-image';
-        const link=document.createElement('a');link.className='article-image-link';link.href=clean;link.target='_blank';link.rel='noopener noreferrer';
-        const image=document.createElement('img');image.className='article-image';image.src=clean;image.alt='تصویر مقاله';image.loading='lazy';image.decoding='async';
-        image.onerror=function(){const msg=document.createElement('a');msg.href=clean;msg.target='_blank';msg.rel='noopener noreferrer';msg.textContent='مشاهده تصویر';msg.style.color='var(--blue)';link.replaceWith(msg);};
-        link.appendChild(image);figure.appendChild(link);
-        const cap=document.createElement('figcaption');cap.className='rich-caption';cap.textContent=caption||'زیرنویس آزمایشی تصویر؛ این متن را بعداً با توضیح دقیق تصویر جایگزین کنید.';figure.appendChild(cap);
+
+    function makeArticleImage(url,standalone,caption){
+        const clean=safeUrl(url);
+
+        if(!clean) return document.createTextNode(String(url||''));
+
+        const figure=document.createElement('figure');
+        figure.className='rich-image';
+
+        const link=document.createElement('a');
+        link.className='article-image-link';
+        link.href=clean;
+        link.target='_blank';
+        link.rel='noopener noreferrer';
+
+        const image=document.createElement('img');
+        image.className='article-image';
+        image.src=clean;
+        image.alt='تصویر مقاله';
+        image.loading='lazy';
+        image.decoding='async';
+
+        image.onerror=function(){
+            const msg=document.createElement('a');
+            msg.href=clean;
+            msg.target='_blank';
+            msg.rel='noopener noreferrer';
+            msg.textContent='مشاهده تصویر';
+            msg.style.color='var(--blue)';
+            link.replaceWith(msg);
+        };
+
+        link.appendChild(image);
+        figure.appendChild(link);
+
+        const cap=document.createElement('figcaption');
+        cap.className='rich-caption';
+        cap.textContent=caption||'زیرنویس آزمایشی تصویر؛ این متن را بعداً با توضیح دقیق تصویر جایگزین کنید.';
+
+        figure.appendChild(cap);
+
         return figure;
     }
+
     function appendInlineText(parent,text){
-        const re=/\{\{year\|([^}]+)\}\}/g;let last=0,m;
-        while((m=re.exec(text))!==null){if(m.index>last)parent.appendChild(document.createTextNode(text.slice(last,m.index)));const span=document.createElement('span');span.className='rich-year';span.textContent=m[1].trim();parent.appendChild(span);last=re.lastIndex;}
-        if(last<text.length)parent.appendChild(document.createTextNode(text.slice(last)));
+        text=String(text??'');
+
+        const re=/\{\{year\|([^}]+)\}\}/g;
+        let last=0,m;
+
+        while((m=re.exec(text))!==null){
+            if(m.index>last){
+                parent.appendChild(
+                    document.createTextNode(text.slice(last,m.index))
+                );
+            }
+
+            const span=document.createElement('span');
+            span.className='rich-year';
+            span.textContent=m[1].trim();
+
+            parent.appendChild(span);
+            last=re.lastIndex;
+        }
+
+        if(last<text.length){
+            parent.appendChild(
+                document.createTextNode(text.slice(last))
+            );
+        }
     }
+
     function parseBlock(raw){
-        const lines=raw.split(/\r?\n/);const data={};
-        lines.forEach(line=>{const i=line.indexOf(':');if(i<1)return;const key=line.slice(0,i).trim().toLowerCase();const value=line.slice(i+1).trim();if(data[key]===undefined)data[key]=value;else if(Array.isArray(data[key]))data[key].push(value);else data[key]=[data[key],value];});
+        const lines=raw.split(/\r?\n/);
+        const data={};
+
+        lines.forEach(line=>{
+            const i=line.indexOf(':');
+            if(i<1) return;
+
+            const key=line.slice(0,i).trim().toLowerCase();
+            const value=line.slice(i+1).trim();
+
+            if(data[key]===undefined){
+                data[key]=value;
+            }else if(Array.isArray(data[key])){
+                data[key].push(value);
+            }else{
+                data[key]=[data[key],value];
+            }
+        });
+
         return data;
     }
-    function field(d,key,fallback=''){const v=d[key];return Array.isArray(v)?(v[0]||fallback):(v||fallback);}
-    function addTitle(box,title){if(title){const h=document.createElement('h3');h.className='rich-title';h.textContent=title;box.appendChild(h);}}
-    function addText(box,text,cls){if(!text)return;const p=document.createElement('p');if(cls)p.className=cls;appendInlineText(p,String(text));box.appendChild(p);}
-    function addSourceLinks(box,values){(Array.isArray(values)?values:[values]).filter(Boolean).forEach(v=>{const p=document.createElement('p');const m=String(v).match(/https?:\/\/\S+/);if(m){const before=String(v).slice(0,m.index);p.appendChild(document.createTextNode(before));const a=document.createElement('a');a.href=safeUrl(m[0].replace(/[),.;!?،؛؟]+$/g,''));a.target='_blank';a.rel='noopener noreferrer';a.textContent=m[0];p.appendChild(a);}else p.textContent=String(v);box.appendChild(p);});}
-    function renderRichBlock(type,body){
-        const d=parseBlock(body),box=document.createElement('section');box.className='rich-block rich-'+type;
-        try{
-            if(type==='image'){const image=makeArticleImage(field(d,'url'),true,field(d,'caption','زیرنویس آزمایشی تصویر؛ این متن را بعداً ویرایش کنید.'));const size=field(d,'size','large').toLowerCase();if(image.classList){image.classList.add('image-size-'+size);const img=image.querySelector('img');if(img){const widths={small:'360px',medium:'560px',large:'760px',full:'100%'};img.style.maxWidth=widths[size]||widths.large;}}return image;}
-            if(type==='gallery'){
-                addTitle(box,field(d,'title','گالری تصاویر'));const grid=document.createElement('div');grid.className='rich-gallery';
-                (Array.isArray(d.image)?d.image:[d.image]).filter(Boolean).forEach(item=>{const parts=String(item).split('|').map(x=>x.trim()),url=safeUrl(parts[0]);if(!url)return;const fig=document.createElement('figure'),img=document.createElement('img'),cap=document.createElement('figcaption');img.src=url;img.alt='تصویر گالری';img.loading='lazy';cap.textContent=parts[1]||'زیرنویس آزمایشی تصویر؛ بعداً ویرایش شود.';fig.append(img,cap);grid.appendChild(fig);});box.appendChild(grid);return box;
-            }
-            if(type==='quote'||type==='viewpoint'){
-                addTitle(box,field(d,'title',type==='quote'?'نقل‌قول':'دیدگاه تاریخی'));
-                if(type==='quote'){addText(box,field(d,'text'),'rich-quote-text');}
-                else{const who=document.createElement('div');who.className='rich-byline';who.textContent=[field(d,'person'),field(d,'role'),field(d,'date')].filter(Boolean).join(' | ');box.appendChild(who);addText(box,field(d,'text'));}
-                const by=[field(d,'author'),field(d,'source')].filter(Boolean).join(' | ');if(by||field(d,'date')){const small=document.createElement('small');small.className='rich-byline';small.textContent=[by,field(d,'date')].filter(Boolean).join(' | ');box.appendChild(small);}return box;
-            }
-            if(type==='callout'){
-                const kind=field(d,'type','info').toLowerCase();box.classList.add(kind);addTitle(box,field(d,'title','یادداشت'));addText(box,field(d,'text'));return box;
-            }
-            if(type==='timeline'){
-                addTitle(box,field(d,'title','خط زمانی'));const wrap=document.createElement('div');wrap.className='rich-timeline';(Array.isArray(d.event)?d.event:[d.event]).filter(Boolean).forEach(v=>{const a=String(v).split('|').map(x=>x.trim()),item=document.createElement('div'),date=document.createElement('span'),desc=document.createElement('div');item.className='rich-event';date.className='rich-event-date';date.textContent=a[0]||'';desc.textContent=a.slice(1).join(' | ');item.append(date,desc);wrap.appendChild(item);});box.appendChild(wrap);return box;
-            }
-            if(type==='table'){
-                addTitle(box,field(d,'title','جدول اطلاعات'));const wrap=document.createElement('div');wrap.className='rich-table-wrap';const table=document.createElement('table');table.className='rich-table';const cols=field(d,'columns').split('|').map(x=>x.trim()).filter(Boolean);if(cols.length){const tr=document.createElement('tr');cols.forEach(x=>{const th=document.createElement('th');th.textContent=x;tr.appendChild(th);});const thead=document.createElement('thead');thead.appendChild(tr);table.appendChild(thead);}const tbody=document.createElement('tbody');(Array.isArray(d.row)?d.row:[d.row]).filter(Boolean).forEach(row=>{const tr=document.createElement('tr');String(row).split('|').forEach(x=>{const td=document.createElement('td');td.textContent=x.trim();tr.appendChild(td);});tbody.appendChild(tr);});table.appendChild(tbody);wrap.appendChild(table);box.appendChild(wrap);return box;
-            }
-            if(type==='person'){
-                const row=document.createElement('div');row.className='rich-person';const imageUrl=safeUrl(field(d,'image'));if(imageUrl){const img=document.createElement('img');img.src=imageUrl;img.alt=field(d,'name','تصویر شخصیت');img.loading='lazy';row.appendChild(img);}const info=document.createElement('div');addTitle(info,field(d,'name','شخصیت تاریخی'));const role=[field(d,'role'),field(d,'period')].filter(Boolean).join(' | ');addText(info,role);addText(info,field(d,'description'));row.appendChild(info);box.appendChild(row);return box;
-            }
-            if(type==='factcheck'){
-                addTitle(box,'بررسی یک ادعا');const status=field(d,'status','unverified').toLowerCase(),labels={confirmed:'تأییدشده',false:'نادرست',disputed:'مورد اختلاف',unverified:'تأییدنشده'};const badge=document.createElement('span');badge.className='fact-status '+status;badge.textContent=labels[status]||status;box.appendChild(badge);addText(box,'ادعا: '+field(d,'claim'));addText(box,field(d,'analysis'));addSourceLinks(box,d.source);return box;
-            }
-            if(type==='document'){
-                addTitle(box,field(d,'title','سند تاریخی'));addText(box,[field(d,'type'),field(d,'date')].filter(Boolean).join(' | '));if(field(d,'image'))box.appendChild(makeArticleImage(field(d,'image'),true,'زیرنویس آزمایشی سند؛ توضیح دقیق بعداً اضافه می‌شود.'));addText(box,field(d,'translation'));addSourceLinks(box,d.source);return box;
-            }
-            if(type==='video'){
-                addTitle(box,field(d,'title','ویدئو'));addText(box,field(d,'description'));const url=safeUrl(field(d,'url'));if(url){const video=document.createElement('video');video.controls=true;video.preload='metadata';video.src=url;if(field(d,'thumbnail'))video.poster=safeUrl(field(d,'thumbnail'));box.appendChild(video);const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='باز کردن ویدئو در صفحه جداگانه';box.appendChild(a);}return box;
-            }
-            if(type==='sources'){
-                box.className='article-sources';addTitle(box,'منابع و مآخذ');const ul=document.createElement('ul');ul.className='article-sources-list';(Array.isArray(d.source)?d.source:[d.source]).filter(Boolean).forEach(v=>{const li=document.createElement('li');addSourceLinks(li,v);ul.appendChild(li);});box.appendChild(ul);return box;
-            }
-            if(type==='chart'){
-                addTitle(box,field(d,'title','نمودار آماری'));const labels=field(d,'labels').split('|').map(x=>x.trim()),values=field(d,'series').split('|').map(x=>Math.max(0,Number(x.trim().replace(',','.'))||0));const total=values.reduce((a,b)=>a+b,0)||1,max=Math.max(1,...values);const chart=document.createElement('div');chart.className='rich-chart';const chartType=field(d,'type','bar').toLowerCase();
-                if(chartType==='pie'||chartType==='doughnut'){let angle=0;const stops=values.map((v,i)=>{const from=angle;angle+=v/total*360;return `hsl(${(i*53+190)%360} 65% 55%) ${from}deg ${angle}deg`;});const pie=document.createElement('div');pie.style.width='min(230px,65vw)';pie.style.aspectRatio='1';pie.style.margin='8px auto 18px';pie.style.borderRadius='50%';pie.style.background='conic-gradient('+stops.join(',')+')';if(chartType==='doughnut'){pie.style.position='relative';const hole=document.createElement('div');hole.style.position='absolute';hole.style.inset='27%';hole.style.borderRadius='50%';hole.style.background='#242424';pie.appendChild(hole);}chart.appendChild(pie);labels.forEach((label,i)=>{const p=document.createElement('p');p.textContent=label+' : '+values[i]+' '+field(d,'unit','');chart.appendChild(p);});}
-                else if(chartType==='line'){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 600 220');svg.setAttribute('role','img');svg.setAttribute('aria-label',field(d,'title','نمودار خطی'));svg.style.width='100%';svg.style.height='auto';const pts=values.map((v,i)=>`${30+(values.length<2?0:i*540/(values.length-1))},${190-v/max*160}`).join(' ');const poly=document.createElementNS('http://www.w3.org/2000/svg','polyline');poly.setAttribute('points',pts);poly.setAttribute('fill','none');poly.setAttribute('stroke','#d3a034');poly.setAttribute('stroke-width','4');poly.setAttribute('stroke-linecap','round');poly.setAttribute('stroke-linejoin','round');svg.appendChild(poly);values.forEach((v,i)=>{const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',30+(values.length<2?0:i*540/(values.length-1)));c.setAttribute('cy',190-v/max*160);c.setAttribute('r','5');c.setAttribute('fill','#2a8acf');svg.appendChild(c);});chart.appendChild(svg);labels.forEach((label,i)=>{const p=document.createElement('p');p.textContent=label+' : '+values[i]+' '+field(d,'unit','');chart.appendChild(p);});}
-                else{labels.forEach((label,i)=>{const val=values[i]||0,row=document.createElement('div'),name=document.createElement('span'),track=document.createElement('div'),fill=document.createElement('div'),num=document.createElement('span');row.className='chart-row';name.textContent=label;track.className='chart-track';fill.className='chart-fill';fill.style.width=Math.max(0,Math.min(100,val/max*100))+'%';track.appendChild(fill);num.className='chart-value';num.textContent=val+' '+field(d,'unit','');row.append(name,track,num);chart.appendChild(row);});}box.appendChild(chart);return box;
-            }
-            if(type==='map'){
-                addTitle(box,field(d,'title','موقعیت‌های جغرافیایی'));const points=document.createElement('div');points.className='rich-map-points';(Array.isArray(d.point)?d.point:[d.point]).filter(Boolean).forEach(v=>{const a=String(v).split('|').map(x=>x.trim()),item=document.createElement('div');item.className='map-point';const title=document.createElement('strong');title.textContent=a[0]||'موقعیت';item.appendChild(title);const desc=document.createElement('p');desc.textContent=a[3]||'';item.appendChild(desc);if(a[1]&&a[2]){const link=document.createElement('a');link.href='https://www.google.com/maps?q='+encodeURIComponent(a[1]+','+a[2]);link.target='_blank';link.rel='noopener noreferrer';link.textContent='نمایش موقعیت روی نقشه';item.appendChild(link);}points.appendChild(item);});box.appendChild(points);return box;
-            }
-        }catch(error){console.error('Article block rendering error:',type,error);}
-        // Unknown or malformed blocks remain readable instead of breaking the article.
-        const fallback=document.createElement('div');fallback.className='article-text-block';fallback.textContent='بلوک «'+type+'» قابل نمایش نبود.\n'+body;return fallback;
+
+    function field(d,key,fallback=''){
+        const v=d[key];
+        return Array.isArray(v)?(v[0]||fallback):(v||fallback);
     }
-    function renderArticleContent(container, raw){
-        container.textContent='';const lines=String(raw||'').replace(/\r\n?/g,'\n').split('\n');let sources=[];let sourceMode=false;
-        const appendPlain=(line)=>{
-            const trimmed=line.trim();if(!trimmed){container.appendChild(document.createElement('br'));return;}
-            if(/^https?:\/\/\S+$/i.test(trimmed)&&isImageUrl(trimmed)){container.appendChild(makeArticleImage(trimmed,true));return;}
-            const paragraph=document.createElement('p');paragraph.className='article-text-block';let text=line;
-            const heading=/^\s*#+\s*/.exec(text);if(heading){paragraph.classList.add('article-bold-line');text=text.slice(heading[0].length);}
-            if(/(?:نتیجه[\u200c\s]*گیری|جمع[\u200c\s]*بندی)/i.test(text))paragraph.classList.add('article-conclusion');
-            const urlPattern=/https?:\/\/[^\s<>"']+/gi;let last=0,m;while((m=urlPattern.exec(text))!==null){if(m.index>last)appendInlineText(paragraph,text.slice(last,m.index));let url=m[0],suffix='';while(/[),.;!?،؛؟]$/.test(url)){suffix=url.slice(-1)+suffix;url=url.slice(0,-1);}if(isImageUrl(url)){paragraph.appendChild(makeArticleImage(url,true));}else{const a=document.createElement('a');a.href=safeUrl(url);a.target='_blank';a.rel='noopener noreferrer';a.textContent=url;a.style.color='var(--blue)';a.style.overflowWrap='anywhere';paragraph.appendChild(a);}if(suffix)paragraph.appendChild(document.createTextNode(suffix));last=m.index+m[0].length;}if(last<text.length)appendInlineText(paragraph,text.slice(last));container.appendChild(paragraph);
+
+    /* Convert Persian and Arabic digits into numbers for charts */
+    function parseChartNumber(value){
+        const normalized=String(value||'')
+            .replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+            .replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+            .replace(/,/g,'.');
+
+        return Math.max(0,Number(normalized)||0);
+    }
+
+    function addTitle(box,title){
+        if(!title) return;
+
+        const h=document.createElement('h3');
+        h.className='rich-title';
+
+        const clean=String(title).replace(/^\s*#+\s*/,'');
+        appendInlineText(h,clean);
+
+        box.appendChild(h);
+    }
+
+    function addText(box,text,cls){
+        if(!text) return;
+
+        const p=document.createElement('p');
+
+        if(cls) p.className=cls;
+
+        appendInlineText(p,String(text));
+        box.appendChild(p);
+    }
+
+    function addSourceLinks(box,values){
+        (Array.isArray(values)?values:[values])
+            .filter(Boolean)
+            .forEach(v=>{
+                const p=document.createElement('p');
+                const m=String(v).match(/https?:\/\/\S+/);
+
+                if(m){
+                    const before=String(v).slice(0,m.index);
+                    p.appendChild(document.createTextNode(before));
+
+                    const a=document.createElement('a');
+                    a.href=safeUrl(m[0].replace(/[),.;!?،؛؟]+$/g,''));
+                    a.target='_blank';
+                    a.rel='noopener noreferrer';
+                    a.textContent=m[0];
+
+                    p.appendChild(a);
+                }else{
+                    p.textContent=String(v);
+                }
+
+                box.appendChild(p);
+            });
+    }
+
+    function renderRichBlock(type,body){
+        const d=parseBlock(body);
+        const box=document.createElement('section');
+
+        box.className='rich-block rich-'+type;
+
+        try{
+
+            if(type==='image'){
+                const image=makeArticleImage(
+                    field(d,'url'),
+                    true,
+                    field(d,'caption','زیرنویس آزمایشی تصویر؛ این متن را بعداً ویرایش کنید.')
+                );
+
+                const size=field(d,'size','large').toLowerCase();
+
+                if(image.classList){
+                    image.classList.add('image-size-'+size);
+
+                    const img=image.querySelector('img');
+
+                    if(img){
+                        const widths={
+                            small:'360px',
+                            medium:'560px',
+                            large:'760px',
+                            full:'100%'
+                        };
+
+                        img.style.maxWidth=widths[size]||widths.large;
+                    }
+                }
+
+                return image;
+            }
+
+            if(type==='gallery'){
+                addTitle(box,field(d,'title','گالری تصاویر'));
+
+                const grid=document.createElement('div');
+                grid.className='rich-gallery';
+
+                (Array.isArray(d.image)?d.image:[d.image])
+                    .filter(Boolean)
+                    .forEach(item=>{
+                        const parts=String(item).split('|').map(x=>x.trim());
+                        const url=safeUrl(parts[0]);
+
+                        if(!url) return;
+
+                        const fig=document.createElement('figure');
+                        const img=document.createElement('img');
+                        const cap=document.createElement('figcaption');
+
+                        img.src=url;
+                        img.alt='تصویر گالری';
+                        img.loading='lazy';
+
+                        cap.textContent=parts[1]||'زیرنویس آزمایشی تصویر؛ بعداً ویرایش شود.';
+
+                        fig.append(img,cap);
+                        grid.appendChild(fig);
+                    });
+
+                box.appendChild(grid);
+                return box;
+            }
+
+            if(type==='quote'||type==='viewpoint'){
+                addTitle(
+                    box,
+                    field(d,'title',type==='quote'?'نقل‌قول':'دیدگاه تاریخی')
+                );
+
+                if(type==='quote'){
+                    addText(box,field(d,'text'),'rich-quote-text');
+                }else{
+                    const who=document.createElement('div');
+                    who.className='rich-byline';
+
+                    who.textContent=[
+                        field(d,'person'),
+                        field(d,'role'),
+                        field(d,'date')
+                    ].filter(Boolean).join(' | ');
+
+                    box.appendChild(who);
+                    addText(box,field(d,'text'));
+                }
+
+                const by=[
+                    field(d,'author'),
+                    field(d,'source')
+                ].filter(Boolean).join(' | ');
+
+                if(by||field(d,'date')){
+                    const small=document.createElement('small');
+                    small.className='rich-byline';
+
+                    small.textContent=[
+                        by,
+                        field(d,'date')
+                    ].filter(Boolean).join(' | ');
+
+                    box.appendChild(small);
+                }
+
+                return box;
+            }
+
+            if(type==='callout'){
+                const kind=field(d,'type','info').toLowerCase();
+
+                box.classList.add(kind);
+
+                addTitle(box,field(d,'title','یادداشت'));
+                addText(box,field(d,'text'));
+
+                return box;
+            }
+
+            if(type==='timeline'){
+                addTitle(box,field(d,'title','خط زمانی'));
+
+                const wrap=document.createElement('div');
+                wrap.className='rich-timeline';
+
+                (Array.isArray(d.event)?d.event:[d.event])
+                    .filter(Boolean)
+                    .forEach(v=>{
+                        const a=String(v).split('|').map(x=>x.trim());
+
+                        const item=document.createElement('div');
+                        const date=document.createElement('span');
+                        const desc=document.createElement('div');
+
+                        item.className='rich-event';
+                        date.className='rich-event-date';
+
+                        appendInlineText(date,a[0]||'');
+                        appendInlineText(desc,a.slice(1).join(' | '));
+
+                        item.append(date,desc);
+                        wrap.appendChild(item);
+                    });
+
+                box.appendChild(wrap);
+                return box;
+            }
+
+            if(type==='table'){
+                addTitle(box,field(d,'title','جدول اطلاعات'));
+
+                const wrap=document.createElement('div');
+                wrap.className='rich-table-wrap';
+
+                const table=document.createElement('table');
+                table.className='rich-table';
+
+                const cols=field(d,'columns')
+                    .split('|')
+                    .map(x=>x.trim())
+                    .filter(Boolean);
+
+                if(cols.length){
+                    const tr=document.createElement('tr');
+
+                    cols.forEach(x=>{
+                        const th=document.createElement('th');
+                        th.textContent=x;
+                        tr.appendChild(th);
+                    });
+
+                    const thead=document.createElement('thead');
+                    thead.appendChild(tr);
+                    table.appendChild(thead);
+                }
+
+                const tbody=document.createElement('tbody');
+
+                (Array.isArray(d.row)?d.row:[d.row])
+                    .filter(Boolean)
+                    .forEach(row=>{
+                        const tr=document.createElement('tr');
+
+                        String(row).split('|').forEach(x=>{
+                            const td=document.createElement('td');
+                            td.textContent=x.trim();
+                            tr.appendChild(td);
+                        });
+
+                        tbody.appendChild(tr);
+                    });
+
+                table.appendChild(tbody);
+                wrap.appendChild(table);
+                box.appendChild(wrap);
+
+                return box;
+            }
+
+            if(type==='person'){
+                const row=document.createElement('div');
+                row.className='rich-person';
+
+                const imageUrl=safeUrl(field(d,'image'));
+
+                if(imageUrl){
+                    const img=document.createElement('img');
+                    img.src=imageUrl;
+                    img.alt=field(d,'name','تصویر شخصیت');
+                    img.loading='lazy';
+                    row.appendChild(img);
+                }
+
+                const info=document.createElement('div');
+
+                addTitle(info,field(d,'name','شخصیت تاریخی'));
+
+                const role=[
+                    field(d,'role'),
+                    field(d,'period')
+                ].filter(Boolean).join(' | ');
+
+                addText(info,role);
+                addText(info,field(d,'description'));
+
+                row.appendChild(info);
+                box.appendChild(row);
+
+                return box;
+            }
+
+            if(type==='factcheck'){
+                addTitle(box,'بررسی یک ادعا');
+
+                const status=field(d,'status','unverified').toLowerCase();
+
+                const labels={
+                    confirmed:'تأییدشده',
+                    false:'نادرست',
+                    disputed:'مورد اختلاف',
+                    unverified:'تأییدنشده'
+                };
+
+                const badge=document.createElement('span');
+                badge.className='fact-status '+status;
+                badge.textContent=labels[status]||status;
+
+                box.appendChild(badge);
+
+                addText(box,'ادعا: '+field(d,'claim'));
+                addText(box,field(d,'analysis'));
+                addSourceLinks(box,d.source);
+
+                return box;
+            }
+
+            if(type==='document'){
+                addTitle(box,field(d,'title','سند تاریخی'));
+
+                addText(
+                    box,
+                    [
+                        field(d,'type'),
+                        field(d,'date')
+                    ].filter(Boolean).join(' | ')
+                );
+
+                if(field(d,'image')){
+                    box.appendChild(
+                        makeArticleImage(
+                            field(d,'image'),
+                            true,
+                            'زیرنویس آزمایشی سند؛ توضیح دقیق بعداً اضافه می‌شود.'
+                        )
+                    );
+                }
+
+                addText(box,field(d,'translation'));
+                addSourceLinks(box,d.source);
+
+                return box;
+            }
+
+            if(type==='video'){
+                addTitle(box,field(d,'title','ویدئو'));
+                addText(box,field(d,'description'));
+
+                const url=safeUrl(field(d,'url'));
+
+                if(url){
+                    const video=document.createElement('video');
+
+                    video.controls=true;
+                    video.preload='metadata';
+                    video.src=url;
+
+                    if(field(d,'thumbnail')){
+                        video.poster=safeUrl(field(d,'thumbnail'));
+                    }
+
+                    box.appendChild(video);
+
+                    const a=document.createElement('a');
+                    a.href=url;
+                    a.target='_blank';
+                    a.rel='noopener noreferrer';
+                    a.textContent='باز کردن ویدئو در صفحه جداگانه';
+
+                    box.appendChild(a);
+                }
+
+                return box;
+            }
+
+            if(type==='sources'){
+                box.className='article-sources';
+
+                addTitle(box,'منابع و مآخذ');
+
+                const ul=document.createElement('ul');
+                ul.className='article-sources-list';
+
+                (Array.isArray(d.source)?d.source:[d.source])
+                    .filter(Boolean)
+                    .forEach(v=>{
+                        const li=document.createElement('li');
+                        addSourceLinks(li,v);
+                        ul.appendChild(li);
+                    });
+
+                box.appendChild(ul);
+                return box;
+            }
+
+            if(type==='chart'){
+                addTitle(box,field(d,'title','نمودار آماری'));
+
+                const labels=field(d,'labels')
+                    .split('|')
+                    .map(x=>x.trim());
+
+                const values=field(d,'series')
+                    .split('|')
+                    .map(parseChartNumber);
+
+                const total=values.reduce((a,b)=>a+b,0)||1;
+                const max=Math.max(1,...values);
+
+                const chart=document.createElement('div');
+                chart.className='rich-chart';
+
+                const chartType=field(d,'type','bar').toLowerCase();
+
+                if(chartType==='pie'||chartType==='doughnut'){
+                    let angle=0;
+
+                    const stops=values.map((v,i)=>{
+                        const from=angle;
+                        angle+=v/total*360;
+
+                        return `hsl(${(i*53+190)%360} 65% 55%) ${from}deg ${angle}deg`;
+                    });
+
+                    const pie=document.createElement('div');
+
+                    pie.style.width='min(230px,65vw)';
+                    pie.style.aspectRatio='1';
+                    pie.style.margin='8px auto 18px';
+                    pie.style.borderRadius='50%';
+                    pie.style.background='conic-gradient('+stops.join(',')+')';
+
+                    if(chartType==='doughnut'){
+                        pie.style.position='relative';
+
+                        const hole=document.createElement('div');
+
+                        hole.style.position='absolute';
+                        hole.style.inset='27%';
+                        hole.style.borderRadius='50%';
+                        hole.style.background='#242424';
+
+                        pie.appendChild(hole);
+                    }
+
+                    chart.appendChild(pie);
+
+                    labels.forEach((label,i)=>{
+                        const p=document.createElement('p');
+                        p.textContent=label+' : '+values[i]+' '+field(d,'unit','');
+                        chart.appendChild(p);
+                    });
+
+                }else if(chartType==='line'){
+
+                    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+
+                    svg.setAttribute('viewBox','0 0 600 220');
+                    svg.setAttribute('role','img');
+                    svg.setAttribute('aria-label',field(d,'title','نمودار خطی'));
+
+                    svg.style.width='100%';
+                    svg.style.height='auto';
+
+                    const pts=values.map((v,i)=>
+                        `${30+(values.length<2?0:i*540/(values.length-1))},${190-v/max*160}`
+                    ).join(' ');
+
+                    const poly=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+
+                    poly.setAttribute('points',pts);
+                    poly.setAttribute('fill','none');
+                    poly.setAttribute('stroke','#d3a034');
+                    poly.setAttribute('stroke-width','4');
+                    poly.setAttribute('stroke-linecap','round');
+                    poly.setAttribute('stroke-linejoin','round');
+
+                    svg.appendChild(poly);
+
+                    values.forEach((v,i)=>{
+                        const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+
+                        c.setAttribute('cx',30+(values.length<2?0:i*540/(values.length-1)));
+                        c.setAttribute('cy',190-v/max*160);
+                        c.setAttribute('r','5');
+                        c.setAttribute('fill','#2a8acf');
+
+                        svg.appendChild(c);
+                    });
+
+                    chart.appendChild(svg);
+
+                    labels.forEach((label,i)=>{
+                        const p=document.createElement('p');
+                        p.textContent=label+' : '+values[i]+' '+field(d,'unit','');
+                        chart.appendChild(p);
+                    });
+
+                }else{
+
+                    labels.forEach((label,i)=>{
+                        const val=values[i]||0;
+
+                        const row=document.createElement('div');
+                        const name=document.createElement('span');
+                        const track=document.createElement('div');
+                        const fill=document.createElement('div');
+                        const num=document.createElement('span');
+
+                        row.className='chart-row';
+                        name.textContent=label;
+
+                        track.className='chart-track';
+                        fill.className='chart-fill';
+
+                        fill.style.width=Math.max(
+                            0,
+                            Math.min(100,val/max*100)
+                        )+'%';
+
+                        track.appendChild(fill);
+
+                        num.className='chart-value';
+                        num.textContent=val+' '+field(d,'unit','');
+
+                        row.append(name,track,num);
+                        chart.appendChild(row);
+                    });
+                }
+
+                box.appendChild(chart);
+                return box;
+            }
+
+            if(type==='map'){
+                addTitle(box,field(d,'title','موقعیت‌های جغرافیایی'));
+
+                const points=document.createElement('div');
+                points.className='rich-map-points';
+
+                (Array.isArray(d.point)?d.point:[d.point])
+                    .filter(Boolean)
+                    .forEach(v=>{
+                        const a=String(v).split('|').map(x=>x.trim());
+
+                        const item=document.createElement('div');
+                        item.className='map-point';
+
+                        const title=document.createElement('strong');
+                        title.textContent=a[0]||'موقعیت';
+
+                        item.appendChild(title);
+
+                        const desc=document.createElement('p');
+                        desc.textContent=a[3]||'';
+
+                        item.appendChild(desc);
+
+                        if(a[1]&&a[2]){
+                            const link=document.createElement('a');
+
+                            link.href='https://www.google.com/maps?q='+encodeURIComponent(a[1]+','+a[2]);
+                            link.target='_blank';
+                            link.rel='noopener noreferrer';
+                            link.textContent='نمایش موقعیت روی نقشه';
+
+                            item.appendChild(link);
+                        }
+
+                        points.appendChild(item);
+                    });
+
+                box.appendChild(points);
+                return box;
+            }
+
+        }catch(error){
+            console.error('Article block rendering error:',type,error);
+        }
+
+        // Unknown or malformed blocks remain readable instead of breaking the article.
+        const fallback=document.createElement('div');
+        fallback.className='article-text-block';
+        fallback.textContent='بلوک «'+type+'» قابل نمایش نبود.\n'+body;
+
+        return fallback;
+    }
+
+    function renderArticleContent(container,raw){
+        container.textContent='';
+
+        const lines=String(raw||'')
+            .replace(/\r\n?/g,'\n')
+            .split('\n');
+
+        let sources=[];
+        let sourceMode=false;
+
+        const appendList=(items)=>{
+            const ul=document.createElement('ul');
+            ul.className='article-list';
+
+            items.forEach(item=>{
+                const li=document.createElement('li');
+
+                appendInlineText(
+                    li,
+                    item.replace(/^\s*[-•]\s+/,'').trim()
+                );
+
+                ul.appendChild(li);
+            });
+
+            container.appendChild(ul);
         };
+
+        const appendPlain=(line)=>{
+            const trimmed=line.trim();
+
+            if(!trimmed){
+                container.appendChild(document.createElement('br'));
+                return;
+            }
+
+            if(/^https?:\/\/\S+$/i.test(trimmed)&&isImageUrl(trimmed)){
+                container.appendChild(makeArticleImage(trimmed,true));
+                return;
+            }
+
+            const paragraph=document.createElement('p');
+            paragraph.className='article-text-block';
+
+            let text=line;
+
+            const heading=/^\s*#+\s*/.exec(text);
+
+            if(heading){
+                paragraph.classList.add('article-bold-line');
+                text=text.slice(heading[0].length);
+            }
+
+            if(/(?:نتیجه[\u200c\s]*گیری|جمع[\u200c\s]*بندی)/i.test(text)){
+                paragraph.classList.add('article-conclusion');
+            }
+
+            const urlPattern=/https?:\/\/[^\s<>"']+/gi;
+
+            let last=0;
+            let m;
+
+            while((m=urlPattern.exec(text))!==null){
+
+                if(m.index>last){
+                    appendInlineText(
+                        paragraph,
+                        text.slice(last,m.index)
+                    );
+                }
+
+                let url=m[0];
+                let suffix='';
+
+                while(/[),.;!?،؛؟]$/.test(url)){
+                    suffix=url.slice(-1)+suffix;
+                    url=url.slice(0,-1);
+                }
+
+                if(isImageUrl(url)){
+                    paragraph.appendChild(makeArticleImage(url,true));
+                }else{
+                    const a=document.createElement('a');
+
+                    a.href=safeUrl(url);
+                    a.target='_blank';
+                    a.rel='noopener noreferrer';
+                    a.textContent=url;
+                    a.style.color='var(--blue)';
+                    a.style.overflowWrap='anywhere';
+
+                    paragraph.appendChild(a);
+                }
+
+                if(suffix){
+                    paragraph.appendChild(document.createTextNode(suffix));
+                }
+
+                last=m.index+m[0].length;
+            }
+
+            if(last<text.length){
+                appendInlineText(paragraph,text.slice(last));
+            }
+
+            container.appendChild(paragraph);
+        };
+
         for(let i=0;i<lines.length;i++){
-            const line=lines[i],trim=line.trim();
-            if(/^:::sources\s*$/i.test(trim)){let body=[];while(i+1<lines.length&&!/^:::\s*$/.test(lines[i+1].trim()))body.push(lines[++i]);if(i+1<lines.length)i++;const d=parseBlock(body.join('\n'));sources=sources.concat(Array.isArray(d.source)?d.source:[d.source].filter(Boolean));continue;}
-            if(sourceMode){if(/^:::\s*$/.test(trim)){sourceMode=false;continue;}if(trim)sources.push(trim);continue;}
+
+            const line=lines[i];
+            const trim=line.trim();
+
+            if(/^:::sources\s*$/i.test(trim)){
+                let body=[];
+
+                while(
+                    i+1<lines.length&&
+                    !/^:::\s*$/.test(lines[i+1].trim())
+                ){
+                    body.push(lines[++i]);
+                }
+
+                if(i+1<lines.length) i++;
+
+                const d=parseBlock(body.join('\n'));
+
+                sources=sources.concat(
+                    Array.isArray(d.source)
+                    ?d.source
+                    :[d.source].filter(Boolean)
+                );
+
+                continue;
+            }
+
+            if(sourceMode){
+                if(/^:::\s*$/.test(trim)){
+                    sourceMode=false;
+                    continue;
+                }
+
+                if(trim) sources.push(trim);
+                continue;
+            }
+
+            /* Convert consecutive bullet lines into one graphic list */
+            if(/^\s*[-•]\s+/.test(line)){
+                const items=[line];
+
+                while(
+                    i+1<lines.length&&
+                    /^\s*[-•]\s+/.test(lines[i+1])
+                ){
+                    items.push(lines[++i]);
+                }
+
+                appendList(items);
+                continue;
+            }
+
             const opening=trim.match(/^:::([a-z]+)\s*$/i);
-            if(opening){const type=opening[1].toLowerCase();let body=[];let closed=false;while(i+1<lines.length){if(/^:::\s*$/.test(lines[i+1].trim())){i++;closed=true;break;}body.push(lines[++i]);}if(closed){const node=renderRichBlock(type,body.join('\n'));if(node)container.appendChild(node);continue;}appendPlain(line);body.forEach(appendPlain);continue;}
-            const sourceHead=/^\s*#*\s*منابع(?:\s*و\s*مآخذ|\s*و\s*ماخذ)?\s*[:：]?\s*$/i.test(trim);
-            if(sourceHead){sourceMode=true;continue;}
+
+            if(opening){
+                const type=opening[1].toLowerCase();
+
+                let body=[];
+                let closed=false;
+
+                while(i+1<lines.length){
+                    if(/^:::\s*$/.test(lines[i+1].trim())){
+                        i++;
+                        closed=true;
+                        break;
+                    }
+
+                    body.push(lines[++i]);
+                }
+
+                if(closed){
+                    const node=renderRichBlock(type,body.join('\n'));
+
+                    if(node) container.appendChild(node);
+
+                    continue;
+                }
+
+                appendPlain(line);
+                body.forEach(appendPlain);
+
+                continue;
+            }
+
+            const sourceHead=
+                /^\s*#*\s*منابع(?:\s*و\s*مآخذ|\s*و\s*ماخذ)?\s*[:：]?\s*$/i.test(trim);
+
+            if(sourceHead){
+                sourceMode=true;
+                continue;
+            }
+
             appendPlain(line);
         }
-        if(sources.length){const section=document.createElement('section');section.className='article-sources';const heading=document.createElement('h2');heading.className='article-sources-title';heading.textContent='منابع و مآخذ';section.appendChild(heading);const list=document.createElement('ul');list.className='article-sources-list';sources.filter(Boolean).forEach(source=>{const li=document.createElement('li');const text=String(source),match=text.match(/https?:\/\/\S+/);if(match){li.appendChild(document.createTextNode(text.slice(0,match.index)));const a=document.createElement('a');a.href=safeUrl(match[0].replace(/[),.;!?،؛؟]+$/g,''));a.target='_blank';a.rel='noopener noreferrer';a.textContent=match[0];li.appendChild(a);}else li.textContent=text;list.appendChild(li);});section.appendChild(list);container.appendChild(section);}
-    }
-    async function loadArticle(){
-        const id = new URLSearchParams(window.location.search).get("id");
-        if(!id){showState("شناسه مقاله مشخص نیست","برای مشاهده مقاله، از صفحه مطالب وارد یکی از مقاله‌ها شوید.");return;}
-        const {data,error} = await db.from("articles")
-            .select("id,title,description,content,category,cover_image,status,created_at")
-            .eq("id",id).eq("status","published").single();
-        if(error || !data){console.error("Article loading error:",error);showState("مقاله پیدا نشد","ممکن است مقاله حذف شده یا هنوز منتشر نشده باشد.");return;}
-        const pageTitle = (data.title || "مقاله") + " | آریامهر گرافی";
-        const pageDescription = (data.description || "مطالعه مقاله در آریامهر گرافی؛ آرشیوی برای تاریخ، اسناد و روایت‌های ایران.").slice(0, 155);
-        document.title = pageTitle;
 
-        function setMeta(selector, attribute, value) {
-            const element = document.querySelector(selector);
-            if (element && value) element.setAttribute(attribute, value);
+        if(sources.length){
+            const section=document.createElement('section');
+            section.className='article-sources';
+
+            const heading=document.createElement('h2');
+            heading.className='article-sources-title';
+            heading.textContent='منابع و مآخذ';
+
+            section.appendChild(heading);
+
+            const list=document.createElement('ul');
+            list.className='article-sources-list';
+
+            sources.filter(Boolean).forEach(source=>{
+                const li=document.createElement('li');
+
+                const text=String(source);
+                const match=text.match(/https?:\/\/\S+/);
+
+                if(match){
+                    li.appendChild(
+                        document.createTextNode(text.slice(0,match.index))
+                    );
+
+                    const a=document.createElement('a');
+
+                    a.href=safeUrl(
+                        match[0].replace(/[),.;!?،؛؟]+$/g,'')
+                    );
+
+                    a.target='_blank';
+                    a.rel='noopener noreferrer';
+                    a.textContent=match[0];
+
+                    li.appendChild(a);
+
+                }else{
+                    li.textContent=text;
+                }
+
+                list.appendChild(li);
+            });
+
+            section.appendChild(list);
+            container.appendChild(section);
+        }
+    }
+
+    async function loadArticle(){
+
+        const id=new URLSearchParams(window.location.search).get("id");
+
+        if(!id){
+            showState(
+                "شناسه مقاله مشخص نیست",
+                "برای مشاهده مقاله، از صفحه مطالب وارد یکی از مقاله‌ها شوید."
+            );
+            return;
         }
 
-        setMeta('meta[name="description"]', "content", pageDescription);
-        setMeta('meta[property="og:title"]', "content", pageTitle);
-        setMeta('meta[property="og:description"]', "content", pageDescription);
-        setMeta('meta[property="og:image"]', "content", data.cover_image || "https://mrkalafe.github.io/ariammehr-graphy/images/og-default.jpg");
-        setMeta('meta[name="twitter:title"]', "content", pageTitle);
-        setMeta('meta[name="twitter:description"]', "content", pageDescription);
+        const {data,error}=await db
+            .from("articles")
+            .select("id,title,description,content,category,cover_image,status,created_at")
+            .eq("id",id)
+            .eq("status","published")
+            .single();
 
-        const canonicalUrl = window.location.origin + window.location.pathname + "?id=" + encodeURIComponent(data.id);
-        let canonical = document.querySelector('link[rel="canonical"]');
-        if (!canonical) {
-            canonical = document.createElement("link");
-            canonical.rel = "canonical";
+        if(error||!data){
+            console.error("Article loading error:",error);
+
+            showState(
+                "مقاله پیدا نشد",
+                "ممکن است مقاله حذف شده یا هنوز منتشر نشده باشد."
+            );
+
+            return;
+        }
+
+        const pageTitle=(data.title||"مقاله")+" | آریامهر گرافی";
+
+        const pageDescription=(
+            data.description||
+            "مطالعه مقاله در آریامهر گرافی؛ آرشیوی برای تاریخ، اسناد و روایت‌های ایران."
+        ).slice(0,155);
+
+        document.title=pageTitle;
+
+        function setMeta(selector,attribute,value){
+            const element=document.querySelector(selector);
+
+            if(element&&value){
+                element.setAttribute(attribute,value);
+            }
+        }
+
+        setMeta('meta[name="description"]',"content",pageDescription);
+        setMeta('meta[property="og:title"]',"content",pageTitle);
+        setMeta('meta[property="og:description"]',"content",pageDescription);
+
+        setMeta(
+            'meta[property="og:image"]',
+            "content",
+            data.cover_image||"https://mrkalafe.github.io/ariammehr-graphy/images/og-default.jpg"
+        );
+
+        setMeta('meta[name="twitter:title"]',"content",pageTitle);
+        setMeta('meta[name="twitter:description"]',"content",pageDescription);
+
+        const canonicalUrl=
+            window.location.origin+
+            window.location.pathname+
+            "?id="+
+            encodeURIComponent(data.id);
+
+        let canonical=document.querySelector('link[rel="canonical"]');
+
+        if(!canonical){
+            canonical=document.createElement("link");
+            canonical.rel="canonical";
             document.head.appendChild(canonical);
         }
-        canonical.href = canonicalUrl;
-        setMeta('meta[property="og:url"]', "content", canonicalUrl);
-        shell.textContent = "";
+
+        canonical.href=canonicalUrl;
+
+        setMeta('meta[property="og:url"]',"content",canonicalUrl);
+
+        shell.textContent="";
+
         if(data.cover_image){
-            const coverWrap=document.createElement("div");coverWrap.className="article-cover-wrap";
-            const cover=document.createElement("img");cover.className="article-cover";cover.alt=data.title || "تصویر مقاله";cover.src=data.cover_image;cover.loading="eager";
-            cover.onerror=function(){coverWrap.remove();};coverWrap.appendChild(cover);shell.appendChild(coverWrap);
+            const coverWrap=document.createElement("div");
+            coverWrap.className="article-cover-wrap";
+
+            const cover=document.createElement("img");
+
+            cover.className="article-cover";
+            cover.alt=data.title||"تصویر مقاله";
+            cover.src=data.cover_image;
+            cover.loading="eager";
+
+            cover.onerror=function(){
+                coverWrap.remove();
+            };
+
+            coverWrap.appendChild(cover);
+            shell.appendChild(coverWrap);
         }
-        const inner=document.createElement("div");inner.className="article-inner";
-        const crumb=document.createElement("div");crumb.className="article-breadcrumb";
-        const home=document.createElement("a");home.href="index.html";home.textContent="صفحه اصلی";
-        const sep=document.createElement("span");sep.textContent="/";
-        const magazine=document.createElement("a");magazine.href="index.html#articles-section";magazine.textContent="مجله";
-        const current=document.createElement("span");current.textContent=data.title || "مقاله";
-        crumb.append(home,sep,magazine,sep.cloneNode(true),current);
-        const meta=document.createElement("div");meta.className="article-meta";
-        const category=document.createElement("span");category.className="article-category";
-        const catIcon=document.createElement("i");catIcon.setAttribute("data-lucide","bookmark");catIcon.setAttribute("size","14");category.append(catIcon,document.createTextNode(data.category || "مقاله"));meta.appendChild(category);
-        const dateText=formatDate(data.created_at);if(dateText){const date=document.createElement("span");date.className="article-date";const dateIcon=document.createElement("i");dateIcon.setAttribute("data-lucide","calendar-days");dateIcon.setAttribute("size","13");date.append(dateIcon,document.createTextNode(" "+dateText));meta.appendChild(date);}
-        const title=document.createElement("h1");title.id="title";title.textContent=data.title || "بدون عنوان";
+
+        const inner=document.createElement("div");
+        inner.className="article-inner";
+
+        const crumb=document.createElement("div");
+        crumb.className="article-breadcrumb";
+
+        const home=document.createElement("a");
+        home.href="index.html";
+        home.textContent="صفحه اصلی";
+
+        const sep=document.createElement("span");
+        sep.textContent="/";
+
+        const magazine=document.createElement("a");
+        magazine.href="index.html#articles-section";
+        magazine.textContent="مجله";
+
+        const current=document.createElement("span");
+        current.textContent=data.title||"مقاله";
+
+        crumb.append(
+            home,
+            sep,
+            magazine,
+            sep.cloneNode(true),
+            current
+        );
+
+        const meta=document.createElement("div");
+        meta.className="article-meta";
+
+        const category=document.createElement("span");
+        category.className="article-category";
+
+        const catIcon=document.createElement("i");
+        catIcon.setAttribute("data-lucide","bookmark");
+        catIcon.setAttribute("size","14");
+
+        category.append(
+            catIcon,
+            document.createTextNode(data.category||"مقاله")
+        );
+
+        meta.appendChild(category);
+
+        const dateText=formatDate(data.created_at);
+
+        if(dateText){
+            const date=document.createElement("span");
+            date.className="article-date";
+
+            const dateIcon=document.createElement("i");
+            dateIcon.setAttribute("data-lucide","calendar-days");
+            dateIcon.setAttribute("size","13");
+
+            date.append(
+                dateIcon,
+                document.createTextNode(" "+dateText)
+            );
+
+            meta.appendChild(date);
+        }
+
+        const title=document.createElement("h1");
+        title.id="title";
+        title.textContent=data.title||"بدون عنوان";
+
         inner.append(crumb,meta,title);
-        if(data.description){const desc=document.createElement("p");desc.className="article-description";desc.textContent=data.description;inner.appendChild(desc);}
-        const divider=document.createElement("div");divider.className="article-divider";
-        const content=document.createElement("div");content.id="content";const sources=renderArticleContent(content,data.content || "");
-        const end=document.createElement("div");end.className="article-end";
-        const back=document.createElement("a");back.className="back-home";back.href="index.html#articles-section";
-        const arrow=document.createElement("i");arrow.setAttribute("data-lucide","arrow-right");arrow.setAttribute("size","16");back.append(arrow,document.createTextNode("بازگشت به مطالب"));
-        const note=document.createElement("span");note.className="article-end-note";note.textContent="آریامهر گرافی | آرشیو تاریخ و روایت‌های ایران";
-        end.append(back,note);inner.append(divider,content);if(sources)inner.appendChild(sources);inner.appendChild(end);shell.appendChild(inner);refreshIcons();
+
+        if(data.description){
+            const desc=document.createElement("p");
+
+            desc.className="article-description";
+            desc.textContent=data.description;
+
+            inner.appendChild(desc);
+        }
+
+        const divider=document.createElement("div");
+        divider.className="article-divider";
+
+        const content=document.createElement("div");
+        content.id="content";
+
+        renderArticleContent(content,data.content||"");
+
+        const end=document.createElement("div");
+        end.className="article-end";
+
+        const back=document.createElement("a");
+        back.className="back-home";
+        back.href="index.html#articles-section";
+
+        const arrow=document.createElement("i");
+        arrow.setAttribute("data-lucide","arrow-right");
+        arrow.setAttribute("size","16");
+
+        back.append(
+            arrow,
+            document.createTextNode("بازگشت به مطالب")
+        );
+
+        const note=document.createElement("span");
+        note.className="article-end-note";
+        note.textContent="آریامهر گرافی | آرشیو تاریخ و روایت‌های ایران";
+
+        end.append(back,note);
+
+        inner.append(divider,content);
+        inner.appendChild(end);
+
+        shell.appendChild(inner);
+
+        refreshIcons();
     }
-    loadArticle().catch(function(error){console.error("Unexpected article error:",error);showState("خطا در دریافت مقاله","لطفاً صفحه را دوباره بارگذاری کنید.");});
+
+    loadArticle().catch(function(error){
+        console.error("Unexpected article error:",error);
+
+        showState(
+            "خطا در دریافت مقاله",
+            "لطفاً صفحه را دوباره بارگذاری کنید."
+        );
+    });
+
     async function submitContactMessage(event){
-        event.preventDefault();const form=document.getElementById("contactForm"),button=document.getElementById("contactSubmit"),box=document.getElementById("contactFormMessage");
-        const payload={name:document.getElementById("contactName").value.trim(),email:document.getElementById("contactEmail").value.trim(),subject:document.getElementById("contactSubject").value.trim(),message:document.getElementById("contactMessage").value.trim()};
-        if(payload.name.length<2||payload.subject.length<2||payload.message.length<5||payload.email.length<5){box.style.color="#ed8797";box.textContent="لطفاً همه فیلدها را با اطلاعات معتبر تکمیل کنید.";return;}
-        button.disabled=true;button.textContent="در حال ارسال...";box.textContent="";
-        try{const {error}=await db.from("contact_messages").insert([payload]);if(error)throw error;form.reset();box.style.color="#78c99a";box.textContent="پیام شما با موفقیت ارسال شد. سپاس از ارتباطتان!";}
-        catch(error){console.error("Contact message error:",error);box.style.color="#ed8797";box.textContent="ارسال پیام انجام نشد. لطفاً کمی بعد دوباره تلاش کنید.";}
-        finally{button.disabled=false;button.textContent="ارسال پیام";}
+
+        event.preventDefault();
+
+        const form=document.getElementById("contactForm");
+        const button=document.getElementById("contactSubmit");
+        const box=document.getElementById("contactFormMessage");
+
+        const payload={
+            name:document.getElementById("contactName").value.trim(),
+            email:document.getElementById("contactEmail").value.trim(),
+            subject:document.getElementById("contactSubject").value.trim(),
+            message:document.getElementById("contactMessage").value.trim()
+        };
+
+        if(
+            payload.name.length<2||
+            payload.subject.length<2||
+            payload.message.length<5||
+            payload.email.length<5
+        ){
+            box.style.color="#ed8797";
+            box.textContent="لطفاً همه فیلدها را با اطلاعات معتبر تکمیل کنید.";
+            return;
+        }
+
+        button.disabled=true;
+        button.textContent="در حال ارسال...";
+        box.textContent="";
+
+        try{
+            const {error}=await db
+                .from("contact_messages")
+                .insert([payload]);
+
+            if(error) throw error;
+
+            form.reset();
+
+            box.style.color="#78c99a";
+            box.textContent="پیام شما با موفقیت ارسال شد. سپاس از ارتباطتان!";
+
+        }catch(error){
+            console.error("Contact message error:",error);
+
+            box.style.color="#ed8797";
+            box.textContent="ارسال پیام انجام نشد. لطفاً کمی بعد دوباره تلاش کنید.";
+
+        }finally{
+            button.disabled=false;
+            button.textContent="ارسال پیام";
+        }
     }
-    document.getElementById("contactForm").addEventListener("submit",submitContactMessage);
+
+    document
+        .getElementById("contactForm")
+        .addEventListener("submit",submitContactMessage);
+
     refreshIcons();
+
 })();
 </script>
+
 </body>
 </html>
